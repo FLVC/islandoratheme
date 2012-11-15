@@ -1,0 +1,93 @@
+/**
+ * Islandoratheme islandoratheme.css
+ *
+ * Use this file to add your custom styles.
+ *
+ * You can change the name of this file, just
+ * remember to update the name in the info file
+ * as well.
+ */
+
+/* Navigation Bar Styles */
+#menu-bar { 
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+/* Header Styles */
+div#header-wrapper div#branding
+{
+  background: #003366;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  border: 1px black solid;
+  border-radius: 6px 6px 6px 6px;
+  display: block;
+}
+
+div#header-wrapper div#branding a
+{
+  color: white;  
+}
+
+/* Basic Image Module Styles */
+
+div.islandora-basic-image-thumbnail
+{
+  float: right;
+}
+
+/* Solr Search Module Styles */
+
+section#block-islandora-solr-advanced
+{
+  margin: 0px 20px 20px 20px;
+  background: #efefef;
+  border: 1px solid #04356c;
+  padding: 20px 20px 0px 20px;
+  border-radius: 6px 6px 6px 6px;
+}
+
+#block-islandora-solr-display-switch
+{
+  float: right;
+  margin: 0;
+}
+
+ul.islandora-solr-display
+{
+margin: 0;
+padding: 0;
+list-style-type: none;
+text-align: right;
+}
+
+ul.islandora-solr-display li
+{
+  display: inline;
+}
+
+dd.dc-title a
+{
+  font-weight: bold;  
+}
+
+.islandora-basic-collection-list-item
+{
+  padding-bottom: 0px;
+}
+
+/* First Sidebar Styles */
+
+div.region-sidebar-first div.block-inner
+{
+  background: #dedede;
+  padding: 15px;
+  border: 1px solid #04356c;
+}
+
+section#block-islandora-solr-sort div.block-inner
+{
+  background: #efefef;
+}
