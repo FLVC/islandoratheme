@@ -1,11 +1,11 @@
 <?php
 
 /*
- * islandora-basic-image.tpl.php
+ * islandora-pdf.tpl.php
  * 
  *
  * 
- * This file overrides the default template provided by the islandora basic image module.
+ * This file overrides the default template provided by the islandora PDF module.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,20 @@
  */
 ?>
 
-<?php if(isset($islandora_object_label)): ?>
-  <?php drupal_set_title("$islandora_object_label"); ?>
-<?php endif; ?>
+<?php
+
+if (isset($islandora_object_label))
+{
+  drupal_set_title("$islandora_object_label");
+}
+
+if (isset($islandora_content))
+{
+  $regex = '$\b(https?|ftp|file)://[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|]$i';
+  preg_match($regex, $islandora_content, $pdf_url);
+}
+
+?>
 
 <div id="tabs">
 
@@ -36,17 +47,15 @@
 <div id="tabs-1">
 
 <div class="islandora-basic-image-object islandora">
-  <div class="islandora-basic-image-content-wrapper clearfix">
-    <?php if(isset($islandora_medium_img)): ?>
-      <div class="islandora-basic-image-content">
-      <?php if(isset($islandora_full_url)): ?>
-        <?php print l($islandora_medium_img, $islandora_full_url, array('html' => TRUE)); ?>
-      <?php elseif(isset($islandora_medium_img)): ?>
-        <?php print $islandora_medium_img; ?>
-      <?php endif; ?>
+  <div class="islandora-pdf-content-wrapper clearfix">
+    <?php if (isset($islandora_content)): ?>
+      <div class="islandora-pdf-content">
+        <p><embed height="600" src="<?php print $pdf_url[0]; ?>" width="100%"></embed></p>
       </div>
+      <p><?php print $islandora_download_link; ?></p>
     <?php endif; ?>
-  <div class="islandora-basic-image-sidebar">
+
+  <div class="islandora-pdf-sidebar">
     <dl>
       <?php if(isset($mods_array['mods:date']['value'])): ?>
         <dt><?php print $mods_array['mods:date']['label']; ?>:</dt>
@@ -73,7 +82,6 @@
         <?php endif; ?>
         </div>
       <?php endif; ?>
-      
       <div>
 	<dl class="islandora-table-display">
         <?php $row_field = 0; ?>
@@ -93,7 +101,6 @@
         <?php endforeach; ?>
         </dl>
       </div>
-      
       <?php if($parent_collections): ?>
         <div>
           <h2>In Collections</h2>
@@ -107,3 +114,4 @@
     </div>
 </div>
 </div>
+

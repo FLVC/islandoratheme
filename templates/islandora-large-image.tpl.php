@@ -1,30 +1,35 @@
 <?php
 
-/*
- * islandora-basic-image.tpl.php
- * 
+/**
+ * @file
+ * This file overrides the default template provided by the islandora large image module.
  *
- * 
- * This file overrides the default template provided by the islandora basic image module.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with the program.  If not, see <http ://www.gnu.org/licenses/>.
+ * Available variables:
+ * - $islandora_object: The Islandora object rendered in this template file
+ * - $islandora_dublin_core: The DC datastream object
+ * - $dc_array: The DC datastream object values as a sanitized array. This 
+ *   includes label, value and class name.
+ * - $islandora_object_label: The sanitized object label.
+ * - $parent_collections: An array containing parent collection(s) info.
+ *   Includes collection object, label, url and rendered link.
+ * - $islandora_thumbnail_img: A rendered thumbnail image.
+ * - $islandora_content: A rendered image. By default this is the JPG datastream
+ *   which is a medium sized image. Alternatively this could be a rendered
+ *   viewer which displays the JP2 datastream image.
+ *
+ * @see template_preprocess_islandora_large_image()
+ * @see theme_islandora_large_image()
  */
 ?>
 
-<?php if(isset($islandora_object_label)): ?>
-  <?php drupal_set_title("$islandora_object_label"); ?>
-<?php endif; ?>
+<?php
+
+if (isset($islandora_object_label))
+{
+  drupal_set_title("$islandora_object_label");
+}
+
+?>
 
 <div id="tabs">
 
@@ -36,17 +41,14 @@
 <div id="tabs-1">
 
 <div class="islandora-basic-image-object islandora">
-  <div class="islandora-basic-image-content-wrapper clearfix">
-    <?php if(isset($islandora_medium_img)): ?>
-      <div class="islandora-basic-image-content">
-      <?php if(isset($islandora_full_url)): ?>
-        <?php print l($islandora_medium_img, $islandora_full_url, array('html' => TRUE)); ?>
-      <?php elseif(isset($islandora_medium_img)): ?>
-        <?php print $islandora_medium_img; ?>
-      <?php endif; ?>
+  <div class="islandora-pdf-content-wrapper clearfix">
+    <?php if (isset($islandora_content)): ?>
+      <div class="islandora-pdf-content">
+        <p><?php print $islandora_content; ?></p>
       </div>
     <?php endif; ?>
-  <div class="islandora-basic-image-sidebar">
+
+  <div class="islandora-pdf-sidebar">
     <dl>
       <?php if(isset($mods_array['mods:date']['value'])): ?>
         <dt><?php print $mods_array['mods:date']['label']; ?>:</dt>
@@ -73,7 +75,6 @@
         <?php endif; ?>
         </div>
       <?php endif; ?>
-      
       <div>
 	<dl class="islandora-table-display">
         <?php $row_field = 0; ?>
@@ -93,7 +94,6 @@
         <?php endforeach; ?>
         </dl>
       </div>
-      
       <?php if($parent_collections): ?>
         <div>
           <h2>In Collections</h2>

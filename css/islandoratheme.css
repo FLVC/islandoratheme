@@ -38,6 +38,18 @@ div.islandora-basic-image-thumbnail
   float: right;
 }
 
+/* PDF Module Styles */
+
+.ui-widget-content a
+{
+  color: #15467d;
+}
+
+.ui-widget-content a:hover
+{
+  text-decoration: underline;
+}
+
 /* Solr Search Module Styles */
 
 section#block-islandora-solr-advanced
