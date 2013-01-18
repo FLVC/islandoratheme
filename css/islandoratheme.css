@@ -50,6 +50,19 @@ div.islandora-basic-image-thumbnail
   text-decoration: underline;
 }
 
+/* Collection Browse Module Styles */
+
+ul.links a
+{
+  text-decoration: underline;
+}
+
+ul.links a.active
+{
+  text-decoration: none;
+  font-weight: bold;
+}
+
 /* Solr Search Module Styles */
 
 section#block-islandora-solr-advanced
@@ -78,6 +91,17 @@ text-align: right;
 ul.islandora-solr-display li
 {
   display: inline;
+}
+
+ul.islandora-solr-display a
+{
+  text-decoration: underline;
+}
+
+ul.islandora-solr-display a.active
+{
+  text-decoration: none;
+  font-weight: bold;
 }
 
 dd.dc-title a

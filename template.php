@@ -93,13 +93,13 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   $results = $variables['collection_results']; //islandora_basic_collection_get_objects($islandora_object, $page_number, $page_size); 
   $total_count = count($results);
 
-  $associated_objects_mods_array = array();
+  $associated_objects_mods_array = array(); 
   $start = $page_size * ($page_number);
   $end = min($start + $page_size, $total_count);
 
   for ($i = $start; $i < $end; $i++) {
     $pid = $results[$i]['object']['value'];
-    $fc_object = islandora_basic_collection_get_object($pid);
+    $fc_object = islandora_object_load($pid);
     if (!isset($fc_object)) {
       continue; //null object so don't show in collection view;
     }
