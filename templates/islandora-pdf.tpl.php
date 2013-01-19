@@ -105,9 +105,9 @@ if (isset($islandora_content))
         <div>
           <h2>In Collections</h2>
           <ul>
-            <?php foreach($parent_collections as $key => $value): ?>
-              <li><?php print $value['label_link'] ?></li>
-            <?php endforeach; ?>
+	    <?php foreach ($parent_collections as $collection): ?>
+               <li><?php print l($collection->label, "islandora/object/{$collection->id}"); ?></li>
+	    <?php endforeach; ?>
           </ul>
         </div>
       <?php endif; ?>
