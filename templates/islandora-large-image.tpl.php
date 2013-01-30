@@ -66,7 +66,6 @@ if (isset($islandora_object_label))
 </div>
 <div id="tabs-2">
     <div class="islandora-basic-image-sidebar">
-      <?php if(isset($islandora_medium_img)): ?>
         <div class="islandora-basic-image-thumbnail">
         <?php if(isset($islandora_full_url)): ?>
           <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
@@ -74,7 +73,6 @@ if (isset($islandora_object_label))
           <?php print $islandora_thumbnail_img; ?>
         <?php endif; ?>
         </div>
-      <?php endif; ?>
       <div>
 	<dl class="islandora-table-display">
         <?php $row_field = 0; ?>

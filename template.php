@@ -29,6 +29,8 @@ function islandoratheme_process_html(&$vars) {
  */
 function islandoratheme_preprocess_islandora_basic_image(&$variables) {
   
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/basic-image.css', array('group' => CSS_THEME, 'type' => 'file'));
+  
   $islandora_object = $variables['islandora_object'];
   
   try {
@@ -47,6 +49,8 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
  */
 function islandoratheme_preprocess_islandora_pdf(&$variables) {
   
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/pdf.css', array('group' => CSS_THEME, 'type' => 'file'));
+  
   $islandora_object = $variables['islandora_object'];
   
   try {
@@ -64,6 +68,8 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
  * Override the Islandora Large Image preprocess function
  */
 function islandoratheme_preprocess_islandora_large_image(&$variables) {
+
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/large-image.css', array('group' => CSS_THEME, 'type' => 'file'));
   
   $islandora_object = $variables['islandora_object'];
   
@@ -135,12 +141,12 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
 /**
  * Override or insert variables for the page templates.
  */
-/* -- Delete this line if you want to use these functions
+/*
 function islandoratheme_preprocess_page(&$vars) {
 }
 function islandoratheme_process_page(&$vars) {
 }
-// */
+*/
 
 
 /**
