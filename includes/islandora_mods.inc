@@ -278,6 +278,15 @@ class MODS {
       }  
     }
     
+    // Owning Institution Section    
+    if (isset($mods_object->extension->owner_inst))
+    {
+      $mods_array['mods:owner_inst']['value'] = $mods_object->extension->owner_inst;
+      $mods_array['mods:owner_inst']['label'] = 'Owner Institution';
+      $mods_array['mods:owner_inst']['class'] = $mods_object->extension->owner_inst->getName();
+      $i++;
+    }
+    
     return $mods_array;
   }
 }

@@ -1,1 +1,4 @@
 .container { max-width: 100%; }
+body.no-sidebars .islandora-large-image-content { float: none; width: 100%; }
+body.no-sidebars .islandora-large-image-sidebar { float: none; width: 100%; }
+.islandora-large-image-thumbnail { float: right; }

@@ -8,33 +8,160 @@
  * as well.
  */
 
+/* html wide Styles */
+
+form { margin: 0 0 .5em }
+
 /* Navigation Bar Styles */
 #menu-bar { 
   margin-right: 20px;
   margin-left: 20px;
 }
 
+#menu-bar div.contextual-links-wrapper {z-index: 500;}
+
+#block-system-navigation ul, 
+#block-system-navigation li, 
+#block-system-navigation span, 
+#block-system-navigation a {
+  position: relative;
+  z-index: 500;
+}
+
+#block-system-navigation > ul > li {
+  float: left;
+  z-index: 1001;
+}
+
+#block-system-navigation ul ul {  
+  display: none;
+  position: absolute;
+  top: 48px;
+  left: -1px;
+  width: 100%;
+  text-align: center;
+  z-index: 1002;
+}
+
+#block-system-navigation li:hover ul {
+  display: block;
+  z-index: 1003;
+}
+
+#block-system-navigation:after, #block-system-navigation ul:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+#block-system-navigation a {
+  display: inline-block;
+  z-index: 4;
+}
+
+#block-system-navigation ul ul li {
+  background: #000000;
+}
+
+#block-system-navigation ul ul li:hover {
+  background: #636363;
+}
+
+#block-system-navigation ul ul li a {
+  width: 250px;
+  text-align: left;
+}
+
+#block-system-navigation ul ul li a.active {
+  border-radius: 0!important;
+}
+
 /* Header Styles */
+#branding hgroup#name-and-slogan { display: none; }
+
 div#header-wrapper div#branding
 {
-  background: #003366;
-  margin-bottom: 20px;
-  margin-right: 20px;
-  margin-top: 20px;
-  border: 1px black solid;
+  margin: 10px 20px 10px 20px;
   border-radius: 6px 6px 6px 6px;
   display: block;
 }
 
 #branding 
 {
-  padding: 25px 0px 28px 25px;
+  padding: 0;
+  z-index: -3;
+}
+
+#branding a
+{
+  font-size: .6em;
 }
 
 div#header-wrapper div#branding a
 {
   color: white;  
 }
+
+div#logo {z-index: -2;}
+
+div#logo img
+{
+  margin-left: 30px;
+}
+
+/* Basic Search Module Styles */
+div#top-panels-wrapper {
+  margin: 0px 20px 10px 20px;
+}
+
+#block-islandora-solr-simple
+{
+  float: right;
+  margin: 0 40px 0 0;
+}
+
+#block-islandora-solr-simple h2.block-title,
+#block-islandora-solr-simple .block-content,
+#block-islandora-solr-simple .block-content form,
+#block-islandora-solr-simple .block-content input,
+#block-islandora-solr-simple .form-item-islandora-simple-search-query
+{
+  display: inline;
+  float: left;
+}
+
+#block-islandora-solr-simple .form-item,
+#block-islandora-solr-simple .form-action
+{
+  margin: 0 15px 0 15px;
+}
+
+div.region-three-33-top 
+{
+margin: 0; 
+padding: 10px 0px 0px 0px; 
+box-shadow: 0 0 10px rgba(76, 76, 76, 0.7); 
+border-radius: 6px 6px 6px 6px; 
+}
+
+/* Highlighted Region Styles */
+div.region-highlighted 
+{
+margin: 0px 20px 10px 20px; 
+padding: 20px 20px 0px 20px; 
+box-shadow: 0 0 10px rgba(76, 76, 76, 0.7); 
+border-radius: 6px 6px 6px 6px; 
+}
+
+div.region-highlighted #block-block-1 { margin-right: 440px; }
+div.region-highlighted #block-block-2 { float: right; width: 420px; padding-top: 10px; margin: 0; }
+div.region-highlighted #block-block-2 h2.block-title { display: none; }
+div.region-highlighted .block { clear: none; }
+
+/* Object-wide displays */
+
+dl.islandora-table-display dt, dl.islandora-table-display dd { display: inline; margin: 0; }
+div.islandora-definition-row { margin-bottom: 10px; }
 
 /* Basic Image Module Styles */
 
@@ -44,11 +171,6 @@ div.islandora-basic-image-thumbnail
 }
 
 /* PDF Module Styles */
-
-.ui-widget-content a
-{
-  color: #15467d;
-}
 
 .ui-widget-content a:hover
 {
@@ -73,7 +195,6 @@ ul.links a.active
 section#block-islandora-solr-advanced
 {
   margin: 0px 20px 20px 20px;
-  background: #efefef;
   border: 1px solid #04356c;
   padding: 20px 20px 0px 20px;
   border-radius: 6px 6px 6px 6px;
@@ -87,10 +208,10 @@ section#block-islandora-solr-advanced
 
 ul.islandora-solr-display
 {
-margin: 0;
-padding: 0;
-list-style-type: none;
-text-align: right;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: right;
 }
 
 ul.islandora-solr-display li
@@ -119,16 +240,22 @@ dd.dc-title a
   padding-bottom: 0px;
 }
 
+ul.islandora-solr-facet
+{
+  margin-left: 10px;
+}
+
 /* First Sidebar Styles */
 
 div.region-sidebar-first div.block-inner
 {
-  background: #dedede;
   padding: 15px;
-  border: 1px solid #04356c;
 }
 
-section#block-islandora-solr-sort div.block-inner
+/* Footer Styles */
+
+.islandora-object-branding
 {
-  background: #efefef;
+  margin-top: 10px;
+  text-align: right;
 }

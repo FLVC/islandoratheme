@@ -10,7 +10,15 @@
  * on "footheme".
  */
 
-require_once 'includes/islandora_mods.inc'; 
+require_once 'includes/islandora_mods.inc';
+
+/*
+ * Custom function to set some variables used throughout the theme
+ */
+function islandoratheme_variables(&$vars) {
+  $vars['default_brand_logo'] = 'http://islandora7d.fcla.edu/sites/default/files/FLVC_logo_smaller_0.jpg';
+  return $vars;
+}
 
 /**
  * Override or insert variables for the html template.
@@ -42,6 +50,8 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
 
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
 }
 
 /**
@@ -49,7 +59,12 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
  */
 function islandoratheme_preprocess_islandora_pdf(&$variables) {
   
+  // Add css file for PDF presentation
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/pdf.css', array('group' => CSS_THEME, 'type' => 'file'));
+  
+  // Create full screen view
+  $variables['islandora_view_link'] = str_replace("download", "view", $variables['islandora_download_link']);
+  $variables['islandora_view_link'] = str_replace("Download pdf", "Full Screen View", $variables['islandora_view_link']);
   
   $islandora_object = $variables['islandora_object'];
   
@@ -62,6 +77,8 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
 
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
 }
 
 /**
@@ -80,8 +97,10 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
     drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
   }
  
-  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
-
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
 }
 
 /**
@@ -93,7 +112,7 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   // base path
   global $base_path;
   $islandora_object = $variables['islandora_object'];
-
+  
   $page_number = (empty($_GET['page'])) ? 0 : $_GET['page'];
   $page_size = (empty($_GET['pagesize'])) ? variable_get('islandora_basic_collection_page_size', '10') : $_GET['pagesize'];
   $results = $variables['collection_results']; //islandora_basic_collection_get_objects($islandora_object, $page_number, $page_size); 
@@ -110,13 +129,18 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
       continue; //null object so don't show in collection view;
     }
     $associated_objects_mods_array[$pid]['object'] = $fc_object;
-    try {
-      $mods = $fc_object['MODS']->content;
-      $mods_object = simplexml_load_string($mods);
-      $associated_objects_mods_array[$pid]['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
-    } catch (Exception $e) {
-      drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+
+    if (isset($fc_object['MODS']))
+    {
+      try {
+        $mods = $fc_object['MODS']->content;
+        $mods_object = simplexml_load_string($mods);
+        $associated_objects_mods_array[$pid]['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+      } catch (Exception $e) {
+        drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+      }
     }
+      
     $object_url = 'islandora/object/' . $pid;
     $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
     $title = $results[$i]['title']['value'];
@@ -138,16 +162,49 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   $variables['associated_objects_mods_array'] = $associated_objects_mods_array;
 }
 
+// Custom function that retrieves the path for branding logo
+function get_branding_info(&$variables)
+{
+  // Get custom islandoratheme variables
+  $variables = islandoratheme_variables($variables);
+  
+  $branding_info = $variables['default_brand_logo'];
+  
+  if (isset($variables['mods_array']['mods:owner_inst']) && ($variables['mods_array']['mods:owner_inst']['value'] != ''))
+  {
+    $owner_institution = $variables['mods_array']['mods:owner_inst']['value'];
+    
+    $query = new EntityFieldQuery();
+    $results = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'object_branding')
+      ->propertyCondition('title', $owner_institution)
+      ->execute();
+      
+    if($results)
+    {
+      $object_branding_array = entity_load('node', array_keys($results['node']));
+     
+      foreach($object_branding_array as $object_branding)
+      {
+        $logo_path = $object_branding->field_institution_logo['und'][0]['value'];
+        $branding_info = $logo_path;
+      }
+    }
+  }
+  
+  return $branding_info;
+}
+
 /**
  * Override or insert variables for the page templates.
  */
 /*
-function islandoratheme_preprocess_page(&$vars) {
+function islandoratheme_preprocess_page(&$variables) {
 }
-function islandoratheme_process_page(&$vars) {
+ 
+function islandoratheme_process_page(&$variables) {
 }
 */
-
 
 /**
  * Override or insert variables into the node templates.

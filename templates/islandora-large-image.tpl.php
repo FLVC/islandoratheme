@@ -41,22 +41,26 @@ if (isset($islandora_object_label))
 <div id="tabs-1">
 
 <div class="islandora-basic-image-object islandora">
-  <div class="islandora-pdf-content-wrapper clearfix">
+  <div class="islandora-large-image-content-wrapper clearfix">
     <?php if (isset($islandora_content)): ?>
-      <div class="islandora-pdf-content">
+      <div class="islandora-large-image-content">
         <p><?php print $islandora_content; ?></p>
       </div>
     <?php endif; ?>
 
-  <div class="islandora-pdf-sidebar">
+  <div class="islandora-large-image-sidebar clearfix">
     <dl>
       <?php if(isset($mods_array['mods:date']['value'])): ?>
+        <div class="islandora-definition-row">
         <dt><?php print $mods_array['mods:date']['label']; ?>:</dt>
         <dd><?php print $mods_array['mods:date']['value']; ?></dd>
+        </div>
       <?php endif; ?>
       <?php if(isset($mods_array['mods:description']['value'])): ?>
+        <div class="islandora-definition-row">
         <dt><?php print $mods_array['mods:description']['label']; ?>:</dt>
         <dd><?php print $mods_array['mods:description']['value']; ?></dd>
+        </div>
       <?php endif; ?>
     </dl>
   </div>
@@ -65,8 +69,8 @@ if (isset($islandora_object_label))
 </div>
 </div>
 <div id="tabs-2">
-    <div class="islandora-basic-image-sidebar">
-        <div class="islandora-basic-image-thumbnail">
+    <div class="islandora-large-image-sidebar clearfix">
+        <div class="islandora-large-image-thumbnail">
         <?php if(isset($islandora_full_url)): ?>
           <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
         <?php elseif(isset($islandora_thumbnail_img)): ?>
@@ -79,13 +83,15 @@ if (isset($islandora_object_label))
         <?php foreach($mods_array as $key => $value): ?>
           
           <?php if($value['value'] != ''): ?>
-
+            
+            <div class="islandora-definition-row">
             <dt class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['label']; ?>:
             </dt>
             <dd class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['value']; ?>
             </dd>
+            </div>
       
           <?php endif; ?>
           <?php $row_field++; ?>
@@ -105,3 +111,4 @@ if (isset($islandora_object_label))
     </div>
 </div>
 </div>
+<div class="islandora-object-branding"><p><img src="<?php print $branding_info ?>"/></p></div>

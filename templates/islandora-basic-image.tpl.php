@@ -49,12 +49,16 @@
   <div class="islandora-basic-image-sidebar">
     <dl>
       <?php if(isset($mods_array['mods:date']['value'])): ?>
-        <dt><?php print $mods_array['mods:date']['label']; ?>:</dt>
-        <dd><?php print $mods_array['mods:date']['value']; ?></dd>
+	<div class="islandora-definition-row">
+          <dt><?php print $mods_array['mods:date']['label']; ?>:</dt>
+          <dd><?php print $mods_array['mods:date']['value']; ?></dd>
+	</div>
       <?php endif; ?>
       <?php if(isset($mods_array['mods:description']['value'])): ?>
-        <dt><?php print $mods_array['mods:description']['label']; ?>:</dt>
-        <dd><?php print $mods_array['mods:description']['value']; ?></dd>
+        <div class="islandora-definition-row">
+	  <dt><?php print $mods_array['mods:description']['label']; ?>:</dt>
+          <dd><?php print $mods_array['mods:description']['value']; ?></dd>
+	</div>
       <?php endif; ?>
     </dl>
   </div>
@@ -80,13 +84,15 @@
         <?php foreach($mods_array as $key => $value): ?>
           
           <?php if($value['value'] != ''): ?>
-
+            
+	    <div class="islandora-definition-row">	  
             <dt class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['label']; ?>:
             </dt>
             <dd class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['value']; ?>
             </dd>
+	    </div>
       
           <?php endif; ?>
           <?php $row_field++; ?>
@@ -107,3 +113,4 @@
     </div>
 </div>
 </div>
+<div class="islandora-object-branding"><p><img src="<?php print $branding_info ?>"/></p></div>
