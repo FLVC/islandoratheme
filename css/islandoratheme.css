@@ -116,24 +116,36 @@ div#top-panels-wrapper {
 
 #block-islandora-solr-simple
 {
-  float: right;
-  margin: 0 40px 0 0;
+  margin: 5px 0 2px 20px;
 }
 
+#block-islandora-solr-simple h2.block-title
+{
+  margin-right: 10px;
+}
+
+#block-islandora-solr-simple form,
 #block-islandora-solr-simple h2.block-title,
 #block-islandora-solr-simple .block-content,
 #block-islandora-solr-simple .block-content form,
 #block-islandora-solr-simple .block-content input,
-#block-islandora-solr-simple .form-item-islandora-simple-search-query
+#block-islandora-solr-simple .form-item-islandora-simple-search-query,
+#block-islandora-solr-simple .form-item-islandora-simple-collection
 {
-  display: inline;
+  display: inline-block;
   float: left;
 }
 
 #block-islandora-solr-simple .form-item,
-#block-islandora-solr-simple .form-action
+#block-islandora-solr-simple .form-action,
+#block-islandora-solr-simple .form-submit
 {
-  margin: 0 15px 0 15px;
+  margin: 0 0 0 10px;
+}
+
+#islandora-solr-view-all-objects #all-objects-submit
+{
+  margin: 0 0 0 120px;
 }
 
 div.region-three-33-top 
@@ -142,6 +154,29 @@ margin: 0;
 padding: 10px 0px 0px 0px; 
 box-shadow: 0 0 10px rgba(76, 76, 76, 0.7); 
 border-radius: 6px 6px 6px 6px; 
+}
+
+/* facet block styles */
+.islandora-solr-facet-wrapper table
+{
+  margin: 0;
+  border: none;
+  border-collapse: separate;
+}
+
+.islandora-solr-facet-wrapper .plusminus
+{
+  width: 20px;
+}
+
+.islandora-solr-facet-wrapper td
+{
+  padding: 2px 0 2px 8px;
+}
+
+.islandora-solr-facet-wrapper tr td:last-child
+{
+  border: none;
 }
 
 /* Highlighted Region Styles */
