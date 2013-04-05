@@ -280,6 +280,13 @@ ul.islandora-solr-facet
   margin-left: 10px;
 }
 
+/* Search Results Styles */
+
+.content-style
+{
+   overflow: auto;
+}
+
 /* First Sidebar Styles */
 
 div.region-sidebar-first div.block-inner
