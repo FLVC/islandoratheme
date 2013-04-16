@@ -31,6 +31,10 @@ if (isset($islandora_object_label))
 
 ?>
 
+<div class="islandora-title">
+  <h3><?php print $islandora_object_label ?></h3>
+</div>
+
 <div id="tabs">
 
 <ul>
@@ -82,7 +86,7 @@ if (isset($islandora_object_label))
         <?php $row_field = 0; ?>
         <?php foreach($mods_array as $key => $value): ?>
           
-          <?php if($value['value'] != ''): ?>
+          <?php if(trim($value['value']) != ''): ?>
             
             <div class="islandora-definition-row">
             <dt class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">

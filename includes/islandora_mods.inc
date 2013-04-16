@@ -17,44 +17,89 @@ class MODS {
     $counter = 0;
 
     // Title Section
-    if (isset($mods_object->titleInfo->title))
+    if (isset($mods_object->titleInfo))
     {
-      foreach ($mods_object->titleInfo->title as $title) {
-        switch((string) $title['type']) { // Get attributes as element indices
-          case 'alternative':
-            $mods_array[$i]['value'] = $title;
-            $mods_array[$i]['label'] = 'Alternative Title';
-            $mods_array[$i]['class'] = $title->getName() . '_alternative';
-            $i++;
-            break;
-          default:
-            $mods_array['mods:title']['value'] = $title;
-            $mods_array['mods:title']['label'] = 'Title';
-            $mods_array['mods:title']['class'] = $title->getName();
-            $i++;
+      foreach ($mods_object->titleInfo as $titleInfo) {
+        if (isset($titleInfo->title))
+        {
+          $title = $titleInfo->title;
+          
+          // If it has a subtitle, add it
+          if(isset($titleInfo->subTitle))
+          {
+            $title = $title . ': ' . $titleInfo->subTitle;
+          }
+          
+          // If it has a NonSort element, add it before the title
+          if(isset($titleInfo->nonSort))
+          {
+            $title = $titleInfo->nonSort . ' ' . $title;
+          }
+          
+          // If it has a Display Label attribute, add it before the NonSort and Title
+          if(isset($titleInfo['displayLabel']))
+          {
+            $title = $titleInfo['displayLabel'] . ' ' . $title;
+          }
+          
+          // If it has a Part Number, add it
+          if(isset($titleInfo->partNumber))
+          {
+            foreach ($titleInfo->partNumber as $partNumber) {
+              $title = $title . ' ' . $partNumber;
+            } 
+          }
+          
+          // If it has a Part Name, add it
+          if(isset($titleInfo->partName))
+          {
+            foreach ($titleInfo->partName as $partName) {
+              $title = $title . ' ' . $partName;
+            } 
+          }
+          
+          switch((string) $titleInfo['type']) { // Get attributes as element indices
+            case 'abbreviated':
+              $mods_array[$i]['value'] = $title;
+              $mods_array[$i]['label'] = 'Abbreviated Title';
+              $mods_array[$i]['class'] = $titleInfo->title->getName() . '_abbreviated';
+              $i++;
+              break;
+            case 'alternative':
+              $mods_array[$i]['value'] = $title;
+              $mods_array[$i]['label'] = 'Alternative Title';
+              $mods_array[$i]['class'] = $titleInfo->title->getName() . '_alternative';
+              $i++;
+              break;
+            case 'translated':
+              $mods_array[$i]['value'] = $title;
+              $mods_array[$i]['label'] = 'Translated Title';
+              $mods_array[$i]['class'] = $titleInfo->title->getName() . '_translated';
+              $i++;
+              break;
+            case 'uniform':
+              $mods_array[$i]['value'] = $title;
+              $mods_array[$i]['label'] = 'Uniform Title';
+              $mods_array[$i]['class'] = $titleInfo->title->getName() . '_uniform';
+              $i++;
+              break;          
+            default:
+              $mods_array['mods:title']['value'] = $title;
+              $mods_array['mods:title']['label'] = 'Title';
+              $mods_array['mods:title']['class'] = $titleInfo->title->getName();
+              $i++;
+          }
         }
       }
     }
     
-    // Creator/Contributor Section
-    if (isset($mods_object->name->namePart))
+    // Name Section
+    if (isset($mods_object->name))
     {
-      $counter = 0;
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Creator/Contributor';
-      foreach ($mods_object->name->namePart as $contributor) {
-        if ($counter == 0) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $contributor;
-          $mods_array['mods:creator']['value'] = $contributor;
-          $mods_array['mods:creator']['label'] = 'Creator/Contributor';
-          $mods_array['mods:creator']['class'] = $contributor->getName();
-        } else {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $contributor;
-        }
-        $counter++;
+      foreach ($mods_object->name as $name) {
+        static::addMODSName('Name', $name, $mods_array, $i);
+        $i++;
       }
-      $mods_array[$i]['class'] = $mods_object->name->namePart->getName();
-      $i++;
     }
     
     // Type of Resource Section
@@ -93,12 +138,12 @@ class MODS {
       $i++;
     }
       
-    // Issued As Section
+    // Issuance Section
     if(isset($mods_object->originInfo->issuance))
     {
       $counter = 0;
       $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Issued As';
+      $mods_array[$i]['label'] = 'Issuance';
       foreach ($mods_object->originInfo->issuance as $issued_as) {
         if ($counter == 0) {
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $issued_as;
@@ -110,15 +155,108 @@ class MODS {
       $mods_array[$i]['class'] = $mods_object->originInfo->issuance->getName();
       $i++;
     }
-      
-    // Date Section    
-    if (isset($mods_object->originInfo->dateIssued))
+    
+    // Frequency Section
+    if(isset($mods_object->originInfo->frequency))
     {
-      $mods_array['mods:date']['value'] = $mods_object->originInfo->dateIssued;
-      $mods_array['mods:date']['label'] = 'Date';
-      $mods_array['mods:date']['class'] = $mods_object->originInfo->dateIssued->getName();
+      $counter = 0;
+      $mods_array[$i]['value'] = '';
+      $mods_array[$i]['label'] = 'Frequency';
+      foreach ($mods_object->originInfo->frequency as $frequency) {
+        if ($counter == 0) {
+          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $frequency;
+        } else {
+          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $frequency;
+        }
+        $counter++;
+      }
+      $mods_array[$i]['class'] = $mods_object->originInfo->frequency->getName();
       $i++;
     }
+      
+    // Dates Section
+    if (isset($mods_object->originInfo->copyrightDate))
+    {
+      foreach ($mods_object->originInfo->copyrightDate as $copyrightDate) {
+        $mods_array[$i]['value'] = $copyrightDate;
+        $mods_array[$i]['label'] = 'Copyright Date';
+        $mods_array[$i]['class'] = $copyrightDate->getName();
+        $i++;
+      }
+    }
+    
+    if (isset($mods_object->originInfo->dateIssued))
+    {
+      foreach ($mods_object->originInfo->dateIssued as $dateIssued) {
+        $mods_array[$i]['value'] = $dateIssued;
+        $mods_array[$i]['label'] = 'Date Issued';
+        $mods_array[$i]['class'] = $dateIssued->getName();
+        $i++;
+      }
+    }
+    
+    if (isset($mods_object->originInfo->dateCreated))
+    {
+      $date_counter = 0;      
+
+      foreach ($mods_object->originInfo->dateCreated as $dateCreated) {
+        
+        if ($date_counter == 0 && $dateCreated != '')
+        {
+          $mods_array['mods:date']['value'] = $dateCreated;
+          $mods_array['mods:date']['label'] = 'Date Created';
+          $mods_array['mods:date']['class'] = $dateCreated->getName();
+          $date_counter++;
+        }
+        elseif ($dateCreated != '')
+        {
+          $mods_array[$i]['value'] = $dateCreated;
+          $mods_array[$i]['label'] = 'Date Created';
+          $mods_array[$i]['class'] = $dateCreated->getName();
+          $i++;
+        }
+      }
+    }    
+    
+    if (isset($mods_object->originInfo->dateCaptured))
+    {
+      foreach ($mods_object->originInfo->dateCaptured as $dateCaptured) {
+        $mods_array[$i]['value'] = $dateCaptured;
+        $mods_array[$i]['label'] = 'Date Captured';
+        $mods_array[$i]['class'] = $dateCaptured->getName();
+        $i++;
+      }
+    }
+    
+    if (isset($mods_object->originInfo->dateValid))
+    {
+      foreach ($mods_object->originInfo->dateValid as $dateValid) {
+        $mods_array[$i]['value'] = $dateValid;
+        $mods_array[$i]['label'] = 'Date Valid';
+        $mods_array[$i]['class'] = $dateValid->getName();
+        $i++;
+      }
+    }
+    
+    if (isset($mods_object->originInfo->dateModified))
+    {
+      foreach ($mods_object->originInfo->dateModified as $dateModified) {
+        $mods_array[$i]['value'] = $dateModified;
+        $mods_array[$i]['label'] = 'Date Modified';
+        $mods_array[$i]['class'] = $dateModified->getName();
+        $i++;
+      }
+    }
+    
+    if (isset($mods_object->originInfo->dateOther))
+    {
+      foreach ($mods_object->originInfo->dateOther as $dateOther) {
+        $mods_array[$i]['value'] = $dateOther;
+        $mods_array[$i]['label'] = 'Other Date';
+        $mods_array[$i]['class'] = $dateOther->getName();
+        $i++;
+      }
+    }     
     
     // Publisher Section
     if (isset($mods_object->originInfo->publisher))
@@ -157,32 +295,45 @@ class MODS {
     }
     
     // Physical Description Section
-    if (isset($mods_object->physicalDescription))
+    if (isset($mods_object->physicalDescription->form))
     {
-      $counter = 0;
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Physical Description';
-      foreach ($mods_object->physicalDescription as $physical_description) {
-        if ($counter == 0) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $physical_description;
-        } else {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $physical_description;
-        }
-        $counter++;
+      foreach ($mods_object->physicalDescription->form as $form) {
+        $mods_array[$i]['value'] = $form;
+        $mods_array[$i]['label'] = 'Physical Form';
+        $mods_array[$i]['class'] = $form->getName();
+        $i++;
       }
-      $mods_array[$i]['class'] = $mods_object->physicalDescription->getName();
-      $i++;
+    }
+
+    if (isset($mods_object->physicalDescription->extent))
+    {
+      foreach ($mods_object->physicalDescription->extent as $extent) {
+        $mods_array[$i]['value'] = $extent;
+        $mods_array[$i]['label'] = 'Extent';
+        $mods_array[$i]['class'] = $extent->getName();
+        $i++;
+      }
+    }
+    
+    if (isset($mods_object->physicalDescription->note))
+    {
+      foreach ($mods_object->physicalDescription->note as $note) {
+        $mods_array[$i]['value'] = $note;
+        $mods_array[$i]['label'] = 'Physical Description';
+        $mods_array[$i]['class'] = $note->getName();
+        $i++;
+      }
     }
     
     // Language Section
-    if (isset($mods_object->language->languageTerm))
+    if (isset($mods_object->language))
     {
-      foreach ($mods_object->language->languageTerm as $language) {
-        switch((string) $language['type']) { // Get attributes as element indices
+      foreach ($mods_object->language as $language) {
+        switch((string) $language->languageTerm['type']) { // Get attributes as element indices
           case 'text':
-            $mods_array[$i]['value'] = $language;
+            $mods_array[$i]['value'] = $language->languageTerm;
             $mods_array[$i]['label'] = 'Language';
-            $mods_array[$i]['class'] = $language->getName() . '_text';
+            $mods_array[$i]['class'] = $language->languageTerm->getName() . '_text';
             $i++;
             break;
           default:
@@ -193,10 +344,24 @@ class MODS {
     // Abstract/Description Section    
     if (isset($mods_object->abstract))
     {
-      $mods_array['mods:description']['value'] = $mods_object->abstract;
-      $mods_array['mods:description']['label'] = 'Abstract/Description';
-      $mods_array['mods:description']['class'] = $mods_object->abstract->getName();
-      $i++;
+      $description_counter = 0;
+
+      foreach($mods_object->abstract as $abstract) {
+        if ($description_counter == 0 && $abstract != '')
+        {
+          $mods_array['mods:description']['value'] = $abstract;
+          $mods_array['mods:description']['label'] = 'Abstract/Description';
+          $mods_array['mods:description']['class'] = $abstract->getName();
+          $counter++;
+        }
+        elseif ($abstract != '')
+        {
+          $mods_array[$i]['value'] = $abstract;
+          $mods_array[$i]['label'] = 'Abstract/Description';
+          $mods_array[$i]['class'] = $abstract->getName();
+          $i++;
+        }
+      }
     }
     
     // Table of Contents Section    
@@ -207,19 +372,28 @@ class MODS {
       $mods_array[$i]['class'] = $mods_object->tableOfContents->getName();
       $i++;
     }
+    
+    // Target Audience Section    
+    if (isset($mods_object->targetAudience))
+    {
+      foreach($mods_object->targetAudience as $targetAudience) {
+        $mods_array[$i]['value'] = $targetAudience;
+        $mods_array[$i]['label'] = 'Target Audience';
+        $mods_array[$i]['class'] = $targetAudience->getName();
+        $i++;
+      }
+    }    
 
     // Identifier Section
     if (isset($mods_object->identifier))
     {
       foreach ($mods_object->identifier as $identifier) {
-        switch((string) $identifier['type']) { // Get attributes as element indices
-          case 'IID':
-            $mods_array[$i]['value'] = trim($identifier);
+        if (isset ($identifier['type'])) {
+            $mods_array[$i]['value'] = trim($identifier) . ' (' . $identifier['type'] . ')';
             $mods_array[$i]['label'] = 'Identifier';
-            $mods_array[$i]['class'] = $identifier->getName() . '_iid';
+            $mods_array[$i]['class'] = $identifier->getName() . '_' . $identifier['type'];
             $i++;
-            break;
-          default:
+        } else {
             $mods_array[$i]['value'] = trim($identifier);
             $mods_array[$i]['label'] = 'Identifier';
             $mods_array[$i]['class'] = $identifier->getName() . '_id';
@@ -247,36 +421,177 @@ class MODS {
     // Subject Section
     if (isset($mods_object->subject))
     {
-      $counter = 0;
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Subject';
-      foreach ($mods_object->subject->children() as $subject) {
-        if ($counter > 0) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . ' -- ' . $subject;
-        } else {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $subject;
+      foreach ($mods_object->subject as $subject) {
+        $j = 0;
+        $counter = 0;
+        $name_flag = false;
+        $title_flag = false;
+        $hierarchical_geographic_flag = false;
+        $subject_as_type = null;
+        $cartographic_info_array = array();
+        $mods_array[$i]['value'] = '';
+        $mods_array[$i]['label'] = 'Subject';
+        
+        // Check to see if this is a specific type of Subject
+        foreach ($subject->children() as $subject_child){
+          switch($subject_child->getName()){
+            case 'name':
+              $name_flag = true;
+              $subject_as_type = $subject_child;
+              break;
+            case 'title':
+              $title_flag = true;
+              $subject_as_type = $subject;
+              break;
+            case 'cartographics':
+              $cartographic_info_array[$j] = $subject_child;
+              $j++;
+              break;
+            case 'hierarchicalGeographic':
+              $hierarchical_geographic_flag = true;
+              $subject_as_type = $subject_child;
+              break;
+            default:
+              break;
+          }
         }
-        $counter++;
-      }   
-      $mods_array[$i]['class'] = $mods_object->subject->getName();
-      $i++;
+        
+        if($name_flag == true)
+        {
+          static::addMODSName('Subject', $subject_as_type, $mods_array, $i);
+        }
+        elseif ($title_flag == true && $subject->title != '')
+        {
+          $title = $subject->title;
+          
+          // If it has a subtitle, add it
+          if(isset($subject->subTitle) && $subject->subTitle != '')
+          {
+            $title = $title . ': ' . $subject->subTitle;
+          }
+          
+          // If it has a NonSort element, add it before the title
+          if(isset($subject->nonSort) && $subject->nonSort != '')
+          {
+            $title = $subject->nonSort . ' ' . $title;
+          }
+        
+          // If it has a Part Number, add it
+          if(isset($subject->partNumber) && $subject->partNumber != '')
+          {
+            foreach ($subject->partNumber as $partNumber) {
+              $title = $title . ' ' . $partNumber;
+            } 
+          }
+          
+          // If it has a Part Name, add it
+          if(isset($subject->partName) && $subject->partName != '')
+          {
+            foreach ($subject->partName as $partName) {
+              $title = $title . ' ' . $partName;
+            } 
+          }
+          
+          $mods_array[$i]['value'] = $title;
+        }
+        elseif ($hierarchical_geographic_flag == true)
+        {
+          foreach ($subject_as_type->children() as $subject_child) {
+            if ($counter > 0 && $subject_child != '') {
+              $mods_array[$i]['value'] = $mods_array[$i]['value'] . ' -- ' . $subject_child;
+            } elseif ($subject_child != '') {
+              $mods_array[$i]['value'] = $mods_array[$i]['value'] . $subject_child;
+            }
+            $counter++;
+          }
+        }
+        else
+        {
+          foreach ($subject->children() as $subject_child) {
+            if ($counter > 0 && $subject_child != '') {
+              $mods_array[$i]['value'] = $mods_array[$i]['value'] . ' -- ' . $subject_child;
+            } elseif ($subject_child != '') {
+              $mods_array[$i]['value'] = $mods_array[$i]['value'] . $subject_child;
+            }
+            $counter++;
+          }
+        }
+        
+        $mods_array[$i]['class'] = $subject->getName();
+        $i++;
+        
+        /*foreach($cartographic_info_array as $cartographic_info)
+        {
+          if (isset($cartographic_info->coordinates) && trim($cartographic_info->coordinates) != '')
+          {
+            $mods_array[$i]['value'] = $cartographic_info->coordinates;
+            $mods_array[$i]['label'] = 'Coordinates';
+            $mods_array[$i]['class'] = $cartographic_info->coordinates->getName();
+            $i++;
+          }
+          
+          if (isset($cartographic_info->scale) && $cartographic_info->scale != '')
+          {
+            $mods_array[$i]['value'] = $cartographic_info->scale;
+            $mods_array[$i]['label'] = 'Scale';
+            $mods_array[$i]['class'] = $cartographic_info->scale->getName();
+            $i++;
+          }
+          
+          if (isset($cartographic_info->projection) && $cartographic_info->projection != '')
+          {
+            $mods_array[$i]['value'] = $cartographic_info->projection;
+            $mods_array[$i]['label'] = 'Projection';
+            $mods_array[$i]['class'] = $cartographic_info->projection->getName();
+            $i++;
+          }
+        }*/
+      }
     }
     
-    // Rights Section
-    if (isset($mods_object->note))
+    // Library Classification Section    
+    if (isset($mods_object->classification))
     {
-      foreach ($mods_object->note as $note) {
-        switch((string) $note['type']) { // Get attributes as element indices
-          case 'rights':
-            $mods_array[$i]['value'] = $note;
-            $mods_array[$i]['label'] = 'Rights';
-            $mods_array[$i]['class'] = $note->getName() . '_rights';
-            $i++;          
-            break;
-          default:
+      foreach($mods_object->classification as $classification) {
+        $mods_array[$i]['value'] = $classification;
+        $mods_array[$i]['label'] = 'Library Classification';
+        $mods_array[$i]['class'] = $classification->getName();
+        $i++;
+      }
+    }    
+    
+    // Location Section    
+    if (isset($mods_object->location))
+    {
+      foreach($mods_object->location as $location) {
+        if(isset($location->physicalLocation))
+        {
+          $mods_array[$i]['value'] = $location->physicalLocation;
+          $mods_array[$i]['label'] = 'Held by';
+          $mods_array[$i]['class'] = $location->physicalLocation->getName();
+          $i++;
         }
-      }  
-    }
+        
+        if(isset($location->URL) && $location->URL != '')
+        {
+          $mods_array[$i]['value'] = $location->URL['displayLabel'] . ': ' . $location->URL;
+          $mods_array[$i]['label'] = 'Links';
+          $mods_array[$i]['class'] = $location->URL->getName();
+          $i++;
+        }
+      }
+    }   
+    
+    // Access Condition Section    
+    if (isset($mods_object->accessCondition))
+    {
+      foreach($mods_object->accessCondition as $accessCondition) {
+        $mods_array[$i]['value'] = $accessCondition;
+        $mods_array[$i]['label'] = 'Restrictions on Access';
+        $mods_array[$i]['class'] = $accessCondition->getName();
+        $i++;
+      }
+    } 
     
     // Owning Institution Section    
     if (isset($mods_object->extension->owner_inst))
@@ -289,5 +604,38 @@ class MODS {
     
     return $mods_array;
   }
+  
+  protected static function addMODSName($label, $name, &$mods_array, &$i)
+  {
+    $name_value = '';
+    
+    // If it has a Name Part, add it
+    if(isset($name->namePart))
+    {
+      foreach ($name->namePart as $namePart) {
+        if($namePart != '')
+        {
+          $name_value = $name_value . ' ' . $namePart;
+        }
+      } 
+    }
+        
+    // If it has a Role, add it
+    if(isset($name->role))
+    {
+      foreach ($name->role as $role) {
+        if(isset($role->roleTerm) && ($role->roleTerm['type'] == 'text') && ($role->roleTerm != ''))
+        {
+          $name_value = $name_value . ', ' . $role->roleTerm;
+        }
+      } 
+    }
+          
+    $mods_array[$i]['value'] = $name_value;
+    $mods_array[$i]['label'] = $label;
+    $mods_array[$i]['class'] = $name->getName();
+  }
 }
+
+
 

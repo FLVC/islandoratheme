@@ -197,6 +197,7 @@ div.region-highlighted .block { clear: none; }
 
 dl.islandora-table-display dt, dl.islandora-table-display dd { display: inline; margin: 0; }
 div.islandora-definition-row { margin-bottom: 10px; }
+.islandora-title h3 { margin-bottom: 10px; }
 
 /* Basic Image Module Styles */
 
