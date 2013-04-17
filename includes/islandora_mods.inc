@@ -27,7 +27,8 @@ class MODS {
           // If it has a subtitle, add it
           if(isset($titleInfo->subTitle))
           {
-            $title = $title . ': ' . $titleInfo->subTitle;
+            $subTitle = static::addPeriod($titleInfo->subTitle);
+            $title = $title . ': ' . $subTitle;
           }
           
           // If it has a NonSort element, add it before the title
@@ -39,13 +40,14 @@ class MODS {
           // If it has a Display Label attribute, add it before the NonSort and Title
           if(isset($titleInfo['displayLabel']))
           {
-            $title = $titleInfo['displayLabel'] . ' ' . $title;
+            $title = $titleInfo['displayLabel'] . ': ' . $title;
           }
           
           // If it has a Part Number, add it
           if(isset($titleInfo->partNumber))
           {
             foreach ($titleInfo->partNumber as $partNumber) {
+              $partNumber = static::addPeriod($partNumber);
               $title = $title . ' ' . $partNumber;
             } 
           }
@@ -54,8 +56,14 @@ class MODS {
           if(isset($titleInfo->partName))
           {
             foreach ($titleInfo->partName as $partName) {
+              $partName = static::addPeriod($partName);
               $title = $title . ' ' . $partName;
             } 
+          }
+          
+          if ($title != '')
+          {
+            $title = static::addPeriod($title);
           }
           
           switch((string) $titleInfo['type']) { // Get attributes as element indices
@@ -613,7 +621,15 @@ class MODS {
     if(isset($name->namePart))
     {
       foreach ($name->namePart as $namePart) {
-        if($namePart != '')
+        if($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'family')
+        {
+          $name_value = $namePart . ', ' . $name_value;
+        }
+        elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
+        {
+          $name_value = $name_value . ', ' . $namePart;
+        }
+        elseif ($namePart != '')
         {
           $name_value = $name_value . ' ' . $namePart;
         }
@@ -634,6 +650,17 @@ class MODS {
     $mods_array[$i]['value'] = $name_value;
     $mods_array[$i]['label'] = $label;
     $mods_array[$i]['class'] = $name->getName();
+  }
+  
+  // if there isn't a period at the end of $string, add one
+  protected static function addPeriod($string)
+  { 
+    if (substr($string, -1) != '.')
+    {
+      $string.= '.';
+    }
+    
+    return $string;
   }
 }
 
