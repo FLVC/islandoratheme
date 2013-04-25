@@ -117,4 +117,10 @@
     </div>
 </div>
 </div>
-<div class="islandora-object-branding"><p><img src="<?php print $branding_info ?>"/></p></div>
+<div class="islandora-object-branding">
+  <p>
+    <p><a href="<?php print $branding_info['institution_link'] ?>">
+    <img src="<?php print base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['image_filename'] ?>">
+    </a>
+  </p>
+</div>

@@ -16,7 +16,8 @@ require_once 'includes/islandora_mods.inc';
  * Custom function to set some variables used throughout the theme
  */
 function islandoratheme_variables(&$vars) {
-  $vars['default_brand_logo'] = 'http://islandora7d.fcla.edu/sites/default/files/FLVC_logo_smaller_0.jpg';
+  $vars['default_brand_logo'] = 'FLVC_logo_smaller.jpg';
+  $vars['default_brand_link'] = 'http://www.flvc.org';
   return $vars;
 }
 
@@ -168,7 +169,10 @@ function get_branding_info(&$variables)
   // Get custom islandoratheme variables
   $variables = islandoratheme_variables($variables);
   
-  $branding_info = $variables['default_brand_logo'];
+  //Create local variables
+  $branding_info = array();
+  $branding_info['image_filename'] = $variables['default_brand_logo'];
+  $branding_info['institution_link'] = $variables['default_brand_link'];
   
   if (isset($variables['mods_array']['mods:owner_inst']) && ($variables['mods_array']['mods:owner_inst']['value'] != ''))
   {
@@ -186,8 +190,8 @@ function get_branding_info(&$variables)
      
       foreach($object_branding_array as $object_branding)
       {
-        $logo_path = $object_branding->field_institution_logo['und'][0]['value'];
-        $branding_info = $logo_path;
+        $branding_info['image_filename'] = $object_branding->field_institution_logo_upload['und'][0]['filename'];
+        $branding_info['institution_link'] = $object_branding->field_institution_link['und'][0]['value'];
       }
     }
   }
