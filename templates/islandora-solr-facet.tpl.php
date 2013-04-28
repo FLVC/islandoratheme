@@ -8,7 +8,7 @@
  */
 ?>
 
-<table>
+<table class="<?php print $classes; ?>">
   <?php foreach($buckets as $key => $bucket): ?>
     <tr>
       <td>
