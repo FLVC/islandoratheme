@@ -118,9 +118,20 @@
 </div>
 </div>
 <div class="islandora-object-branding">
-  <p>
-    <p><a href="<?php print $branding_info['institution_link'] ?>">
-    <img src="<?php print base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['image_filename'] ?>">
-    </a>
-  </p>
+  <ul>
+    <li><a href="<?php print $branding_info['institution_logo']['institution_link'] ?>">
+    <img src="<?php print base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['institution_logo']['image_filename'] ?>"></a>
+    </li>
+
+    <!--- START OTHERLOGO DISPLAY -->
+    <?php $local_counter = 0; ?>
+    <?php while (isset($branding_info['other_logo_' . $local_counter])): ?>
+      <li><a href="<?php print $branding_info['other_logo_' . $local_counter]['institution_link'] ?>">  	
+      <img src="<?php print base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['other_logo_' . $local_counter]['image_filename'] ?>"></a>
+      </li>
+      <?php $local_counter++; ?>
+    <?php endwhile; ?>
+    <!--- END OF OTHERLOGO DISPLAY -->  
+
+  </ul>
 </div>

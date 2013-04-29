@@ -171,9 +171,11 @@ function get_branding_info(&$variables)
   
   //Create local variables
   $branding_info = array();
-  $branding_info['image_filename'] = $variables['default_brand_logo'];
-  $branding_info['institution_link'] = $variables['default_brand_link'];
+  $branding_info['institution_logo']['image_filename'] = $variables['default_brand_logo'];
+  $branding_info['institution_logo']['institution_link'] = $variables['default_brand_link'];
   
+  
+  //if the MODS metadata has an owner institution, grab the logo information
   if (isset($variables['mods_array']['mods:owner_inst']) && ($variables['mods_array']['mods:owner_inst']['value'] != ''))
   {
     $owner_institution = $variables['mods_array']['mods:owner_inst']['value'];
@@ -190,10 +192,38 @@ function get_branding_info(&$variables)
      
       foreach($object_branding_array as $object_branding)
       {
-        $branding_info['image_filename'] = $object_branding->field_institution_logo_upload['und'][0]['filename'];
-        $branding_info['institution_link'] = $object_branding->field_institution_link['und'][0]['value'];
+        $branding_info['institution_logo']['image_filename'] = $object_branding->field_institution_logo_upload['und'][0]['filename'];
+        $branding_info['institution_logo']['institution_link'] = $object_branding->field_institution_link['und'][0]['value'];
       }
     }
+  }
+
+  //while the MODS metadata has an other logo information, grab the logos and links to display
+  $local_counter = 0;
+
+  while (isset($variables['mods_array']['mods:other_logo_' . $local_counter]) && 
+    ($variables['mods_array']['mods:other_logo_' . $local_counter]['value'] != ''))
+  {
+    $other_logo = $variables['mods_array']['mods:other_logo_' . $local_counter]['value'];
+
+    $query = new EntityFieldQuery();
+    $results = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'object_branding')
+      ->propertyCondition('title', $other_logo)
+      ->execute();
+
+    if($results)
+    {
+      $object_branding_array = entity_load('node', array_keys($results['node']));
+
+      foreach($object_branding_array as $object_branding)
+      {
+        $branding_info['other_logo_' . $local_counter]['image_filename'] = $object_branding->field_institution_logo_upload['und'][0]['filename'];
+        $branding_info['other_logo_' . $local_counter]['institution_link'] = $object_branding->field_institution_link['und'][0]['value'];
+      }
+    }
+
+    $local_counter++;
   }
   
   return $branding_info;

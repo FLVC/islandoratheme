@@ -174,6 +174,16 @@ border-radius: 6px 6px 6px 6px;
   border-collapse: separate;
 }
 
+.islandora-solr-facet-wrapper h4
+{
+  font-size: 1em;
+}
+
+.islandora-solr-facet-wrapper a
+{
+  font-size: 0.9em;
+}
+
 .islandora-solr-facet-wrapper .plusminus
 {
   width: 20px;
@@ -311,4 +321,18 @@ div.region-sidebar-first div.block-inner
 {
   margin-top: 10px;
   text-align: right;
+}
+
+.islandora-object-branding ul
+{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align:center;
+}
+
+.islandora-object-branding li
+{
+  display: inline;
+  margin: 0px 20px 0px 20px;
 }

@@ -582,7 +582,15 @@ class MODS {
         
         if(isset($location->URL) && $location->URL != '')
         {
-          $mods_array[$i]['value'] = $location->URL['displayLabel'] . ': ' . $location->URL;
+          if(isset($location->URL['displayLabel']) && $location->URL['displayLabel'] != '')
+          { 
+            $mods_array[$i]['value'] = '<a href="' . $location->URL . '" target="_blank">' . $location->URL['displayLabel'] . '</a>';
+          }
+          else
+          {
+            $mods_array[$i]['value'] = '<a href="' . $location->URL . '" target="_blank">' . $location->URL . '</a>';
+          }
+
           $mods_array[$i]['label'] = 'Links';
           $mods_array[$i]['class'] = $location->URL->getName();
           $i++;
@@ -609,7 +617,20 @@ class MODS {
       $mods_array['mods:owner_inst']['class'] = $mods_object->extension->owningInstitution->getName();
       $i++;
     }
-    
+   
+    // Other Logo Section
+    if (isset($mods_object->extension->otherLogo))
+    {
+      $local_counter = 0;
+
+      foreach($mods_object->extension->otherLogo as $otherLogo) {
+        $mods_array['mods:other_logo_' . $local_counter]['value'] = $otherLogo;
+        $mods_array['mods:other_logo_' . $local_counter]['label'] = 'Other Logo ' . $local_counter;
+        $mods_array['mods:other_logo_' . $local_counter]['class'] = $otherLogo->getName();
+        $local_counter++;
+      }
+    }
+ 
     return $mods_array;
   }
   
