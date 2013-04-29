@@ -126,15 +126,15 @@ if (isset($islandora_content))
   <ul>
     <!--- START OTHERLOGO DISPLAY -->
     <?php $local_counter = 0; ?>
-    <?php while (isset($branding_info['other_logo_' . $local_counter])): ?>
-      <li><a href="<?php print $branding_info['other_logo_' . $local_counter]['institution_link'] ?>">  	
+    <?php while (isset($branding_info['other_logo_' . $local_counter]) && $local_counter < 3): ?>
+      <li><a href="<?php print $branding_info['other_logo_' . $local_counter]['institution_link'] ?>" target="_blank">  	
       <img src="<?php print base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['other_logo_' . $local_counter]['image_filename'] ?>"></a>
       </li>
       <?php $local_counter++; ?>
     <?php endwhile; ?>
     <!--- END OF OTHERLOGO DISPLAY -->      
     
-    <li><a href="<?php print $branding_info['institution_logo']['institution_link'] ?>">
+    <li><a href="<?php print $branding_info['institution_logo']['institution_link'] ?>" target="_blank">
     <img src="<?php print base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['institution_logo']['image_filename'] ?>"></a>
     </li>
   </ul>

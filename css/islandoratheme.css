@@ -328,11 +328,11 @@ div.region-sidebar-first div.block-inner
   margin: 0;
   padding: 0;
   list-style-type: none;
-  text-align:center;
+  text-align:right;
 }
 
 .islandora-object-branding li
 {
   display: inline;
-  margin: 0px 20px 0px 20px;
+  margin: 0px 0px 0px 25px;
 }
