@@ -183,7 +183,7 @@ function get_branding_info(&$variables)
     $query = new EntityFieldQuery();
     $results = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'object_branding')
-      ->propertyCondition('title', $owner_institution)
+      ->propertyCondition('title', strtoupper($owner_institution))
       ->execute();
       
     if($results)
@@ -209,7 +209,7 @@ function get_branding_info(&$variables)
     $query = new EntityFieldQuery();
     $results = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'object_branding')
-      ->propertyCondition('title', $other_logo)
+      ->propertyCondition('title', strtoupper($other_logo))
       ->execute();
 
     if($results)
