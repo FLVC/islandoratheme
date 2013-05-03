@@ -16,7 +16,7 @@ require_once 'includes/islandora_mods.inc';
  * Custom function to set some variables used throughout the theme
  */
 function islandoratheme_variables(&$vars) {
-  $vars['default_brand_logo'] = 'FLVC_logo_smaller.jpg';
+  $vars['default_brand_logo'] = 'default_logo.png';
   $vars['default_brand_link'] = 'http://www.flvc.org';
   return $vars;
 }
