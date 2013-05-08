@@ -224,6 +224,13 @@ div.islandora-definition-row { margin-bottom: 10px; }
 div.islandora-basic-image-thumbnail
 {
   float: right;
+  margin-right: 12px;
+}
+
+/* Large Image Module Styles */
+div.islandora-large-image-thumbnail
+{
+  margin-right: 12px;
 }
 
 /* PDF Module Styles */

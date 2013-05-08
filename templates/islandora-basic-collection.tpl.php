@@ -41,6 +41,11 @@
                 <strong>Title: </strong><?php print $associated_object['title_link']; ?>
               <?php endif; ?>
             </dd>
+            <dd>
+              <?php if (isset($associated_object['collection_description'])): ?>
+                <strong>Description: </strong><?php print $associated_object['collection_description']; ?>
+              <?php endif; ?>
+            </dd>
             <?php if (isset($associated_object['mods_array']['mods:description']['value']) && $associated_object['mods_array']['mods:description']['value'] != ''): ?>
               <dd class="collection-value <?php print $associated_object['mods_array']['mods:description']['class']; ?>">
                 <strong><?php print $associated_object['mods_array']['mods:description']['label']; ?>: </strong><?php print $associated_object['mods_array']['mods:description']['value']; ?>
