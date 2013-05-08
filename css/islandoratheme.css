@@ -166,6 +166,14 @@ box-shadow: 0 0 10px rgba(76, 76, 76, 0.7);
 border-radius: 6px 6px 6px 6px; 
 }
 
+/* Collection Browse Styles */
+#local-collection-search { border-collapse: separate; }
+#local-collection-search td { vertical-align: top; }
+#local-collection-search tr td:last-child { border: none; }
+#local-collection-search-form { text-align: right; min-width: 350px; }
+#local-collection-search-form .search-input-text { margin-right: 8px; width: 200px;}
+#local-collection-search-form .form-submit { width: 130px; margin: 0; }
+
 /* facet block styles */
 .islandora-solr-facet-wrapper table
 {
