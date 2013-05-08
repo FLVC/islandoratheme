@@ -167,10 +167,7 @@ border-radius: 6px 6px 6px 6px;
 }
 
 /* Collection Browse Styles */
-#local-collection-search { border-collapse: separate; }
-#local-collection-search td { vertical-align: top; padding: 0px 20px 5px 10px; }
-#local-collection-search #local-search-container { padding: 5px 15px 5px 15px; }
-#local-collection-search tr td:last-child { border: none; }
+#local-search-container { float: right; width: 350px; margin: 0px 5px 15px 25px; padding: 5px 15px 5px 15px; }
 #local-collection-search-form { text-align: right; min-width: 350px; }
 #local-collection-search-form .search-input-text { margin-right: 8px; width: 200px;}
 #local-collection-search-form .form-submit { width: 120px; margin: 0; }
