@@ -358,6 +358,16 @@ class MODS {
         if ($description_counter == 0 && $abstract != '')
         {
           $mods_array['mods:description']['value'] = $abstract;
+          
+          if(strlen($abstract) > 300)
+          {
+            $mods_array['mods:description']['short_value'] = substr($abstract, 0, 300) . '...';
+          }
+          else
+          {
+            $mods_array['mods:description']['short_value'] = $abstract;
+          }
+          
           $mods_array['mods:description']['label'] = 'Abstract/Description';
           $mods_array['mods:description']['class'] = $abstract->getName();
           $counter++;
