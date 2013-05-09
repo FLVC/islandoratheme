@@ -20,9 +20,6 @@
     else {
       print '<h1 id="page-title">' . $islandora_object->label . '</h1>';
     }
-  ?>
-  
-  <?php
     
     if (isset($islandora_object['DESC-TEXT'])) {
       $description_text_url = '/islandora/object/' . $islandora_object->id . '/datastream/DESC-TEXT/view'; 
@@ -31,13 +28,13 @@
       <div id="local-collection-search">
       <div id="local-search-container">
       <h2 class="local-collection-search-title">Search this Collection</h2>
-      <form id="local-collection-search-form" accept-charset="UTF-8" method="post" action="<?php print $search_url ?>">
+      <form id="local-collection-search-form" accept-charset="UTF-8" onsubmit="return makeURL('local-collection-search-form');" method="get" action="#">
         <div class="form-item">
           <input class="search-input-text" type="text" maxlength="128" name="islandora_simple_search_query" />
           <input type="submit" name="submit" value="search"  class="form-submit" />
         </div>
           <input type="hidden" name="islandora_simple_collection" value="<?php print $islandora_object->id ?>">
-          <input type="hidden" value="islandora_solr_simple_search_form" name="form_id">
+          <input type="hidden" name="base_url" value="<?php print $base_url ?>">
       </form>
       </div>
 
