@@ -16,6 +16,7 @@ form { margin: 0 0 .5em }
 #menu-bar { 
   margin-right: 20px;
   margin-left: 20px;
+  padding-top: 0;
 }
 
 #menu-bar div.contextual-links-wrapper {z-index: 500;}
@@ -153,6 +154,10 @@ padding: 10px 0px 0px 0px;
 #local-collection-search-form .form-submit { width: 120px; margin: 0; }
 .islandora-basic-collection-display-switch ul.links.inline { margin-right: 70px; }
 .islandora-basic-collection-display-switch a.links.inline { text-decoration: underline; }
+
+/* task bar styles */
+
+#tasks { margin-top: 10px; }
 
 /* sidebar styles */
 .region-sidebar-first .region-inner {
