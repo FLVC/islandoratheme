@@ -317,6 +317,12 @@ ul.islandora-solr-facet
 div.region-sidebar-first div.block-inner
 {
   padding: 15px;
+  margin-right: 0;
+}
+
+div.region-sidebar-first .block
+{
+  margin-bottom: 0;
 }
 
 /* Footer Styles */
@@ -340,3 +346,6 @@ div.region-sidebar-first div.block-inner
   display: inline;
   margin: 0px 0px 0px 25px;
 }
+
+/* Main Content styles */
+#columns #main-content, #columns .content-margin { margin-left: 0px; }
