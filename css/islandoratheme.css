@@ -77,32 +77,12 @@ form { margin: 0 0 .5em }
 }
 
 /* Header Styles */
-#branding hgroup#name-and-slogan { display: none; }
 
-div#header-wrapper div#branding
-{
-  margin: 10px 20px 10px 20px;
-  border-radius: 6px 6px 6px 6px;
-  display: block;
-}
+div#branding hgroup#name-and-slogan { display:none; }
 
-#branding 
-{
-  padding: 0;
-  z-index: -3;
-}
+#branding { padding: 0; z-index: -3; margin: 0px 20px; display: block; }
 
-#branding a
-{
-  font-size: .6em;
-}
-
-div#header-wrapper div#branding a
-{
-  color: white;  
-}
-
-div#logo {z-index: -2;}
+div#logo {z-index: -2; padding-right: 0px;}
 
 div#logo img
 {
@@ -111,12 +91,14 @@ div#logo img
 
 /* Basic Search Module Styles */
 div#top-panels-wrapper {
-  margin: 0px 20px 10px 20px;
+  margin: 0;
 }
 
+div.at-panel .region-conditional-stack { display: inline; }
+div#top-panels-wrapper .three-3x33 { margin: 0px 20px; height: 60px; } 
 #block-islandora-solr-simple
 {
-  margin: 5px 0 2px 20px;
+  margin: -10px 0 2px 20px;
 }
 
 #block-islandora-solr-simple h2.block-title
@@ -160,10 +142,8 @@ div#top-panels-wrapper {
 
 div.region-three-33-top 
 {
-margin: 0; 
-padding: 10px 0px 0px 0px; 
-box-shadow: 0 0 10px rgba(76, 76, 76, 0.7); 
-border-radius: 6px 6px 6px 6px; 
+margin: 0 20px;
+padding: 10px 0px 0px 0px;   
 }
 
 /* Collection Browse Styles */
@@ -173,6 +153,11 @@ border-radius: 6px 6px 6px 6px;
 #local-collection-search-form .form-submit { width: 120px; margin: 0; }
 .islandora-basic-collection-display-switch ul.links.inline { margin-right: 70px; }
 .islandora-basic-collection-display-switch a.links.inline { text-decoration: underline; }
+
+/* sidebar styles */
+.region-sidebar-first .region-inner {
+  margin-left: 10px;
+}
 
 /* facet block styles */
 .islandora-solr-facet-wrapper table
@@ -210,10 +195,8 @@ border-radius: 6px 6px 6px 6px;
 /* Highlighted Region Styles */
 div.region-highlighted 
 {
-margin: 0px 20px 10px 20px; 
-padding: 20px 20px 0px 20px; 
-box-shadow: 0 0 10px rgba(76, 76, 76, 0.7); 
-border-radius: 6px 6px 6px 6px; 
+margin: 0px 20px 0px 20px; 
+padding: 20px 20px 0px 20px;   
 }
 
 div.region-highlighted #block-block-1 { margin-right: 440px; }
@@ -321,6 +304,7 @@ ul.islandora-solr-facet
 .content-style
 {
    overflow: auto;
+   border: none;
 }
 
 /* First Sidebar Styles */
