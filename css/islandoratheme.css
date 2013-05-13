@@ -171,6 +171,8 @@ border-radius: 6px 6px 6px 6px;
 #local-collection-search-form { text-align: right; min-width: 350px; }
 #local-collection-search-form .search-input-text { margin-right: 8px; width: 200px;}
 #local-collection-search-form .form-submit { width: 120px; margin: 0; }
+.islandora-basic-collection-display-switch ul.links.inline { margin-right: 70px; }
+.islandora-basic-collection-display-switch a.links.inline { text-decoration: underline; }
 
 /* facet block styles */
 .islandora-solr-facet-wrapper table

@@ -46,6 +46,7 @@
   <div class="islandora-basic-collection clearfix">
     <span class="islandora-basic-collection-display-switch">
      <?php print theme('links', array('links' => $view_links, 'attributes' => array('class' => array('links', 'inline'))));?>
+     <?php print l('Go to detailed view', "islandora/search/", array('attributes' => array('class' => array('links', 'inline')), 'query' => array('type' => 'edismax', 'collection' => $islandora_object->id))); ?>
     </span>
     <?php print $collection_pager; ?>
     <?php print $collection_content; ?>
