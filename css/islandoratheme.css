@@ -13,6 +13,10 @@
 form { margin: 0 0 .5em }
 
 /* Navigation Bar Styles */
+#menu-bar-wrapper { background: none; line-height: 1.4; }
+
+#block-system-navigation { margin-left: 20px; }
+
 #menu-bar { 
   margin-right: 20px;
   margin-left: 20px;
@@ -37,7 +41,7 @@ form { margin: 0 0 .5em }
 #block-system-navigation ul ul {  
   display: none;
   position: absolute;
-  top: 48px;
+  top: 46px;
   left: -1px;
   width: 100%;
   text-align: center;

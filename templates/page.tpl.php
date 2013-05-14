@@ -60,15 +60,15 @@
         </div>
       </div>
     <?php endif; ?>
-    
+
     <?php if ($menubar = render($page['menu_bar'])): ?>
       <div id="menu-bar-wrapper">
         <div class="container clearfix">
           <?php print $menubar; ?>
         </div>
       </div>
-    <?php endif; ?>    
-
+    <?php endif; ?>
+    
     <?php if ($page['secondary_content']): ?>
       <div id="secondary-content-wrapper">
         <div class="container clearfix">
@@ -123,6 +123,14 @@
                       <?php if ($breadcrumb): print $breadcrumb; endif; ?>
 
                       <?php print render($title_prefix); ?>
+
+                      <?php if ($title && !isset($node)): ?>
+                        <header class="clearfix">
+                          <h1 id="page-title">
+                            <?php print $title; ?>
+                          </h1>
+                        </header>
+                      <?php endif; ?>
 
                       <?php print render($title_suffix); ?>
 
