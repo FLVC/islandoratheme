@@ -14,4 +14,12 @@ function makeURL(the_form) {
   var query = document.forms[the_form]["base_url"].value + "/islandora/search/" + document.forms[the_form]["islandora_simple_search_query"].value + "?type=dismax&collection=" + collection;
   window.location = query;
   return false;
+}
+
+function allItemsMakeURL(the_form, the_second_form) {
+  var collection = document.forms[the_form]["islandora_simple_collection"].value;
+  collection = collection.replace(":", "\%3A");
+  var query = document.forms[the_second_form]["base_url"].value + "/islandora/search/" + document.forms[the_form]["islandora_simple_search_query"].value + "?type=dismax&collection=" + collection;
+  window.location = query;
+  return false;
 }  

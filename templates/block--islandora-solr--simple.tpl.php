@@ -55,12 +55,16 @@
  * @see adaptivetheme_process_block()
  */
 ?>
+<?php global $base_url ?>
+
 <section id="block-islandora-solr-simple" class="block block-islandora-solr">
   <div class="block-inner clearfix">
-    <h2 class="block-title">Search the Repository</h2>
+    <h2 class="block-title">Search For</h2>
       <?php print $content ?>
-      <form action="/islandora/search/?type=dismax" method="post" id="islandora-solr-view-all-objects">
-        <input type="submit" id="all-objects-submit" name="all-objects" value="view all objects" class="form-submit" />
+      <span id="islandora-basic-view-all-option">OR</span>
+      <form action="#" method="get" onsubmit="return allItemsMakeURL('islandora-solr-simple-search-form', 'islandora-solr-view-all-objects');" id="islandora-solr-view-all-objects">
+        <input type="submit" id="all-objects-submit" name="all-objects" value="View All Items" class="form-submit" />
+        <input type="hidden" name="base_url" value="<?php print $base_url ?>">
       </form>
   </div>
 </section>
