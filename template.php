@@ -177,6 +177,23 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   $variables['associated_objects_mods_array'] = $associated_objects_mods_array;
 }
 
+// This function makes customizations to the breadcrumb region
+function islandoratheme_breadcrumb($variables) {
+  if (!empty($variables['breadcrumb'][1])) {
+    //Append title if it's a search
+    if (strpos($variables['breadcrumb'][1], 'islandora-solr-breadcrumb-super') !== false)
+    {
+      unset($variables['breadcrumb'][0]);
+      return '<p><strong>Current Search: </strong>&nbsp;' . implode(' &raquo; ', $variables['breadcrumb']) . '</p>';
+    }
+    else
+    {
+      unset($variables['breadcrumb'][0]);
+      return theme_breadcrumb($variables);
+    }
+  }
+}
+
 // Custom function that retrieves the path for branding logo
 function get_branding_info(&$variables)
 {
