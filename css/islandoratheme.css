@@ -128,6 +128,8 @@ div#top-panels-wrapper .three-3x33 { margin: 0px 20px; height: 60px; }
   max-width: 600px;
 }
 
+#edit-islandora-simple-collection { max-width: 300px; }
+
 #block-islandora-solr-simple .form-item,
 #block-islandora-solr-simple .form-action,
 #block-islandora-solr-simple .form-submit
