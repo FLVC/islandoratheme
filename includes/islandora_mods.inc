@@ -193,34 +193,34 @@ class MODS {
       }
     }
     
-    if (isset($mods_object->originInfo->dateIssued))
+    if (isset($mods_object->originInfo->dateCreated))
     {
-      foreach ($mods_object->originInfo->dateIssued as $dateIssued) {
-        $mods_array[$i]['value'] = $dateIssued;
-        $mods_array[$i]['label'] = 'Date Issued';
-        $mods_array[$i]['class'] = $dateIssued->getName();
+      foreach ($mods_object->originInfo->dateCreated as $dateCreated) {
+        $mods_array[$i]['value'] = $dateCreated;
+        $mods_array[$i]['label'] = 'Date Created';
+        $mods_array[$i]['class'] = $dateCreated->getName();
         $i++;
       }
     }
     
-    if (isset($mods_object->originInfo->dateCreated))
+    if (isset($mods_object->originInfo->dateIssued))
     {
       $date_counter = 0;      
 
-      foreach ($mods_object->originInfo->dateCreated as $dateCreated) {
+      foreach ($mods_object->originInfo->dateIssued as $dateIssued) {
         
-        if ($date_counter == 0 && $dateCreated != '')
+        if ($date_counter == 0 && $dateIssued != '')
         {
-          $mods_array['mods:date']['value'] = $dateCreated;
-          $mods_array['mods:date']['label'] = 'Date Created';
-          $mods_array['mods:date']['class'] = $dateCreated->getName();
+          $mods_array['mods:date']['value'] = $dateIssued;
+          $mods_array['mods:date']['label'] = 'Date Issued';
+          $mods_array['mods:date']['class'] = $dateIssued->getName();
           $date_counter++;
         }
-        elseif ($dateCreated != '')
+        elseif ($dateIssued != '')
         {
-          $mods_array[$i]['value'] = $dateCreated;
-          $mods_array[$i]['label'] = 'Date Created';
-          $mods_array[$i]['class'] = $dateCreated->getName();
+          $mods_array[$i]['value'] = $dateIssued;
+          $mods_array[$i]['label'] = 'Date Issued';
+          $mods_array[$i]['class'] = $dateIssued->getName();
           $i++;
         }
       }
@@ -405,17 +405,17 @@ class MODS {
     // Identifier Section
     if (isset($mods_object->identifier))
     {
+      $mods_array['mods:identifier']['value'] = NULL;
+      
       foreach ($mods_object->identifier as $identifier) {
-        if (isset ($identifier['type'])) {
-            $mods_array[$i]['value'] = trim($identifier) . ' (' . $identifier['type'] . ')';
-            $mods_array[$i]['label'] = 'Identifier';
-            $mods_array[$i]['class'] = $identifier->getName() . '_' . $identifier['type'];
-            $i++;
-        } else {
-            $mods_array[$i]['value'] = trim($identifier);
-            $mods_array[$i]['label'] = 'Identifier';
-            $mods_array[$i]['class'] = $identifier->getName() . '_id';
-            $i++;
+        if (isset ($identifier['type']) && $identifier != '') {
+            $mods_array['mods:identifier']['value'] .= trim($identifier) . ' (' . $identifier['type'] . ') ';
+            $mods_array['mods:identifier']['label'] = 'Identifier';
+            $mods_array['mods:identifier']['class'] = $identifier->getName() . '_' . $identifier['type'];
+        } elseif ($identifier != '') {
+            $mods_array['mods:identifier']['value'] .= trim($identifier) . ' ';
+            $mods_array['mods:identifier']['label'] = 'Identifier';
+            $mods_array['mods:identifier']['class'] = $identifier->getName() . '_id';
         }
       }
     }

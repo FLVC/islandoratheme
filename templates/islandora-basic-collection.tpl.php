@@ -59,9 +59,9 @@
                 <strong><?php print $associated_object['mods_array']['mods:date']['label']; ?>: </strong><?php print $associated_object['mods_array']['mods:date']['value']; ?>
               </dd>
             <?php endif; ?>
-            <?php if (isset($associated_object['mods_array']['mods:creator']['value']) && $associated_object['mods_array']['mods:creator']['value'] != ''): ?>
-              <dd class="collection-value <?php print $associated_object['mods_array']['mods:creator']['class']; ?>">
-                <strong><?php print $associated_object['mods_array']['mods:creator']['label']; ?>: </strong><?php print $associated_object['mods_array']['mods:creator']['value']; ?>
+            <?php if (isset($associated_object['mods_array']['mods:identifier']['value']) && $associated_object['mods_array']['mods:identifier']['value'] != ''): ?>
+              <dd class="collection-value <?php print $associated_object['mods_array']['mods:identifier']['class']; ?>">
+                <strong><?php print $associated_object['mods_array']['mods:identifier']['label']; ?>: </strong><?php print $associated_object['mods_array']['mods:identifier']['value']; ?>
               </dd>
             <?php endif; ?>            
         </dl>
