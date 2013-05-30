@@ -19,7 +19,12 @@ function makeURL(the_form) {
 function allItemsMakeURL(the_form, the_second_form) {
   var collection = document.forms[the_form]["islandora_simple_collection"].value;
   collection = collection.replace(":", "\%3A");
-  var query = document.forms[the_second_form]["base_url"].value + "/islandora/search/" + document.forms[the_form]["islandora_simple_search_query"].value + "?type=dismax&collection=" + collection;
+  var query = document.forms[the_second_form]["base_url"].value + "/islandora/search/?type=dismax";
+
+  if (collection !== "") {
+    query += "&collection=" + collection;
+  }
+
   window.location = query;
   return false;
 }  
