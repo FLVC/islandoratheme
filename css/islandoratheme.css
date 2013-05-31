@@ -139,7 +139,7 @@ div#top-panels-wrapper .three-3x33 { margin: 0px 20px; height: 60px; }
 
 .form-item-islandora-simple-collection label { margin: 0 10px 0 7px; }
 
-#islandora-basic-view-all-option { font-size: 1.1em; font-weight: bold; margin-left: 35px; padding-bottom: 4px; }
+#islandora-basic-view-all-option { font-size: 1.1em; font-weight: bold; margin-left: 35px; padding: 0 0 4px 0; vertical-align: top; }
 
 #islandora-solr-view-all-objects
 {

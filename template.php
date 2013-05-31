@@ -105,6 +105,28 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
 }
 
 /**
+ * Override the Islandora Internet Archive Bookreader module process function
+ */
+function islandoratheme_process_islandora_internet_archive_bookreader(&$variables) {
+
+  $islandora_object = $variables['object'];
+
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/book.css', array('group' => CSS_THEME, 'type' => 'file'));
+  
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+ 
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+ 
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
+}
+
+/**
  * Override the Islandora Collection preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_collection(&$variables) {  
