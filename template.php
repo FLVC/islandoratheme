@@ -87,6 +87,7 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
  */
 function islandoratheme_preprocess_islandora_large_image(&$variables) {
 
+  drupal_add_js('jQuery(document).ready(function(){tabLinkReload();});', 'inline');
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/large-image.css', array('group' => CSS_THEME, 'type' => 'file'));
   
   $islandora_object = $variables['islandora_object'];

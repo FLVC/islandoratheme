@@ -27,4 +27,10 @@ function allItemsMakeURL(the_form, the_second_form) {
 
   window.location = query;
   return false;
-}  
+}
+
+function tabLinkReload() {
+  jQuery("#tabs a:first").click(function() {
+    window.location.reload(true);
+  });
+}
