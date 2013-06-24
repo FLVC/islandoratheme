@@ -34,3 +34,20 @@ function tabLinkReload() {
     window.location.reload(true);
   });
 }
+
+function collectionBlankSearch() {
+  jQuery('#collection-specific-menu-item').click(function(e) {
+    e.preventDefault();
+    var query = location.protocol + '//' + location.hostname + '/islandora/search/?type=edismax';
+    var collection = jQuery('#edit-islandora-simple-collection option:selected').val();
+    collection = collection.replace(":", "\%3A");
+
+    if(collection !== "") {
+      query += '&collection=' + collection;
+    }
+    
+    window.location = query;
+    return false;
+  });
+
+}

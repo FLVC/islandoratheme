@@ -27,6 +27,7 @@ function islandoratheme_variables(&$vars) {
 function islandoratheme_preprocess_html(&$vars) {
   drupal_add_library ('system', 'ui.tabs');
   drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();});', 'inline');
+  drupal_add_js('jQuery(document).ready(function(){collectionBlankSearch();});', 'inline');
 }
 
 function islandoratheme_process_html(&$vars) {
