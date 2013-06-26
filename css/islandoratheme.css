@@ -230,7 +230,7 @@ padding: 20px 20px 0px 20px;
 }
 
 div.region-highlighted #block-block-1 { margin-right: 440px; }
-div.region-highlighted #block-block-2 { float: right; width: 420px; padding-top: 10px; margin: 0; }
+div.region-highlighted #block-block-2 { float: right; width: 420px; padding-top: 0; margin: 0; }
 div.region-highlighted #block-block-2 h2.block-title { display: none; }
 div.region-highlighted .block { clear: none; }
 
