@@ -54,7 +54,7 @@
         <?php endforeach ?>
       </ul>
 
-     <?php print l('Go to detailed view', "islandora/search/", 
+     <?php print l('View All Items in this Collection', "islandora/search/", 
            array('attributes' => array('class' => array('links', 'inline')), 'query' => array('type' => 'edismax', 
            'collection' => $islandora_object->id))); ?>
 
