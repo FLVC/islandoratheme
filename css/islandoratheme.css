@@ -11,6 +11,7 @@
 /* html wide Styles */
 
 form { margin: 0 0 .5em }
+a { text-decoration: underline; }
 
 /* Navigation Bar Styles */
 #menu-bar-wrapper { background: none; line-height: 1.4; }
@@ -41,7 +42,7 @@ form { margin: 0 0 .5em }
 #block-system-navigation ul ul {  
   display: none;
   position: absolute;
-  top: 46px;
+  top: 42px;
   left: -1px;
   width: 100%;
   text-align: center;
@@ -95,6 +96,10 @@ div#logo img
 {
   margin-left: 30px;
 }
+
+/* Main Content Wide Styles */
+
+#content-wrapper { margin-bottom: 0; }
 
 /* Basic Search Module Styles */
 div#top-panels-wrapper {
@@ -345,7 +350,7 @@ div.region-sidebar-first .block
   margin-bottom: 0;
 }
 
-/* Footer Styles */
+/* Object Branding Styles */
 
 .islandora-object-branding
 {
@@ -367,3 +372,7 @@ div.region-sidebar-first .block
   margin: 0px 0px 0px 25px;
 }
 
+/* Footer Styles */
+
+#footer-wrapper p { padding: 20px 0 0 0; text-align: center; }
+#footer-wrapper .block-inner { margin: 0 20px 0 20px; }
