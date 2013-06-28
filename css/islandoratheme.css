@@ -222,6 +222,12 @@ padding: 10px 0px 0px 0px;
   border: none;
 }
 
+/* Secondary Content Styles */
+#secondary-content-wrapper { margin-bottom: 0; }
+#secondary-content-wrapper .region-secondary-content .block { margin: 0; }
+#secondary-content-wrapper .block-inner { margin: 0 20px; padding: 20px; }
+#secondary-content-wrapper p { margin-bottom: 0; padding: 0; font-size: 0.8em; text-align: left; }  
+
 /* Highlighted Region Styles */
 div.region-highlighted 
 {
