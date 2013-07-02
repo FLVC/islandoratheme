@@ -225,7 +225,7 @@ padding: 10px 0px 0px 0px;
 /* Secondary Content Styles */
 #secondary-content-wrapper { margin-bottom: 0; }
 #secondary-content-wrapper .region-secondary-content .block { margin: 0; }
-#secondary-content-wrapper .block-inner { margin: 0 20px; padding: 20px 20px 5px 20px; }
+#secondary-content-wrapper .block-inner { text-align: left; margin: 0 20px; padding: 20px 20px 15px 20px; }
 #secondary-content-wrapper p { margin-bottom: 0; padding: 0 0 15px 0; font-size: 0.8em; text-align: left; }  
 
 /* Highlighted Region Styles */
