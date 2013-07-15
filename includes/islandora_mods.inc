@@ -590,19 +590,27 @@ class MODS {
           $i++;
         }
         
-        if(isset($location->URL) && $location->URL != '')
+        if(isset($location->url) && $location->url != '')
         {
-          if(isset($location->URL['displayLabel']) && $location->URL['displayLabel'] != '')
+          if(isset($location->url['displayLabel']) && $location->url['displayLabel'] != '')
           { 
-            $mods_array[$i]['value'] = '<a href="' . $location->URL . '" target="_blank">' . $location->URL['displayLabel'] . '</a>';
+            $mods_array[$i]['value'] = '<a href="' . $location->url . '" target="_blank">' . $location->url['displayLabel'] . '</a>';
           }
           else
           {
-            $mods_array[$i]['value'] = '<a href="' . $location->URL . '" target="_blank">' . $location->URL . '</a>';
+            $mods_array[$i]['value'] = '<a href="' . $location->url . '" target="_blank">' . $location->url . '</a>';
           }
 
-          $mods_array[$i]['label'] = 'Links';
-          $mods_array[$i]['class'] = $location->URL->getName();
+          if($location['displayLabel'] == 'purl')
+          {
+            $mods_array[$i]['label'] = 'Persistent Link to This Record';
+          }
+          else
+          {
+            $mods_array[$i]['label'] = 'Links';        
+          }
+    
+          $mods_array[$i]['class'] = $location->url->getName();
           $i++;
         }
       }
