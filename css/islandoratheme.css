@@ -13,6 +13,11 @@
 form { margin: 0 0 .5em }
 a { text-decoration: underline; }
 
+/* Responsive Styles */
+@media screen and (max-width: 1140px) {
+  .region-highlighted { display: none; }
+}
+
 /* Navigation Bar Styles */
 #menu-bar-wrapper { background: none; line-height: 1.4; }
 
