@@ -910,6 +910,11 @@ class MODS {
   // if there isn't a parentheses at the beginning and end of $string, add one
   protected static function addParentheses($string)
   {
+    if($string == '')
+    {
+      return $string;
+    }
+    
     if (substr($string, 0, 1) != '(')
     {
       $string = '(' . $string;
