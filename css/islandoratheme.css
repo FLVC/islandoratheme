@@ -11,8 +11,11 @@
 /* html wide Styles */
 
 form { margin: 0 0 .5em }
+html { font-size: 90%; }
 a { text-decoration: underline; }
-
+td, th { vertical-align: top; }
+table { border: none; border-collapse: separate; }
+tr td:last-child { border-right: none; }
 /* Responsive Styles */
 @media screen and (max-width: 1140px) {
   .region-highlighted { display: none; }
@@ -47,7 +50,7 @@ a { text-decoration: underline; }
 #block-system-navigation ul ul {  
   display: none;
   position: absolute;
-  top: 42px;
+  top: 36px;
   left: -1px;
   width: 100%;
   text-align: center;
@@ -112,7 +115,7 @@ div#top-panels-wrapper {
 }
 
 div.at-panel .region-conditional-stack { display: inline; }
-div#top-panels-wrapper .three-3x33 { margin: 0px 20px; height: 55px; }  
+div#top-panels-wrapper .three-3x33 { margin: 0px 20px; height: 48px; }  
 #block-islandora-solr-simple
 {
   margin: -12px 0 2px 20px;
@@ -250,12 +253,14 @@ div.region-highlighted .block { clear: none; }
 dl.islandora-table-display dt, dl.islandora-table-display dd { display: inline; margin: 0; }
 div.islandora-definition-row { margin-bottom: 10px; }
 .islandora-title h3 { margin-bottom: 10px; }
+.islandora-table-display td { padding-left: 20px; }
+body.no-sidebars .islandora-basic-image-sidebar { padding: 0; }
+body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
 
 /* Basic Image Module Styles */
 
 div.islandora-basic-image-thumbnail
 {
-  float: right;
   margin-right: 12px;
 }
 

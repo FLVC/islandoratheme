@@ -1,4 +1,3 @@
 .container { max-width: 100%; }
 body.no-sidebars .islandora-pdf-content { float: none; width: 100%; }
 body.no-sidebars .islandora-pdf-sidebar { float: none; width: 100%; }
-.islandora-pdf-thumbnail { float: right; }
