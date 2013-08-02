@@ -28,6 +28,7 @@
 
 <div class="islandora-title">
   <h3><?php print $islandora_object_label ?></h3>
+  <p><?php print $islandora_view_link; ?> </p>
 </div>
 
 <div id="tabs">
@@ -81,7 +82,7 @@
           <?php if(trim($value['value']) != ''): ?>
             
 	    <tr class="islandora-definition-row">	  
-            <th class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
+            <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['label']; ?>:
             </th>
             <td class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">

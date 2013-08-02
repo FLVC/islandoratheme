@@ -38,9 +38,17 @@ function islandoratheme_process_html(&$vars) {
  * Override the Islandora Basic Image preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_image(&$variables) {
+
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
   
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/basic-image.css', array('group' => CSS_THEME, 'type' => 'file'));
   
+  // Create the full view link
+  $variables['islandora_view_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Full Screen View</a>';
+
   $islandora_object = $variables['islandora_object'];
   
   try {

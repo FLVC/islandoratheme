@@ -90,7 +90,7 @@ if (isset($islandora_content))
           <?php if(trim($value['value']) != ''): ?>
 
             <tr class="islandora-definition-row">
-            <th class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
+            <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['label']; ?>:
             </th>
             <td class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
