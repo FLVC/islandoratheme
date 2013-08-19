@@ -658,20 +658,28 @@ class MODS {
     } 
     
     // Owning Institution Section    
-    if (isset($mods_object->extension->owningInstitution))
+    if (isset($mods_object->extension))
     {
-      $mods_array['mods:owner_inst']['value'] = $mods_object->extension->owningInstitution;
-      $mods_array['mods:owner_inst']['label'] = 'Owner Institution';
-      $mods_array['mods:owner_inst']['class'] = $mods_object->extension->owningInstitution->getName();
-      $i++;
+      foreach ($mods_object->extension as $extension) 
+      {
+        $namespaces = $extension->getNameSpaces(true);
+        $flvc = $extension->children($namespaces['flvc']);
+        
+        $mods_array['mods:owner_inst']['value'] = $flvc->flvc->owningInstitution;
+        $mods_array['mods:owner_inst']['label'] = 'Owner Institution';
+        $mods_array['mods:owner_inst']['class'] = $flvc->flvc->owningInstitution->getName();
+        $i++;
+      }
     }
    
     // Other Logo Section
-    if (isset($mods_object->extension->otherLogo))
+    if (isset($mods_object->extension))
     {
       $local_counter = 0;
+      $namespaces = $extension->getNameSpaces(true);
+      $flvc = $extension->children($namespaces['flvc']);
 
-      foreach($mods_object->extension->otherLogo as $otherLogo) {
+      foreach($flvc->flvc->otherLogo as $otherLogo) {
         $mods_array['mods:other_logo_' . $local_counter]['value'] = $otherLogo;
         $mods_array['mods:other_logo_' . $local_counter]['label'] = 'Other Logo ' . $local_counter;
         $mods_array['mods:other_logo_' . $local_counter]['class'] = $otherLogo->getName();
