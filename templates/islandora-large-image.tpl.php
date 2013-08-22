@@ -33,6 +33,7 @@ if (isset($islandora_object_label))
 
 <div class="islandora-title">
   <h3><?php print $islandora_object_label ?></h3>
+  <p><?php print $islandora_download_link; ?> </p>
 </div>
 
 <div id="tabs">

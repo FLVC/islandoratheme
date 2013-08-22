@@ -96,10 +96,18 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
  */
 function islandoratheme_preprocess_islandora_large_image(&$variables) {
 
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
   drupal_add_js('jQuery(document).ready(function(){tabLinkReload();});', 'inline');
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/large-image.css', array('group' => CSS_THEME, 'type' => 'file'));
-  
+
   $islandora_object = $variables['islandora_object'];
+
+  // Create the full view link
+  $variables['islandora_download_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Download File</a>';
   
   try {
     $mods = $islandora_object['MODS']->content;
