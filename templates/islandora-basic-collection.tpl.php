@@ -46,12 +46,12 @@
               <?php if (isset($associated_object['collection_description']) && strlen($associated_object['collection_description']) <= $description_length) : ?>
                 <strong>Description: </strong><?php print $associated_object['collection_description']; ?>
               <?php elseif (isset($associated_object['collection_description'])): ?>
-                <strong>Description: </strong><?php print substr($associated_object['collection_description'], 0, $description_length) . '...'; ?>
+                <strong>Description: </strong><?php print strip_tags(substr($associated_object['collection_description'], 0, $description_length)) . '...'; ?>
               <?php endif; ?>
             </dd>
             <?php if (isset($associated_object['mods_array']['mods:description']['value']) && $associated_object['mods_array']['mods:description']['value'] != ''): ?>
               <dd class="collection-value <?php print $associated_object['mods_array']['mods:description']['class']; ?>">
-                <strong><?php print $associated_object['mods_array']['mods:description']['label']; ?>: </strong><?php print $associated_object['mods_array']['mods:description']['short_value']; ?>
+                <strong><?php print $associated_object['mods_array']['mods:description']['label']; ?>: </strong><?php print strip_tags($associated_object['mods_array']['mods:description']['short_value']); ?>
               </dd>
             <?php endif; ?>
             <?php if (isset($associated_object['mods_array']['mods:date']['value']) && $associated_object['mods_array']['mods:date']['value'] != ''): ?>
