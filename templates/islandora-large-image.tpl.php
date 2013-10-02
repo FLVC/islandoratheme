@@ -96,7 +96,7 @@ if (isset($islandora_object_label))
                 <?php if(isset($islandora_full_url)): ?>
                   <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
-                  <?php print $islandora_thumbnail_img; ?>
+                  <a href="javascript:document.location.reload();"><?php print $islandora_thumbnail_img; ?></a>
                 <?php endif; ?>
               </td>
             <?php endif; ?>
