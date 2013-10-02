@@ -59,7 +59,7 @@
   <?php print render($title_prefix); ?>
 
   <?php if ($title): ?>
-    <h2<?php print $title_attributes; ?>>Sort Results</h2>
+    <h2<?php print $title_attributes; ?>>Sort Results By:</h2>
   <?php endif; ?>
 
   <?php print $content_processed; ?>
