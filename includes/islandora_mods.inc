@@ -686,14 +686,18 @@ class MODS {
     if (isset($mods_object->extension))
     {
       $local_counter = 0;
-      $namespaces = $extension->getNameSpaces(true);
-      $flvc = $extension->children($namespaces['flvc']);
+      
+      foreach ($mods_object->extension as $extension)
+      {
+        $namespaces = $extension->getNameSpaces(true);
+        $flvc = $extension->children($namespaces['flvc']);
 
-      foreach($flvc->flvc->otherLogo as $otherLogo) {
-        $mods_array['mods:other_logo_' . $local_counter]['value'] = $otherLogo;
-        $mods_array['mods:other_logo_' . $local_counter]['label'] = 'Other Logo ' . $local_counter;
-        $mods_array['mods:other_logo_' . $local_counter]['class'] = $otherLogo->getName();
-        $local_counter++;
+        foreach($flvc->flvc->otherLogo as $otherLogo) {
+          $mods_array['mods:other_logo_' . $local_counter]['value'] = $otherLogo;
+          $mods_array['mods:other_logo_' . $local_counter]['label'] = 'Other Logo ' . $local_counter;
+          $mods_array['mods:other_logo_' . $local_counter]['class'] = $otherLogo->getName();
+          $local_counter++;
+        }
       }
     }
     
