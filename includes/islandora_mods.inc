@@ -883,7 +883,9 @@ class MODS {
       } 
     }
     
-    $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
+    if($randomize_name == NULL) {
+      $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
+    }  
         
     // If it has a Role, add it
     if(isset($name->role))
