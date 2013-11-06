@@ -895,7 +895,7 @@ class MODS {
     }
     
     if($randomize_name == NULL) {
-      $mods_array[$i]['value'] = $name_value;
+      $mods_array[$i]['value'] = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
       $mods_array[$i]['label'] = $label;
       $mods_array[$i]['class'] = $name->getName();
     }
