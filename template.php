@@ -65,6 +65,79 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
 }
 
 /**
+ * Override the Islandora Audio preprocess function
+ */
+function islandoratheme_preprocess_islandora_audio(&$variables) {
+  
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+  
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/audio.css', array('group' => CSS_THEME, 'type' => 'file'));
+
+  $islandora_object = $variables['islandora_object'];
+  $repository = $islandora_object->repository;
+  
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+  
+  $variables['islandora_object_label'] = $islandora_object->label;
+  
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
+
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
+
+ // Start getting parameters for the player...
+  $audio_params = array(
+    "pid" => $islandora_object->id,
+  );
+  // Thumbnail.
+  if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
+    $tn_url = url("islandora/object/{$islandora_object->id}/datastream/TN/view");
+    $params = array(
+      'title' => $islandora_object->label,
+      'path' => $tn_url,
+    );
+    $variables['islandora_thumbnail_img'] = theme('image', $params);
+
+    $audio_params += array(
+      'tn' => $tn_url,
+    );
+  }
+  
+  // Audio player.
+  if (isset($islandora_object['PROXY_MP3']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PROXY_MP3'])) {
+    $audio_url = url("islandora/object/{$islandora_object->id}/datastream/PROXY_MP3/view", array('absolute' => TRUE));
+
+    $audio_params += array(
+      "url" => $audio_url,
+      "mime" => 'audio/mpeg',
+    );
+  }
+
+  module_load_include('inc', 'islandora', 'includes/solution_packs');
+  $viewer = islandora_get_viewer($audio_params, 'islandora_audio_viewers', $islandora_object);
+
+  if ($viewer) {
+    $variables['islandora_content'] = $viewer;
+  }
+  elseif (isset($variables['islandora_thumbnail_img']) && isset($islandora_object['PROXY_MP3']) &&
+    islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PROXY_MP3'])) {
+
+    $variables['islandora_content'] = l($variables['islandora_thumbnail_img'], $audio_url, array('html' => TRUE));
+  }
+  elseif (isset($islandora_object['PROXY_MP3']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PROXY_MP3'])) {
+    $variables['islandora_content'] = l($islandora_object->label, $audio_url);
+  }  
+}
+
+/**
  * Override the Islandora PDF preprocess function
  */
 function islandoratheme_preprocess_islandora_pdf(&$variables) {

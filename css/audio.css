@@ -1,0 +1,3 @@
+.container { max-width: 100%; }
+body.no-sidebars .islandora-audio-content { float: none; width: 100%; }
+body.no-sidebars .islandora-audio-sidebar { float: none; width: 100%; }
