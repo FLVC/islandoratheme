@@ -21,7 +21,7 @@
  
     <dl class="islandora-basic-collection-object <?php print $value['class']; ?>">
         <dt class="islandora-basic-collection-thumb"><?php print $value['thumb_link']; ?></dt>
-        <dd class="islandora-basic-collection-caption"><?php print $value['title_link']; ?></dd>
+        <dd class="islandora-basic-collection-caption"><a href="<?php print $base_url . '/' . $value['path']; ?>"><?php print substr($value['title'], 0, 100); ?></a></dd>
     </dl>
   
   <?php if($collection_policy): ?>
