@@ -73,7 +73,11 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
   global $base_url;
   // base path
   global $base_path;
-  
+
+  // Create the full view link
+  $variables['islandora_view_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Full Screen View</a>';
+  $variables['islandora_full_url'] = $base_url . request_uri() . '/datastream/OBJ/view';  
+
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/audio.css', array('group' => CSS_THEME, 'type' => 'file'));
 
   $islandora_object = $variables['islandora_object'];

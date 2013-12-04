@@ -28,6 +28,7 @@
 
 <div class="islandora-title">
   <h3><?php print $islandora_object_label ?></h3>
+  <p><?php print $islandora_view_link; ?> </p>
 </div>
 
 <div id="tabs">
@@ -85,15 +86,13 @@
             </td>
 
             <?php if($row_field == 0): ?>
-              <?php if(isset($islandora_medium_img)): ?>
-                <td class="islandora-audio-thumbnail" rowspan="5"> 
+              <td class="islandora-audio-thumbnail" rowspan="5"> 
                 <?php if(isset($islandora_full_url)): ?>
                   <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
                   <?php print $islandora_thumbnail_img; ?>
                 <?php endif; ?>
-                </td>
-              <?php endif; ?>
+              </td>
             <?php endif; ?>
             </tr>
 
