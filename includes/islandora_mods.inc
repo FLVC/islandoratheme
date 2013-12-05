@@ -795,19 +795,69 @@ class MODS {
   {
     foreach($simple_xml_object->children() as $child) {
       
-      $space_check = substr($value, -6);
-      
-      if ($space_check != '<br />') {
-        $value .= $child . '<br />';
+      if($child->getName() == 'url')
+      {
+        $string = '<a href="' . $child . '" target="_blank">' . $child . '</a>';
+        static::spaceCheck($string, $value);
+      } 
+
+      if($child->getName() == 'physicalLocation')
+      {
+        $string = $child;
+        static::spaceCheck($string, $value);
       }
-      else {
-        $value .= $child;
-      }
       
-      if($child->getName() != 'titleInfo')
+      if($child->getName() == 'name')
+      {
+        $string = '';
+        
+        foreach ($child->namePart as $namePart) {
+          if($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'family')
+          {
+            $string = $namePart . ', ' . $string;
+          }
+          elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
+          {
+            $string = $name_value . ', ' . $string;
+          }
+          elseif ($namePart != '')
+          {
+            $string = $string . ' ' . $namePart;
+          }
+        }
+        
+        $string = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $string . ')">' . $string . '</a>';
+        
+        if(isset($child->role))
+        {
+          foreach ($child->role as $role) {
+            if(isset($role->roleTerm) && ($role->roleTerm['type'] == 'text') && ($role->roleTerm != ''))
+            {
+              $string = $string . ', ' . $role->roleTerm;
+            }
+          } 
+        }
+        
+        static::spaceCheck($string, $value);
+      }
+     
+      if($child->getName() != 'titleInfo' && $child->getName != 'name')
       {
         static::traverseRelatedItem($child, $value);
       }
+    }
+  }
+
+  //This function ensures there is a new line tag after each line
+  protected static function spaceCheck($string, &$value)
+  {
+    $space_check = substr($value, -6);
+    
+    if ($space_check != '<br />') {
+        $value .= '<br />' . $string;
+    }
+    else {
+        $value .= $string;
     }
   }
   
