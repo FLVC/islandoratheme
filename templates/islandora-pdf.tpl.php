@@ -98,7 +98,7 @@ if (isset($islandora_content))
             </td>
 
             <?php if($row_field == 0): ?>
-                <td class="islandora-basic-image-thumbnail" rowspan="5">
+                <td class="islandora-basic-image-thumbnail" rowspan="8">
                 <?php if(isset($islandora_full_url)): ?>
                   <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
