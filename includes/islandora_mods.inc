@@ -372,7 +372,7 @@ class MODS {
           
           $mods_array['mods:description']['label'] = 'Abstract/Description';
           $mods_array['mods:description']['class'] = $abstract->getName();
-          $counter++;
+          $description_counter++;
         }
         elseif ($abstract != '')
         {
@@ -797,7 +797,20 @@ class MODS {
       
       if($child->getName() == 'url')
       {
-        $string = '<a href="' . $child . '" target="_blank">' . $child . '</a>';
+        if(isset($child['displayLabel']))
+        {
+          $string = '<a href="' . $child . '" target="_blank">' . $child['displayLabel'] . '</a>';
+        }
+        else
+        {
+          $string = '<a href="' . $child . '" target="_blank">' . $child . '</a>';
+        }
+        
+        if(isset($child['note']))
+        {
+          $string .= ' ' . $child['note'];
+        }
+        
         static::spaceCheck($string, $value);
       } 
 
