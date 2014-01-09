@@ -22,8 +22,9 @@
     }
     
     if (isset($islandora_object['DESC-TEXT'])) {
-      $description_text_url = '/islandora/object/' . $islandora_object->id . '/datastream/DESC-TEXT/view'; 
-      $description_text = file_get_contents($base_url . $description_text_url);
+      //$description_text_url = '/islandora/object/' . $islandora_object->id . '/datastream/DESC-TEXT/view'; 
+      //$description_text = file_get_contents($base_url . $description_text_url);
+      $description_text = $islandora_object['DESC-TEXT']->content;
       $search_url = '/islandora/object/' . $islandora_object->id; ?>
       <div id="local-collection-search">
       <div id="local-search-container">
