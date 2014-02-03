@@ -66,37 +66,39 @@
 </div>
 <div id="tabs-2">
     <div class="islandora-book-sidebar">
-      <?php if(isset($islandora_medium_img)): ?>
-        <div class="islandora-book-thumbnail">
-        <?php if(isset($islandora_full_url)): ?>
-          <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
-        <?php elseif(isset($islandora_thumbnail_img)): ?>
-          <?php print $islandora_thumbnail_img; ?>
-        <?php endif; ?>
-        </div>
-      <?php endif; ?>
       
-      <div>
-	<dl class="islandora-table-display">
-        <?php $row_field = 0; ?>
-        <?php foreach($mods_array as $key => $value): ?>
-          
-          <?php if(trim($value['value']) != ''): ?>
-            
-	    <div class="islandora-definition-row">	  
-            <dt class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
-              <?php print $value['label']; ?>:
-            </dt>
-            <dd class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
-              <?php print $value['value']; ?>
-            </dd>
-	    </div>
-      
+      <table class="islandora-table-display">
+      <tbody>
+      <?php $row_field = 0; ?>
+      <?php foreach($mods_array as $key => $value): ?>
+
+        <?php if(trim($value['value']) != ''): ?>
+
+          <tr class="islandora-definition-row">
+          <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
+            <?php print $value['label']; ?>:
+          </th>
+          <td class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
+            <?php print $value['value']; ?>
+          </td>
+
+          <?php if($row_field == 0): ?>             
+            <td class="islandora-book-thumbnail" rowspan="8">
+              <?php if(isset($islandora_tn_html)): ?>
+                <a href="javascript:document.location.reload();"><?php print $islandora_tn_html; ?></a>
+              <?php endif; ?>
+            </td>
           <?php endif; ?>
+          
+          </tr>
+
           <?php $row_field++; ?>
-        <?php endforeach; ?>
-        </dl>
-      </div>
+
+        <?php endif; ?>
+
+      <?php endforeach; ?>
+      </tbody>
+      </table>
       
       <?php if(isset($parent_collections)): ?>
         <div>

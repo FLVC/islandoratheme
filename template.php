@@ -204,7 +204,15 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
  */
 function islandoratheme_process_islandora_internet_archive_bookreader(&$variables) {
 
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
   $islandora_object = $variables['object'];
+
+  //Create thumbnail HTML
+  $variables['islandora_tn_html'] = '<img src="' . $base_url . request_uri() . '/datastream/TN/view' . '">';
 
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/book.css', array('group' => CSS_THEME, 'type' => 'file'));
   
