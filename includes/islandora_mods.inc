@@ -653,6 +653,14 @@ class MODS {
           $mods_array[$i]['class'] = $location->url->getName();
           $i++;
         }
+        
+        if(isset($location->holdingSimple->copyInformation->subLocation) && $location->holdingSimple->copyInformation->subLocation != '')
+        {
+          $mods_array[$i]['value'] = $location->holdingSimple->copyInformation->subLocation;
+          $mods_array[$i]['label'] = 'Sublocation';
+          $mods_array[$i]['class'] = 'sublocation';
+          $i++;
+        }
       }
     }   
     
