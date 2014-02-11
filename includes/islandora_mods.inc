@@ -368,14 +368,31 @@ class MODS {
             $mods_array['mods:description']['short_value'] = $abstract;
           }
           
-          $mods_array['mods:description']['label'] = 'Abstract/Description';
+          if(isset($abstract['displayLabel']))
+          {
+            $mods_array['mods:description']['label'] = $abstract['displayLabel'];
+          }
+          else
+          {
+            $mods_array['mods:description']['label'] = 'Abstract/Description';  
+          }
+ 
           $mods_array['mods:description']['class'] = $abstract->getName();
           $description_counter++;
         }
         elseif ($abstract != '')
         {
           $mods_array[$i]['value'] = $abstract;
-          $mods_array[$i]['label'] = 'Abstract/Description';
+
+          if(isset($abstract['displayLabel']))
+       	  {
+            $mods_array[$i]['label'] = $abstract['displayLabel'];
+          }
+       	  else
+       	  {
+            $mods_array[$i]['label'] = 'Abstract/Description';
+       	  }
+
           $mods_array[$i]['class'] = $abstract->getName();
           $i++;
         }
