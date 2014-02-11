@@ -216,15 +216,13 @@ class MODS {
           $mods_array['mods:date']['class'] = $dateIssued->getName();
           $date_counter++;
         }       
-        // The code below was removed to display only one 'Date Issued'.
-        //If you would like to display all 'Date Issued' fields uncomment the code below.
-        /*elseif ($dateIssued != '')
+        elseif ($dateIssued != '')
         {
-          $mods_array[$i]['value'] = $dateIssued;
-          $mods_array[$i]['label'] = 'Date Issued';
-          $mods_array[$i]['class'] = $dateIssued->getName();
-          $i++;
-        }*/
+          if(isset($dateIssued['point']) && $dateIssued['point'] == 'end')
+          {
+            $mods_array['mods:date']['value'] = $mods_array['mods:date']['value'] . ' - ' . $dateIssued; 
+          }
+        }
       }
     }    
     
