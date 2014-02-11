@@ -447,11 +447,20 @@ class MODS {
         switch((string) $note['type']) { // Get attributes as element indices
           case 'rights':
             break;
+          case 'statementOfResponsibility':
+            break;
           default:
-            $mods_array[$i]['value'] = $note;
-            $mods_array[$i]['label'] = 'Note';
-            $mods_array[$i]['class'] = $note->getName() . '_text';
-            $i++;
+            if(isset($note['displayLabel'])) {     
+              $mods_array[$i]['value'] = $note;
+              $mods_array[$i]['label'] = $note['displayLabel'];
+              $mods_array[$i]['class'] = $note->getName() . '_text';
+              $i++;
+            } else {
+              $mods_array[$i]['value'] = $note;
+              $mods_array[$i]['label'] = 'Note';
+              $mods_array[$i]['class'] = $note->getName() . '_text';
+              $i++;
+            }
         }
       }
     }
