@@ -680,9 +680,23 @@ class MODS {
         
         if(isset($location->holdingSimple->copyInformation->subLocation) && $location->holdingSimple->copyInformation->subLocation != '')
         {
-          $mods_array[$i]['value'] = $location->holdingSimple->copyInformation->subLocation;
-          $mods_array[$i]['label'] = 'Sublocation';
-          $mods_array[$i]['class'] = 'sublocation';
+          $sublocation_counter = 0;
+
+          foreach($location->holdingSimple->copyInformation->subLocation as $sublocation)
+          {
+            if($sublocation_counter == 0)
+            {
+              $mods_array[$i]['value'] = $sublocation;
+              $mods_array[$i]['label'] = 'Sublocation';
+              $mods_array[$i]['class'] = 'sublocation';
+              $sublocation_counter++;
+            }
+            else
+            {
+              $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $sublocation;
+            }
+          }
+
           $i++;
         }
       }
