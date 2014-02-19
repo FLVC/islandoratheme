@@ -485,7 +485,7 @@ class MODS {
     {
       $total_counter = 0;
       
-      $mods_array[$i]['label'] = 'Subject';
+      $mods_array[$i]['label'] = 'Subject(s)';
       $mods_array[$i]['value'] = '';
       
       foreach ($mods_object->subject as $subject) {
@@ -509,7 +509,7 @@ class MODS {
               $name_flag = true;
               $subject_as_type = $subject_child;
               break;
-            case 'title':
+            case 'titleInfo':
               $title_flag = true;
               $subject_as_type = $subject;
               break;
@@ -530,36 +530,70 @@ class MODS {
         
         if($name_flag == true)
         {
-          static::addMODSName('Subject', $subject_as_type, $mods_array, $i, $total_counter);
+          $name_value = '';
+
+          // If it has a Name Part, add it
+          if(isset($subject->name->namePart))
+          {
+            foreach ($subject->name->namePart as $namePart) {
+              if($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'family')
+              {
+                $name_value = $namePart . ', ' . $name_value;
+              }
+	      elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
+              {
+                $name_value = $name_value . ', ' . $namePart;
+              }
+	      elseif ($namePart != '')
+              {
+                $name_value = $name_value . ' ' . $namePart;
+              }
+            }
+          }
+
+          $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
+
+          // If it has a Role, add it
+          if(isset($subject->name->role))
+          {
+            foreach ($subject->name->role as $role) {
+              if(isset($role->roleTerm) && ($role->roleTerm['type'] == 'text') && ($role->roleTerm != ''))
+              {
+                $name_value = $name_value . ', ' . $role->roleTerm;
+              }
+            }
+          }
+
+          $mods_array[$i]['value'] .= $name_value;
         }
-        elseif ($title_flag == true && $subject->title != '')
+        elseif ($title_flag == true && $subject->titleInfo->title != '')
         {
-          $title = $subject->title;
+          $title = $subject->titleInfo->title;
           
           // If it has a subtitle, add it
-          if(isset($subject->subTitle) && $subject->subTitle != '')
+          if(isset($subject->titleInfo->subTitle) && $subject->titleInfo->subTitle != '')
           {
-            $title = $title . ': ' . $subject->subTitle;
+            $title = $title . ': ' . $subject->titleInfo->subTitle;
           }
           
           // If it has a NonSort element, add it before the title
-          if(isset($subject->nonSort) && $subject->nonSort != '')
+          if(isset($subject->titleInfo->nonSort) && $subject->titleInfo->nonSort != '')
           {
-            $title = $subject->nonSort . ' ' . $title;
+            $title = $subject->titleInfo->nonSort . ' ' . $title;
           }
         
           // If it has a Part Number, add it
-          if(isset($subject->partNumber) && $subject->partNumber != '')
+          if(isset($subject->titleInfo->partNumber) && $subject->titleInfo->partNumber != '')
           {
-            foreach ($subject->partNumber as $partNumber) {
+            foreach ($subject->titleInfo->partNumber as $partNumber) {
               $title = $title . ' ' . $partNumber;
             } 
           }
           
           // If it has a Part Name, add it
-          if(isset($subject->partName) && $subject->partName != '')
+          if(isset($subject->titleInfo->partName) && $subject->titleInfo->partName != '')
           {
-            foreach ($subject->partName as $partName) {
+            foreach ($subject->titleInfo->partName as $partName) {
               $title = $title . ' ' . $partName;
             } 
           }
