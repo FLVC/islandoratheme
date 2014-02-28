@@ -60,7 +60,7 @@ function collectionAdvancedSearch() {
     collection = collection.replace(":", "\%3A");
 
     if(collection !== "") {
-      query += '?select_collection=' + collection;
+      query += '?collection=' + collection;
     }
 
     window.location = query;
