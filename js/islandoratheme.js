@@ -51,3 +51,21 @@ function collectionBlankSearch() {
   });
 
 }
+
+function collectionAdvancedSearch() {
+  jQuery('#advanced-search-menu-item').click(function(e) {
+    e.preventDefault();
+    var query = this.href;
+    var collection = jQuery('#edit-islandora-simple-collection option:selected').val();
+    collection = collection.replace(":", "\%3A");
+
+    if(collection !== "") {
+      query += '?select_collection=' + collection;
+    }
+
+    window.location = query;
+    return false;
+  });
+
+}
+
