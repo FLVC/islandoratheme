@@ -911,7 +911,7 @@ class MODS {
           }
           elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
           {
-            $string = $namePart . ', ' . $string;
+            $string = $string . ', ' . $namePart;
           }
           elseif ($namePart != '')
           {
