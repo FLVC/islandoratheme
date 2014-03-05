@@ -63,6 +63,9 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
 }
 
 /**
@@ -167,6 +170,9 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
 }
 
 /**
@@ -198,6 +204,9 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
   
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
 }
 
 /**
@@ -228,6 +237,9 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
  
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
 }
 
 /**
@@ -384,6 +396,25 @@ function get_branding_info(&$variables)
   }
   
   return $branding_info;
+}
+
+/**
+ * This function checks if an Islandora Object is part of a Compound Object. If it is, it sets a variable.
+ */
+function compound_object_check($islandora_object, &$variables) {
+
+  $rels_predicate = variable_get('islandora_compound_object_relationship', 'isConstituentOf');
+  $part_of = $islandora_object->relationships->get('info:fedora/fedora-system:def/relations-external#', $rels_predicate);
+
+  if(!empty($part_of)) {
+    //grab the metadata for the parent
+    foreach ($part_of as $part) {
+      $parent_pid = $part['object']['value'];
+      $parent_object = islandora_object_load($parent_pid);
+      $parent_mods = $parent_object['MODS']->content;
+      $variables['parent_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
+    }
+  }
 }
 
 /**
