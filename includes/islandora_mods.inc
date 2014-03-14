@@ -781,7 +781,7 @@ class MODS {
       }
     }
     
-   // Related Item Section
+    // Related Item Section
     if (isset($mods_object->relatedItem))
     {
       foreach ($mods_object->relatedItem as $relatedItem) {
@@ -790,6 +790,11 @@ class MODS {
           $title = static::formatTitleInfo($relatedItem->titleInfo);
           
           static::traverseRelatedItem($relatedItem, $title);
+
+          if (isset($relatedItem->identifier))
+          {
+            $title = $title . "<br />" . $relatedItem->identifier;
+          }
           
           switch((string) $relatedItem['type']) { // Get attributes as element indices
             case 'preceding':
