@@ -789,6 +789,11 @@ class MODS {
         {
           $title = static::formatTitleInfo($relatedItem->titleInfo);
           
+          if(isset($relatedItem['displayLabel']))
+          {
+            $title = $title . " (" . $relatedItem['displayLabel'] . ")";
+          }
+ 
           static::traverseRelatedItem($relatedItem, $title);
 
           if (isset($relatedItem->identifier))
