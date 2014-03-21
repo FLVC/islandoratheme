@@ -762,25 +762,6 @@ class MODS {
       }
     }
    
-    // Other Logo Section
-    if (isset($mods_object->extension))
-    {
-      $local_counter = 0;
-      
-      foreach ($mods_object->extension as $extension)
-      {
-        $namespaces = $extension->getNameSpaces(true);
-        $flvc = $extension->children($namespaces['flvc']);
-
-        foreach($flvc->flvc->otherLogo as $otherLogo) {
-          $mods_array['mods:other_logo_' . $local_counter]['value'] = $otherLogo;
-          $mods_array['mods:other_logo_' . $local_counter]['label'] = 'Other Logo ' . $local_counter;
-          $mods_array['mods:other_logo_' . $local_counter]['class'] = $otherLogo->getName();
-          $local_counter++;
-        }
-      }
-    }
-    
     // Related Item Section
     if (isset($mods_object->relatedItem))
     {
@@ -879,6 +860,32 @@ class MODS {
     }    
  
     return $mods_array;
+  }
+
+  /* This function takes a SimpleXML object as input and returns an array with the other logo information */
+  function other_logo_array($mods_object) {
+    $other_logo_array = array();
+
+    // Other Logo Section
+    if (isset($mods_object->extension))
+    {
+      $local_counter = 0;
+
+      foreach ($mods_object->extension as $extension)
+      {
+        $namespaces = $extension->getNameSpaces(true);
+        $flvc = $extension->children($namespaces['flvc']);
+
+        foreach($flvc->flvc->otherLogo as $otherLogo) {
+          $other_logo_array['mods:other_logo_' . $local_counter]['value'] = $otherLogo;
+          $other_logo_array['mods:other_logo_' . $local_counter]['label'] = 'Other Logo ' . $local_counter;
+          $other_logo_array['mods:other_logo_' . $local_counter]['class'] = $otherLogo->getName();
+          $local_counter++;
+        }
+      }
+    }
+
+    return $other_logo_array;
   }
   
   protected static function traverseRelatedItem($simple_xml_object, &$value)

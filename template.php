@@ -60,6 +60,7 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
   }
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
@@ -97,6 +98,7 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
   $variables['islandora_object_label'] = $islandora_object->label;
   
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
@@ -167,6 +169,7 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
   }
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
@@ -201,6 +204,7 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
   }
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
   
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
@@ -234,6 +238,7 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
   }
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
  
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
@@ -370,10 +375,10 @@ function get_branding_info(&$variables)
   //while the MODS metadata has an other logo information, grab the logos and links to display
   $local_counter = 0;
 
-  while (isset($variables['mods_array']['mods:other_logo_' . $local_counter]) && 
-    ($variables['mods_array']['mods:other_logo_' . $local_counter]['value'] != ''))
+  while (isset($variables['other_logo_array']['mods:other_logo_' . $local_counter]) && 
+    ($variables['other_logo_array']['mods:other_logo_' . $local_counter]['value'] != ''))
   {
-    $other_logo = $variables['mods_array']['mods:other_logo_' . $local_counter]['value'];
+    $other_logo = $variables['other_logo_array']['mods:other_logo_' . $local_counter]['value'];
 
     $query = new EntityFieldQuery();
     $results = $query->entityCondition('entity_type', 'node')
