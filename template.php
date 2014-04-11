@@ -248,6 +248,81 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
 }
 
 /**
+ * Override the Islandora Video preprocess function
+ */
+function islandoratheme_preprocess_islandora_video(&$variables) {
+
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
+  $viewer_dsid = 'MP4';
+
+  // Create the full view link
+  $variables['islandora_view_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Full Screen View</a>';
+  $variables['islandora_full_url'] = $base_url . request_uri() . '/datastream/OBJ/view';
+
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/video.css', array('group' => CSS_THEME, 'type' => 'file'));
+
+  $islandora_object = $variables['object'];
+  $repository = $islandora_object->repository;
+
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+
+  $variables['islandora_object_label'] = $islandora_object->label;
+
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
+
+  // Get parameters for the player...
+  $video_params = array(
+    "pid" => $islandora_object->id,
+  );
+
+  // Video player.
+  if (isset($islandora_object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object[$viewer_dsid])) {
+    $video_url = url("islandora/object/{$islandora_object->id}/datastream/$viewer_dsid/view");
+    $video_params += array(
+      'mime' => 'video/mp4',
+      'url' => $video_url,
+    );
+  }
+
+  // Thumbnail.
+  if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
+    $tn_url = url("islandora/object/{$islandora_object->id}/datastream/TN/view");
+    $params = array(
+      'title' => $islandora_object->label,
+      'path' => $tn_url,
+    );
+    $variables['islandora_thumbnail_img'] = theme('image', $params);
+
+    $video_params += array(
+      'tn' => $tn_url,
+    );
+  }
+
+  $viewer = islandora_get_viewer($video_params, 'islandora_video_viewers', $islandora_object);
+  $variables['islandora_content'] = '';
+  if ($viewer) {
+    $variables['islandora_content'] = $viewer;
+  }
+  else {
+    $variables['islandora_content'] = NULL;
+  }
+  return array('' => $viewer);
+}
+
+/**
  * Override the Islandora Collection preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_collection(&$variables) {  
