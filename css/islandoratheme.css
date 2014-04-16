@@ -16,10 +16,6 @@ a { text-decoration: underline; }
 td, th { vertical-align: top; }
 table { border: none; border-collapse: separate; }
 tr td:last-child { border-right: none; }
-/* Responsive Styles */
-@media screen and (max-width: 1140px) {
-  .region-highlighted { display: none; }
-}
 
 /* Navigation Bar Styles */
 #menu-bar-wrapper { background: none; line-height: 1.4; }
@@ -141,12 +137,12 @@ div#top-panels-wrapper .three-3x33 { margin: 0px 20px; height: 48px; }
   vertical-align: top;
 }
 
-#block-islandora-solr-simple #edit-islandora-simple-search-query { margin-left: 10px; width: auto; } 
+#block-islandora-solr-simple #edit-islandora-simple-search-query { margin-left: 10px; width: 300px; } 
 #block-islandora-solr-simple #edit-submit { display: inline; }
 
 #islandora-solr-simple-search-form
 {
-  max-width: 640px;
+  max-width: 800px;
 }
 
 #edit-islandora-simple-collection { max-width: 300px; }
@@ -398,3 +394,13 @@ div.region-sidebar-first .block
 
 #footer-wrapper p { padding: 20px 0 0 0; text-align: center; }
 #footer-wrapper .block-inner { margin: 0 20px 0 20px; }
+
+/* Responsive Styles */
+
+@media screen and (max-width: 830px) {
+  #block-islandora-solr-simple #edit-islandora-simple-search-query { width: 140px; }
+}
+
+@media screen and (max-width: 1140px) {
+  .region-highlighted { display: none; }
+}
