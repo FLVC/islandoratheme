@@ -259,6 +259,11 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
   max-width: none;
 }
 
+.islandora-video-thumbnail img
+{
+  max-width: 200px;
+}
+
 /* Basic Image Module Styles */
 
 div.islandora-basic-image-thumbnail
