@@ -551,7 +551,7 @@ class MODS {
             }
           }
 
-          $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
+          $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
 
           // If it has a Role, add it
           if(isset($subject->name->role))
@@ -598,7 +598,7 @@ class MODS {
             } 
           }
           
-          $mods_array[$i]['value'] .= '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . $title . ')">' . $title . '</a>';
+          $mods_array[$i]['value'] .= '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($title) . ')">' . $title . '</a>';
         }
         elseif ($hierarchical_geographic_flag == true)
         {
@@ -613,7 +613,7 @@ class MODS {
             $counter++;
           }
 
-          $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . $temp_subject . ')">' . $temp_subject . '</a>';
+          $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($temp_subject) . ')">' . $temp_subject . '</a>';
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $temp_subject;
         }
         else
@@ -629,7 +629,7 @@ class MODS {
             $counter++;
           }
  
-          $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . $temp_subject . ')">' . $temp_subject . '</a>';
+          $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($temp_subject) . ')">' . $temp_subject . '</a>';
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $temp_subject;
         }
         
@@ -936,7 +936,7 @@ class MODS {
           }
         }
         
-        $string = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $string . ')">' . $string . '</a>';
+        $string = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . static::stripSolrValue($string) . ')">' . $string . '</a>';
         
         if(isset($child->role))
         {
@@ -1044,7 +1044,7 @@ class MODS {
     }
     
     if($randomize_name == NULL) {
-      $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
+      $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
     }  
         
     // If it has a Role, add it
@@ -1065,7 +1065,7 @@ class MODS {
     }
     else {
       $add_to_array = $i . '_subject_' . $randomize_name;
-      $mods_array[$add_to_array]['value'] = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . $name_value . ')">' . $name_value . '</a>';
+      $mods_array[$add_to_array]['value'] = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
       $mods_array[$add_to_array]['label'] = $label;
       $mods_array[$add_to_array]['class'] = $add_to_array;
     }
@@ -1113,6 +1113,16 @@ class MODS {
     
     return $string;
   }
+
+  protected static function stripSolrValue($string)
+  {
+    $match = array('&', '|', '!', '(', ')', '{', '}', '[', ']', '^', '~', '*', '?', ':', '"', ';');
+    $replace = array(' ', '', '', '', '', '', '', '', '', '', '', '', '', ' ', '', ' ');
+    $string = str_replace($match, $replace, $string);
+
+    return $string;
+  }
+
 }
 
 
