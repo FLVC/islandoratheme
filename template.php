@@ -36,6 +36,61 @@ function islandoratheme_process_html(&$vars) {
 // */
 
 /**
+ * Override the Islandora Binary Object preprocess function
+ */
+function islandoratheme_preprocess_islandora_binary_object(&$variables) {
+
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/binary-object.css', array('group' => CSS_THEME, 'type' => 'file'));
+
+  // Create the download link
+  $variables['islandora_download_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/download' . '">Download</a>';
+
+  $islandora_object = $variables['islandora_object'];
+  $variables['islandora_object_label'] = $islandora_object->label;
+
+  if (isset($islandora_object['OBJ']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['OBJ'])) {
+    $mime_detect = new MimeDetect();
+    $extension = $mime_detect->getExtension($islandora_object['OBJ']->mimetype);
+
+    $variables['islandora_binary_object_info'] = t('This is a downloadable object of filetype @extension and size @size.', array(
+      '@extension' => $extension,
+      '@size' => format_size($islandora_object['OBJ']->size),
+    ));
+  }
+
+  // Thumbnail.
+  if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
+    $thumbnail_size_url = url("islandora/object/{$islandora_object->id}/datastream/TN/view");
+    $params = array(
+      'title' => $islandora_object->label,
+      'path' => $thumbnail_size_url,
+    );
+    $variables['islandora_thumbnail_img'] = theme('image', $params);
+  }
+  $variables['parent_collections'] = islandora_get_parents_from_rels_ext($islandora_object);
+  $variables['metadata'] = islandora_retrieve_metadata_markup($islandora_object);
+  $variables['description'] = islandora_retrieve_description_markup($islandora_object);
+
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
+}
+
+/**
  * Override the Islandora Basic Image preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_image(&$variables) {
