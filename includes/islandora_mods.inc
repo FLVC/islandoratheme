@@ -632,7 +632,15 @@ class MODS {
           $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($temp_subject) . ')">' . $temp_subject . '</a>';
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $temp_subject;
         }
-        
+       
+        // If the Subject has a genre, add it
+        if(isset($subject->genre) && $subject->genre != '')
+        {
+          foreach ($subject->genre as $genre) {
+            $title = $title . ' -- ' . $genre;
+          }
+        }
+ 
         /*foreach($cartographic_info_array as $cartographic_info)
         {
           if (isset($cartographic_info->coordinates) && trim($cartographic_info->coordinates) != '')
