@@ -88,6 +88,9 @@ function islandoratheme_preprocess_islandora_binary_object(&$variables) {
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
 }
 
 /**
