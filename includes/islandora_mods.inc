@@ -637,7 +637,7 @@ class MODS {
         if(isset($subject->genre) && $subject->genre != '')
         {
           foreach ($subject->genre as $genre) {
-            $title = $title . ' -- ' . $genre;
+            $mods_array[$i]['value'] = $mods_array[$i]['value'] . ' -- ' . $genre;
           }
         }
  
