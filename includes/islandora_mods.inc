@@ -748,10 +748,30 @@ class MODS {
     if (isset($mods_object->accessCondition))
     {
       foreach($mods_object->accessCondition as $accessCondition) {
-        $mods_array[$i]['value'] = $accessCondition;
-        $mods_array[$i]['label'] = 'Restrictions on Access';
-        $mods_array[$i]['class'] = $accessCondition->getName();
-        $i++;
+
+        if(isset($mods_object->accessCondition['type']))
+        {
+          switch((string) $accessCondition['type']) { // Get attributes as element indices
+            case 'useAndReproduction':
+              $mods_array[$i]['value'] = $accessCondition;
+              $mods_array[$i]['label'] = 'Use and Reproduction';
+              $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
+              $i++;
+              break;
+            default:
+              $mods_array[$i]['value'] = $accessCondition;
+              $mods_array[$i]['label'] = 'Restrictions on Access';
+              $mods_array[$i]['class'] = $accessCondition->getName();
+              $i++;
+          }
+        }
+        else
+        {
+          $mods_array[$i]['value'] = $accessCondition;
+          $mods_array[$i]['label'] = 'Restrictions on Access';
+          $mods_array[$i]['class'] = $accessCondition->getName();
+          $i++;
+        }
       }
     } 
     
