@@ -32,10 +32,12 @@
 <div id="tabs">
 
 <ul>
-  <li><a href="#tabs-1">Full Description</a></li>
 
   <?php if (isset($parent_mods_array)): ?>
+    <li><a href="#tabs-1">Item Description</a></li>
     <li><a href="#tabs-2">Set Description</a></li>
+  <?php else: ?>
+    <li><a href="#tabs-1">Full Description</a></li>
   <?php endif; ?>
 
 </ul>
