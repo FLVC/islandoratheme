@@ -453,6 +453,94 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   $variables['associated_objects_mods_array'] = $associated_objects_mods_array;
 }
 
+/**
+ * Implements hook_preprocess() from newspaper module.
+ */
+function islandoratheme_islandora_newspaper(array $variables) {
+  drupal_add_js('misc/collapse.js');
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/newspaper.css', array('group' => CSS_THEME, 'type' => 'file'));
+  $object = $variables['object'];
+  $issues = islandora_newspaper_get_issues($object);
+  $grouped_issues = islandora_newspaper_group_issues($issues);
+  $output = array(
+    'pagetitle' => array(
+      '#markup' => '<h3>' . $object->label . '</h3>',
+    ),
+    'controls' => array(
+      '#theme' => 'links',
+      '#attributes' => array(
+        'class' => array('links', 'inline'),
+        'id' => array('newspaper-controls'),
+      ),
+      '#links' => array(
+        array(
+          'title' => t('Expand all months'),
+          'href' => "javascript://void(0)",
+          'html' => TRUE,
+          'external' => TRUE,
+          'attributes' => array(
+            'onclick' => "Drupal.toggleFieldset(jQuery('fieldset.month.collapsed'));",
+          ),
+	),
+	array(
+          'title' => t('Collapse all months'),
+          'href' => "javascript://void(0)",
+          'html' => TRUE,
+          'external' => TRUE,
+          'attributes' => array(
+            'onclick' => "Drupal.toggleFieldset(jQuery('fieldset.month:not(.collapsed)'));",
+          ),
+	),
+      ),
+    ),
+    'tabs' => array(
+      '#type' => 'vertical_tabs',
+    ),
+  );
+  $tabs = &$output['tabs'];
+  foreach ($grouped_issues as $year => $months) {
+    $tabs[$year] = array(
+      '#title' => $year,
+      '#type' => 'fieldset',
+    );
+    foreach ($months as $month => $days) {
+      $month_name = t("@date", array(
+        "@date" => date("F", mktime(0, 0, 0, $month, 1, 2000)),
+      ));
+      $tabs[$year][$month] = array(
+        '#title' => $month_name,
+        '#type' => 'fieldset',
+        '#attributes' => array(
+          'class' => array('collapsible', 'collapsed', 'month'),
+        ),
+      );
+      foreach ($days as $day => $issues) {
+        foreach ($issues as $issue) {
+          $tabs[$year][$month][$day][] = array(
+            '#theme' => 'link',
+            '#prefix' => '<div>',
+            '#suffix' => '</div>',
+            '#text' => t("@month @day, @year", array(
+                '@year' => $year,
+                '@month' => $month_name,
+                '@day' => $day,
+                )),
+            '#path' => "islandora/object/{$issue['pid']}",
+            '#options' => array(
+              'attributes' => array(),
+              'html' => FALSE,
+            ),
+          );
+	}
+      }
+      ksort($tabs[$year][$month]);
+    }
+    ksort($tabs[$year]);
+  }
+  ksort($tabs);
+  return drupal_render($output);
+}
+
 // This function makes customizations to the breadcrumb region
 function islandoratheme_breadcrumb($variables) {
   if (!empty($variables['breadcrumb'][1])) {
