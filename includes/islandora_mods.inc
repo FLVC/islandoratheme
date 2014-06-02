@@ -758,6 +758,12 @@ class MODS {
               $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
               $i++;
               break;
+            case 'use and reproduction':
+              $mods_array[$i]['value'] = $accessCondition;
+              $mods_array[$i]['label'] = 'Use and Reproduction';
+              $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
+              $i++;
+              break;
             default:
               $mods_array[$i]['value'] = $accessCondition;
               $mods_array[$i]['label'] = 'Restrictions on Access';
