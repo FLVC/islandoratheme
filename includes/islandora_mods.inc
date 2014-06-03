@@ -104,10 +104,22 @@ class MODS {
     // Name Section
     if (isset($mods_object->name))
     {
+      $mods_array[$i]['label'] = 'Name(s)';
+      $mods_array[$i]['value'] = '';
+      $total_counter = 0;
       foreach ($mods_object->name as $name) {
+        if ($total_counter == 0) {
+          $mods_array[$i]['class'] = $name->getName();
+        }
+        if ($total_counter > 0)
+        {
+          $mods_array[$i]['value'] .= '<br />';
+        }
         static::addMODSName('Name', $name, $mods_array, $i);
-        $i++;
+        //$i++;
+        $total_counter++;
       }
+      $i++;
     }
     
     // Type of Resource Section
@@ -1093,9 +1105,9 @@ class MODS {
     }
     
     if($randomize_name == NULL) {
-      $mods_array[$i]['value'] = $name_value;
-      $mods_array[$i]['label'] = $label;
-      $mods_array[$i]['class'] = $name->getName();
+      $mods_array[$i]['value'] .= $name_value;
+      //$mods_array[$i]['label'] = $label;
+      //$mods_array[$i]['class'] = $name->getName();
     }
     else {
       $add_to_array = $i . '_subject_' . $randomize_name;
