@@ -470,6 +470,7 @@ class MODS {
     // Notes Section
     if (isset($mods_object->note))
     {
+      // display notes with displayLabel first
       foreach ($mods_object->note as $note) {
         switch((string) $note['type']) { // Get attributes as element indices
           case 'rights':
@@ -482,13 +483,37 @@ class MODS {
               $mods_array[$i]['label'] = $note['displayLabel'];
               $mods_array[$i]['class'] = $note->getName() . '_text';
               $i++;
-            } else {
-              $mods_array[$i]['value'] = $note;
-              $mods_array[$i]['label'] = 'Note';
-              $mods_array[$i]['class'] = $note->getName() . '_text';
-              $i++;
             }
         }
+      }
+
+      // group other notes under single label
+      $note_value = '';
+      $total_counter = 0;
+      foreach ($mods_object->note as $note) {
+        switch((string) $note['type']) { // Get attributes as element indices
+          case 'rights':
+            break;
+          case 'statementOfResponsibility':
+            break;
+          default:
+            if(!isset($note['displayLabel'])) {
+              if ($total_counter > 0) {
+                $note_value .= '<br />';
+              }
+              $note_value .= $note;
+              $total_counter++;
+              //$mods_array[$i]['value'] = $note;
+              //$mods_array[$i]['label'] = 'Note';
+              $mods_array[$i]['class'] = $note->getName() . '_text';
+              //$i++;
+            }
+        }
+      }
+      if (strlen($note_value) > 0) {
+        $mods_array[$i]['label'] = 'Note(s)';
+        $mods_array[$i]['value'] = $note_value;
+        $i++;
       }
     }
     
@@ -496,7 +521,7 @@ class MODS {
     if (isset($mods_object->subject))
     {
       $total_counter = 0;
-      
+
       $mods_array[$i]['label'] = 'Subject(s)';
       $mods_array[$i]['value'] = '';
       
