@@ -26,7 +26,8 @@ function islandoratheme_variables(&$vars) {
  */
 function islandoratheme_preprocess_html(&$vars) {
   drupal_add_library ('system', 'ui.tabs');
-  drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();if (typeof _currentContentModel !== "undefined" && _currentContentModel && _currentContentModel=="islandora:compoundCModel") {jQuery("#tabs").tabs("select", jQuery("#tabs").tabs("length")-1);} });', 'inline');
+  drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();});', 'inline');
+  //drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();if (typeof _currentContentModel !== "undefined" && _currentContentModel && _currentContentModel=="islandora:compoundCModel") {jQuery("#tabs").tabs("select", jQuery("#tabs").tabs("length")-1);} });', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionBlankSearch();});', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionAdvancedSearch();});', 'inline');
 }
