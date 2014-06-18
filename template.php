@@ -297,6 +297,23 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
   $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+
+  // if newspaper issue, set parent newspaper mods array
+  if (in_array('islandora:newspaperIssueCModel', $islandora_object->models)) {
+    $part_of = $islandora_object->relationships->get('info:fedora/fedora-system:def/relations-external#', 'isMemberOf');
+    if(!empty($part_of)) {
+      //grab the metadata for the parent
+      foreach ($part_of as $part) {
+        $parent_pid = $part['object']['value'];
+        $parent_object = islandora_object_load($parent_pid);
+        $parent_mods = $parent_object['MODS']->content;
+        $variables['newspaper_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
+        $object_url = 'islandora/object/' . $parent_pid;
+        $variables['newspaper_tn_html'] = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
+        $variables['newspaper_parent_collections'] = islandora_get_parents_from_rels_ext($parent_object);
+      }
+    }
+  }
  
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
@@ -562,7 +579,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
   $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
   $newspaper_output = '<h3>' . $islandora_object->label . '</h3>';
-  $newspaper_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Full Description</a></li></ul><div id="tabs-1">';
+  $newspaper_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Newspaper Details</a></li></ul><div id="tabs-1">';
   $newspaper_output .= theme_islandora_newspaper($variables);
   $newspaper_output .= '</div><div id="tabs-2">';
   $full_description .= '<div>';
