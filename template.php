@@ -26,7 +26,7 @@ function islandoratheme_variables(&$vars) {
  */
 function islandoratheme_preprocess_html(&$vars) {
   drupal_add_library ('system', 'ui.tabs');
-  drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();});', 'inline');
+  drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();if (typeof _currentContentModel !== "undefined" && _currentContentModel && _currentContentModel=="islandora:compoundCModel") {jQuery("#tabs").tabs("select", jQuery("#tabs").tabs("length")-1);} });', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionBlankSearch();});', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionAdvancedSearch();});', 'inline');
 }
@@ -454,8 +454,9 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
 }
 
 /**
- * Implements hook_preprocess() from newspaper module.
+ * Implements theme from newspaper module.
  */
+/*
 function islandoratheme_islandora_newspaper(array $variables) {
   drupal_add_js('misc/collapse.js');
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/newspaper.css', array('group' => CSS_THEME, 'type' => 'file'));
@@ -539,6 +540,82 @@ function islandoratheme_islandora_newspaper(array $variables) {
   }
   ksort($tabs);
   return drupal_render($output);
+}
+*/
+/**
+ * Implements theme from newspaper module.
+ */
+function islandoratheme_islandora_newspaper(array $variables) {
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
+  $islandora_object = $variables['object'];
+  $pid = $islandora_object->id;
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+  $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+
+  $newspaper_output = '<h3>' . $islandora_object->label . '</h3>';
+  $newspaper_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Full Description</a></li></ul><div id="tabs-1">';
+  $newspaper_output .= theme_islandora_newspaper($variables);
+  $newspaper_output .= '</div><div id="tabs-2">';
+  $full_description .= '<div>';
+  $full_description .= '<table class="islandora-table-display" width="100%">';
+  $full_description .= '<tbody>';
+
+  $row_field = 0;
+  foreach ($mods_array as $key => $value) {
+          
+    if (trim($value['value']) != '') {
+            
+      $full_description .= '<tr class="islandora-definition-row">';
+      $full_description .= '<th class="full-description-heading';
+      if ($row_field == 0) $full_description .= ' first';
+      $full_description .= '">';
+      $full_description .= $value['label'] . ':</th><td class="' . $value['class'];
+      if ($row_field == 0) $full_description .= ' first';
+      $full_description .= '">';
+      $full_description .= $value['value'];
+      $full_description .= '</td>';
+
+      if (($row_field == 0)&&(isset($islandora_object['TN']))) {
+        $object_url = 'islandora/object/' . $pid;
+        $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
+        $full_description .= '<td class="islandora-basic-image-thumbnail" rowspan="8">';
+        $full_description .= $thumbnail_img;
+        $full_description .= '</td>';
+      }
+
+      $full_description .= '</tr>';
+      $row_field++;
+
+    }
+
+  }
+  $full_description .= '</tbody></table></div>';
+
+  $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
+  if (count($parent_collections) > 0) {
+    $full_description .= '<div><h2>In Collections</h2><ul>';
+    foreach ($parent_collections as $collection) {
+      if (substr($collection->id, 0, 5) != 'palmm') {
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, "islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
+    }
+    $full_description .= '</ul></div>';
+  }
+
+  $newspaper_output .= $full_description;
+  $newspaper_output .= '</div></div>';
+  return $newspaper_output;
 }
 
 // This function makes customizations to the breadcrumb region
