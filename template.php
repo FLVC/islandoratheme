@@ -653,6 +653,11 @@ function islandoratheme_islandora_serial_object(array $variables) {
   $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
   $serial_output = '<h3>' . $islandora_object->label . '</h3>';
+  $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Serial Details</a></li></ul><div id="tabs-1">';
+  //$newspaper_output .= theme_islandora_newspaper($variables);
+  $tree_block = islandora_serial_object_block_view('islandora_serial_object_tree');
+  $serial_output .= drupal_render($tree_block['content']);
+  $serial_output .= '</div><div id="tabs-2">';
   $full_description = '<div>';
   $full_description .= '<table class="islandora-table-display" width="100%">';
   $full_description .= '<tbody>';
@@ -701,24 +706,8 @@ function islandoratheme_islandora_serial_object(array $variables) {
   }
 
   $serial_output .= $full_description;
+  $serial_output .= '</div></div>';
   return $serial_output;
-}
-
-// This function makes customizations to the breadcrumb region
-function islandoratheme_breadcrumb($variables) {
-  if (!empty($variables['breadcrumb'][1])) {
-    //Append title if it's a search
-    if (strpos($variables['breadcrumb'][1], 'islandora-solr-breadcrumb-super') !== false)
-    {
-      unset($variables['breadcrumb'][0]);
-      return '<p><strong>Current Search: </strong>&nbsp;' . implode(' &raquo; ', $variables['breadcrumb']) . '</p>';
-    }
-    else
-    {
-      unset($variables['breadcrumb'][0]);
-      return theme_breadcrumb($variables);
-    }
-  }
 }
 
 function islandoratheme_islandora_serial_intermediate_object(array $variables) {
@@ -787,6 +776,23 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
 */
   $serial_output .= $full_description;
   return $serial_output;
+}
+
+// This function makes customizations to the breadcrumb region
+function islandoratheme_breadcrumb($variables) {
+  if (!empty($variables['breadcrumb'][1])) {
+    //Append title if it's a search
+    if (strpos($variables['breadcrumb'][1], 'islandora-solr-breadcrumb-super') !== false)
+    {
+      unset($variables['breadcrumb'][0]);
+      return '<p><strong>Current Search: </strong>&nbsp;' . implode(' &raquo; ', $variables['breadcrumb']) . '</p>';
+    }
+    else
+    {
+      unset($variables['breadcrumb'][0]);
+      return theme_breadcrumb($variables);
+    }
+  }
 }
 
 // Custom function that retrieves the path for branding logo
