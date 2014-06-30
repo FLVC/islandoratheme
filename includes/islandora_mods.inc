@@ -927,7 +927,7 @@ class MODS {
               $i++;
           }
         }
-        if ((isset($relatedItem->part))&&(isset($relatedItem->part->detail))&&($relatedItem->part->detail['type'] == 'issue'))
+        if ((isset($relatedItem->part))&&(isset($relatedItem->part->detail)))
         {
           if (isset($relatedItem->part->detail->caption))
           {
