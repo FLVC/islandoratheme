@@ -727,6 +727,10 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   }
   $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
+  $serial_output = '<h3>' . $islandora_object->label . '</h3>';
+  $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Serial Intermediate Details</a></li></ul><div id="tabs-1">';
+  $serial_output .= views_embed_view('islandora_serial_object_intermediate_pdf_view');
+  $serial_output .= '</div><div id="tabs-2">';
   $full_description = '<div>';
   $full_description .= '<table class="islandora-table-display" width="100%">';
   $full_description .= '<tbody>';
@@ -775,6 +779,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   }
 */
   $serial_output .= $full_description;
+  $serial_output .= '</div></div>';
   return $serial_output;
 }
 
