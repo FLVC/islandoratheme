@@ -605,7 +605,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
       if (($row_field == 0)&&(isset($islandora_object['TN']))) {
         $object_url = 'islandora/object/' . $pid;
         $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $full_description .= '<td class="islandora-basic-image-thumbnail" rowspan="8">';
+        $full_description .= '<td class="islandora-newspaper-thumbnail" rowspan="8">';
         $full_description .= $thumbnail_img;
         $full_description .= '</td>';
       }
@@ -680,7 +680,7 @@ function islandoratheme_islandora_serial_object(array $variables) {
       if (($row_field == 0)&&(isset($islandora_object['TN']))) {
         $object_url = 'islandora/object/' . $pid;
         $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $full_description .= '<td class="islandora-basic-image-thumbnail" rowspan="8">';
+        $full_description .= '<td class="islandora-serial-thumbnail" rowspan="8">';
         $full_description .= $thumbnail_img;
         $full_description .= '</td>';
       }
@@ -728,7 +728,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
   $serial_output = '<h3>' . $islandora_object->label . '</h3>';
-  $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Serial Intermediate Details</a></li></ul><div id="tabs-1">';
+  $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Full Description</a></li></ul><div id="tabs-1">';
   $serial_output .= views_embed_view('islandora_serial_object_intermediate_pdf_view');
   $serial_output .= '</div><div id="tabs-2">';
   $full_description = '<div>';
@@ -753,7 +753,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
       if (($row_field == 0)&&(isset($islandora_object['TN']))) {
         $object_url = 'islandora/object/' . $pid;
         $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $full_description .= '<td class="islandora-basic-image-thumbnail" rowspan="8">';
+        $full_description .= '<td class="islandora-serial-thumbnail" rowspan="8">';
         $full_description .= $thumbnail_img;
         $full_description .= '</td>';
       }

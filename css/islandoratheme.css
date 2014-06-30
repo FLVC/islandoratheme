@@ -270,6 +270,18 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
   padding: 5px;
 }
 
+.islandora-newspaper-thumbnail img
+{
+  max-height: 200px;
+  max-width: 200px;
+}
+
+.islandora-serial-thumbnail img
+{
+  max-height: 200px;
+  max-width: 200px;
+}
+
 /* Basic Image Module Styles */
 
 div.islandora-basic-image-thumbnail
