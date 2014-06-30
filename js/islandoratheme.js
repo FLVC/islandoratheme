@@ -30,9 +30,14 @@ function allItemsMakeURL(the_form, the_second_form) {
 }
 
 function tabLinkReload() {
+ if (typeof _currentContentModel !== "undefined" && _currentContentModel && _currentContentModel=="islandora:compoundCModel")
+ {
   jQuery("#tabs a:first").click(function() {
-    window.location.reload(true);
+    if (window.location.href.indexOf("tabload=true") < 0) {
+      window.location.replace(window.location.href + "?tabload=true");
+    }
   });
+ }
 }
 
 function collectionBlankSearch() {
