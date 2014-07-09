@@ -50,6 +50,9 @@ if (isset($islandora_content))
   <?php if (isset($parent_mods_array)): ?>
     <li><a href="#tabs-2">Item Description</a></li>
     <li><a href="#tabs-3">Set Description</a></li>
+  <?php elseif (isset($serial_mods_array)): ?>
+    <li><a href="#tabs-2">Full Description</a></li>
+    <li><a href="#tabs-3">Serial Details</a></li>
   <?php else: ?>
     <li><a href="#tabs-2">Full Description</a></li>
   <?php endif; ?>
@@ -196,6 +199,61 @@ if (isset($islandora_content))
     </div>
 </div>
 
+<?php endif; ?>
+
+<?php if (isset($serial_mods_array)): ?>
+<div id="tabs-3">
+    <div class="islandora-pdf-image-sidebar">
+     <div> 
+      <table class="islandora-table-display" width="100%">
+      <tbody>
+      <?php $row_field = 0; ?>
+      <?php foreach($serial_mods_array as $key => $value): ?>
+
+        <?php if(trim($value['value']) != ''): ?>
+
+          <tr class="islandora-definition-row">
+          <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
+            <?php print $value['label']; ?>:
+          </th>
+          <td class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
+            <?php print $value['value']; ?>
+          </td>
+
+          <?php if($row_field == 0): ?>             
+            <td class="islandora-serial-thumbnail" rowspan="8">
+              <?php if(isset($serial_tn_html)): ?>
+                <a href="javascript:document.location.reload();"><?php print $serial_tn_html; ?></a>
+              <?php endif; ?>
+            </td>
+          <?php endif; ?>          
+          </tr>
+
+          <?php $row_field++; ?>
+
+        <?php endif; ?>
+
+      <?php endforeach; ?>
+      </tbody>
+      </table>
+      </div>
+      <?php if(isset($serial_parent_collections)): ?>
+        <div>
+          <h2>In Collections</h2>
+          <ul>
+            <?php foreach ($serial_parent_collections as $collection): ?>
+               <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
+                 <!--- <li><?php print l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li> -->
+               <?php else: ?>
+                 <li><?php print l($collection->label, "islandora/object/{$collection->id}"); ?></li>
+               <?php endif; ?>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endif; ?>
+
+    </div>
+</div>
 <?php endif; ?>
 
 </div>

@@ -210,7 +210,12 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
  * Override the Islandora PDF preprocess function
  */
 function islandoratheme_preprocess_islandora_pdf(&$variables) {
-  
+
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+ 
   // Add css file for PDF presentation
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/pdf.css', array('group' => CSS_THEME, 'type' => 'file'));
   
@@ -235,6 +240,35 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // if serial article, set parent serial mods array
+  $part_of = $islandora_object->relationships->get(ISLANDORA_RELS_EXT_URI, 'isComponentOf');
+  if(!empty($part_of)) {
+      //grab the metadata for the parent
+      foreach ($part_of as $part) {
+        $parent_pid = $part['object']['value'];
+
+        // query for parent serial object
+        $parent_serial_id = '';
+        $query_serial = 'select $parentObject $collection from <#ri>
+                        where (
+                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
+                        walk(<info:fedora/' . $parent_pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
+                      )';
+        $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
+        if (count($results) > 0) {
+            $parent_serial_id = $results[0]['parentObject']['value'];
+        }
+        $parent_serial_object = islandora_object_load($parent_serial_id);
+
+        $parent_mods = $parent_serial_object['MODS']->content;
+        $variables['serial_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
+        $object_url = 'islandora/object/' . $parent_serial_id;
+        $variables['serial_tn_html'] = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
+        $variables['serial_parent_collections'] = islandora_get_parents_from_rels_ext($parent_serial_object);
+      }
+  }
+
 }
 
 /**
@@ -264,7 +298,7 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
  
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
   $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
-  
+
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
 
@@ -570,68 +604,26 @@ function islandoratheme_islandora_newspaper(array $variables) {
   global $base_path;
 
   $islandora_object = $variables['object'];
-  $pid = $islandora_object->id;
-  try {
-    $mods = $islandora_object['MODS']->content;
-    $mods_object = simplexml_load_string($mods);
-  } catch (Exception $e) {
-    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
-  }
-  $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
   $newspaper_output = '<h3>' . $islandora_object->label . '</h3>';
   $newspaper_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Newspaper Details</a></li></ul><div id="tabs-1">';
   $newspaper_output .= theme_islandora_newspaper($variables);
   $newspaper_output .= '</div><div id="tabs-2">';
-  $full_description = '<div>';
-  $full_description .= '<table class="islandora-table-display" width="100%">';
-  $full_description .= '<tbody>';
-
-  $row_field = 0;
-  foreach ($mods_array as $key => $value) {
-          
-    if (trim($value['value']) != '') {
-            
-      $full_description .= '<tr class="islandora-definition-row">';
-      $full_description .= '<th class="full-description-heading';
-      if ($row_field == 0) $full_description .= ' first';
-      $full_description .= '">';
-      $full_description .= $value['label'] . ':</th><td class="' . $value['class'];
-      if ($row_field == 0) $full_description .= ' first';
-      $full_description .= '">';
-      $full_description .= $value['value'];
-      $full_description .= '</td>';
-
-      if (($row_field == 0)&&(isset($islandora_object['TN']))) {
-        $object_url = 'islandora/object/' . $pid;
-        $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $full_description .= '<td class="islandora-newspaper-thumbnail" rowspan="8">';
-        $full_description .= $thumbnail_img;
-        $full_description .= '</td>';
-      }
-
-      $full_description .= '</tr>';
-      $row_field++;
-
-    }
-
-  }
-  $full_description .= '</tbody></table></div>';
+  $newspaper_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-newspaper-thumbnail');
 
   $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
   if (count($parent_collections) > 0) {
-    $full_description .= '<div><h2>In Collections</h2><ul>';
+    $newspaper_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
       if (substr($collection->id, 0, 5) != 'palmm') {
-        $full_description .= '<li>';
-        $full_description .=  l($collection->label, "islandora/object/{$collection->id}");
-        $full_description .= '</li>';
+        $newspaper_output .= '<li>';
+        $newspaper_output .=  l($collection->label, "islandora/object/{$collection->id}");
+        $newspaper_output .= '</li>';
       }
     }
-    $full_description .= '</ul></div>';
+    $newspaper_output .= '</ul></div>';
   }
 
-  $newspaper_output .= $full_description;
   $newspaper_output .= '</div></div>';
   return $newspaper_output;
 }
@@ -643,69 +635,27 @@ function islandoratheme_islandora_serial_object(array $variables) {
   global $base_path;
 
   $islandora_object = $variables['object'];
-  $pid = $islandora_object->id;
-  try {
-    $mods = $islandora_object['MODS']->content;
-    $mods_object = simplexml_load_string($mods);
-  } catch (Exception $e) {
-    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
-  }
-  $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
   $serial_output = '<h3>' . $islandora_object->label . '</h3>';
   $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Serial Details</a></li></ul><div id="tabs-1">';
-  //$newspaper_output .= theme_islandora_newspaper($variables);
   $tree_block = islandora_serial_object_block_view('islandora_serial_object_tree');
   $serial_output .= drupal_render($tree_block['content']);
   $serial_output .= '</div><div id="tabs-2">';
-  $full_description = '<div>';
-  $full_description .= '<table class="islandora-table-display" width="100%">';
-  $full_description .= '<tbody>';
-
-  $row_field = 0;
-  foreach ($mods_array as $key => $value) {
-
-    if (trim($value['value']) != '') {
-
-      $full_description .= '<tr class="islandora-definition-row">';
-      $full_description .= '<th class="full-description-heading';
-      if ($row_field == 0) $full_description .= ' first';
-      $full_description .= '">';
-      $full_description .= $value['label'] . ':</th><td class="' . $value['class'];
-      if ($row_field == 0) $full_description .= ' first';
-      $full_description .= '">';
-      $full_description .= $value['value'];
-      $full_description .= '</td>';
-
-      if (($row_field == 0)&&(isset($islandora_object['TN']))) {
-        $object_url = 'islandora/object/' . $pid;
-        $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $full_description .= '<td class="islandora-serial-thumbnail" rowspan="8">';
-        $full_description .= $thumbnail_img;
-        $full_description .= '</td>';
-      }
-
-      $full_description .= '</tr>';
-      $row_field++;
-
-    }
-  }
-  $full_description .= '</tbody></table></div>';
+  $serial_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-serial-thumbnail');
 
   $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
   if (count($parent_collections) > 0) {
-    $full_description .= '<div><h2>In Collections</h2><ul>';
+    $serial_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
       if (substr($collection->id, 0, 5) != 'palmm') {
-        $full_description .= '<li>';
-        $full_description .=  l($collection->label, "islandora/object/{$collection->id}");
-        $full_description .= '</li>';
+        $serial_output .= '<li>';
+        $serial_output .=  l($collection->label, "islandora/object/{$collection->id}");
+        $serial_output .= '</li>';
       }
     }
-    $full_description .= '</ul></div>';
+    $serial_output .= '</ul></div>';
   }
 
-  $serial_output .= $full_description;
   $serial_output .= '</div></div>';
   return $serial_output;
 }
@@ -719,51 +669,20 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   $serial_output = '';
   $islandora_object = $variables['object'];
   $pid = $islandora_object->id;
-  try {
-    $mods = $islandora_object['MODS']->content;
-    $mods_object = simplexml_load_string($mods);
-  } catch (Exception $e) {
-    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
-  }
-  $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
 
   $serial_output = '<h3>' . $islandora_object->label . '</h3>';
-  $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Full Description</a></li></ul><div id="tabs-1">';
-  $serial_output .= views_embed_view('islandora_serial_object_intermediate_pdf_view');
-  $serial_output .= '</div><div id="tabs-2">';
-  $full_description = '<div>';
-  $full_description .= '<table class="islandora-table-display" width="100%">';
-  $full_description .= '<tbody>';
-
-  $row_field = 0;
-  foreach ($mods_array as $key => $value) {
-
-    if (trim($value['value']) != '') {
-
-      $full_description .= '<tr class="islandora-definition-row">';
-      $full_description .= '<th class="full-description-heading';
-      if ($row_field == 0) $full_description .= ' first';
-      $full_description .= '">';
-      $full_description .= $value['label'] . ':</th><td class="' . $value['class'];
-      if ($row_field == 0) $full_description .= ' first';
-      $full_description .= '">';
-      $full_description .= $value['value'];
-      $full_description .= '</td>';
-
-      if (($row_field == 0)&&(isset($islandora_object['TN']))) {
-        $object_url = 'islandora/object/' . $pid;
-        $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $full_description .= '<td class="islandora-serial-thumbnail" rowspan="8">';
-        $full_description .= $thumbnail_img;
-        $full_description .= '</td>';
-      }
-
-      $full_description .= '</tr>';
-      $row_field++;
-
-    }
+  $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Full Description</a></li><li><a href="#tabs-3">Serial Details</a></li></ul><div id="tabs-1">';
+  $pdf_table = views_embed_view('islandora_serial_object_intermediate_pdf_view');
+  if (strlen($pdf_table) > 0) {
+    $serial_output .= $pdf_table;
   }
-  $full_description .= '</tbody></table></div>';
+  else {
+    $serial_output .= views_embed_view('islandora_serial_object_intermediate_objects_view');
+  }
+  //$serial_output .= views_embed_view('islandora_serial_object_intermediate_pdf_view');
+  $serial_output .= '</div><div id="tabs-2">';
+  $serial_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-serial-thumbnail');
+
 /*
   $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
   if (count($parent_collections) > 0) {
@@ -778,7 +697,22 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
     $full_description .= '</ul></div>';
   }
 */
-  $serial_output .= $full_description;
+
+  // add parent serial
+  $serial_output .= '</div><div id="tabs-3">';
+  $parent_serial = '';
+  $query_serial = 'select $parentObject $collection from <#ri>
+                        where (
+                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
+                        walk(<info:fedora/' . $pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
+                      )';
+  $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
+  if (count($results) > 0) {
+      $parent_serial = $results[0]['parentObject']['value'];
+  }
+  $parent_serial_object = islandora_object_load($parent_serial);
+  $serial_output .= islandoratheme_create_mods_table($parent_serial_object, 'islandora-serial-thumbnail');
+
   $serial_output .= '</div></div>';
   return $serial_output;
 }
@@ -883,6 +817,61 @@ function compound_object_check($islandora_object, &$variables) {
       $variables['parent_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
     }
   }
+}
+
+function islandoratheme_create_mods_table($islandora_object, $thumbclass) {
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
+  $pid = $islandora_object->id;
+
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+  $mods_array = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+
+  $full_description = '<div>';
+  $full_description .= '<table class="islandora-table-display" width="100%">';
+  $full_description .= '<tbody>';
+
+  $row_field = 0;
+  foreach ($mods_array as $key => $value) {
+
+    if (trim($value['value']) != '') {
+
+      $full_description .= '<tr class="islandora-definition-row">';
+      $full_description .= '<th class="full-description-heading';
+      if ($row_field == 0) $full_description .= ' first';
+      $full_description .= '">';
+      $full_description .= $value['label'] . ':</th><td class="' . $value['class'];
+      if ($row_field == 0) $full_description .= ' first';
+      $full_description .= '">';
+      $full_description .= $value['value'];
+      $full_description .= '</td>';
+
+      if (($row_field == 0)&&(isset($islandora_object['TN']))) {
+        $object_url = 'islandora/object/' . $pid;
+        $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
+        $full_description .= '<td class="';
+        $full_description .= $thumbclass;
+        $full_description .= '" rowspan="8">';
+        $full_description .= $thumbnail_img;
+        $full_description .= '</td>';
+      }
+
+      $full_description .= '</tr>';
+      $row_field++;
+
+    }
+  }
+  $full_description .= '</tbody></table></div>';
+
+  return $full_description;
 }
 
 /**
