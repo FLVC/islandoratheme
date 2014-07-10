@@ -713,6 +713,19 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   $parent_serial_object = islandora_object_load($parent_serial);
   $serial_output .= islandoratheme_create_mods_table($parent_serial_object, 'islandora-serial-thumbnail');
 
+  $parent_collections = islandora_get_parents_from_rels_ext($parent_serial_object);
+  if (count($parent_collections) > 0) {
+    $serial_output .= '<div><h2>In Collections</h2><ul>';
+    foreach ($parent_collections as $collection) {
+      if (substr($collection->id, 0, 5) != 'palmm') {
+        $serial_output .= '<li>';
+        $serial_output .=  l($collection->label, "islandora/object/{$collection->id}");
+        $serial_output .= '</li>';
+      }
+    }
+    $serial_output .= '</ul></div>';
+  }
+
   $serial_output .= '</div></div>';
   return $serial_output;
 }
