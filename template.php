@@ -162,6 +162,9 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
 
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
+
  // Start getting parameters for the player...
   $audio_params = array(
     "pid" => $islandora_object->id,
@@ -244,9 +247,8 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
   // if serial article, set parent serial mods array
   $part_of = $islandora_object->relationships->get(ISLANDORA_RELS_EXT_URI, 'isComponentOf');
   if(!empty($part_of)) {
-      //grab the metadata for the parent
-      foreach ($part_of as $part) {
-        $parent_pid = $part['object']['value'];
+        //grab the metadata for the parent
+        $parent_pid = $part_of[0]['object']['value'];
 
         // query for parent serial object
         $parent_serial_id = '';
@@ -266,7 +268,63 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
         $object_url = 'islandora/object/' . $parent_serial_id;
         $variables['serial_tn_html'] = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
         $variables['serial_parent_collections'] = islandora_get_parents_from_rels_ext($parent_serial_object);
-      }
+
+        // build navigation links
+        $links = array();
+        $siblings = array();
+        $query_siblings = 'select $object $sequence_number from <#ri>
+                        where (
+                        $object <fedora-model:hasModel> <info:fedora/islandora:sp_pdf> and
+                        $object <http://islandora.ca/ontology/relsext#isComponentOf> <info:fedora/' . $parent_pid . '> and
+                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
+                      )
+                      order by $sequence_number';
+        $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
+        foreach ($results as $result) {
+          $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
+        }
+        $index = array_search($islandora_object->id, $siblings);
+        if (count($siblings) == 1) {
+          // try again with parent object
+          unset($siblings[0]);
+          $parent_object = islandora_object_load($parent_pid);
+          $parent_part_of = $parent_object->relationships->get('info:fedora/fedora-system:def/relations-external#', 'isMemberOf');
+          if (!empty($parent_part_of)) {
+              $grandparent_pid = $parent_part_of[0]['object']['value'];
+              $query_siblings = 'select $object $sequence_number from <#ri>
+                        where (
+                        $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $grandparent_pid . '> and
+                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
+                      )
+                      order by $sequence_number';
+              $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
+              foreach ($results as $result) {
+                $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
+              }
+              $index = array_search($parent_object->id, $siblings);
+          }
+        }
+        if (isset($siblings[$index - 1])) {
+          $previous_sibling = $siblings[$index - 1];
+          $links[] = array(
+            'title' => t('Prev'),
+            'href' => url("islandora/object/{$previous_sibling}", array('absolute' => TRUE)),
+          );
+        }
+        if (isset($siblings[$index + 1])) {
+          $next_sibling = $siblings[$index + 1];
+          $links[] = array(
+            'title' => t('Next'),
+            'href' => url("islandora/object/{$next_sibling}", array('absolute' => TRUE)),
+          );
+        }
+
+        $links[] = array(
+          'title' => t('All Issues'),
+          'href' => url("islandora/object/{$parent_serial_object->id}", array('absolute' => TRUE)),
+        );
+        $attributes = array('class' => array('links', 'inline'));
+        $variables['serial_navigation_links'] = theme('links', array('links' => $links, 'attributes' => $attributes));
   }
 
 }
@@ -392,6 +450,9 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  // Check if the object is part of a Compound Object
+  compound_object_check($islandora_object, $variables);
 
   // Get parameters for the player...
   $video_params = array(
@@ -670,7 +731,60 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   $islandora_object = $variables['object'];
   $pid = $islandora_object->id;
 
-  $serial_output = '<h3>' . $islandora_object->label . '</h3>';
+  $siblings = array();
+  $links = array();
+  $part_of = $islandora_object->relationships->get('info:fedora/fedora-system:def/relations-external#', 'isMemberOf');
+  if(!empty($part_of)) {
+    $parent_pid = $part_of[0]['object']['value'];
+    $query_siblings = 'select $object $sequence_number from <#ri>
+                        where (
+                        $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $parent_pid . '> and
+                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
+                      )
+                      order by $sequence_number';
+    $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
+    foreach ($results as $result) {
+      $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
+    }
+    $index = array_search($pid, $siblings);
+    //$previous_sibling = isset($siblings[$index - 1]) ? $siblings[$index - 1] : NULL;
+    //$next_sibling = isset($siblings[$index + 1]) ? $siblings[$index + 1] : NULL;
+    if (isset($siblings[$index - 1])) {
+      $previous_sibling = $siblings[$index - 1];
+      $links[] = array(
+        'title' => t('Prev'),
+        'href' => url("islandora/object/{$previous_sibling}", array('absolute' => TRUE)),
+      );
+    }
+    if (isset($siblings[$index + 1])) {
+      $next_sibling = $siblings[$index + 1];
+      $links[] = array(
+        'title' => t('Next'),
+        'href' => url("islandora/object/{$next_sibling}", array('absolute' => TRUE)),
+      );
+    }
+  }
+
+  $parent_serial = '';
+  $query_serial = 'select $parentObject $collection from <#ri>
+                        where (
+                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
+                        walk(<info:fedora/' . $pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
+                      )';
+  $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
+  if (count($results) > 0) {
+      $parent_serial = $results[0]['parentObject']['value'];
+  }
+  $parent_serial_object = islandora_object_load($parent_serial);
+
+  $links[] = array(
+    'title' => t('All Issues'),
+    'href' => url("islandora/object/{$parent_serial_object->id}", array('absolute' => TRUE)),
+  );
+  $attributes = array('class' => array('links', 'inline'));
+  $serial_output = theme('links', array('links' => $links, 'attributes' => $attributes));
+
+  $serial_output .= '<h3>' . $islandora_object->label . '</h3>';
   $serial_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Full Description</a></li><li><a href="#tabs-3">Serial Details</a></li></ul><div id="tabs-1">';
   $pdf_table = views_embed_view('islandora_serial_object_intermediate_pdf_view');
   if (strlen($pdf_table) > 0) {
@@ -700,17 +814,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
 
   // add parent serial
   $serial_output .= '</div><div id="tabs-3">';
-  $parent_serial = '';
-  $query_serial = 'select $parentObject $collection from <#ri>
-                        where (
-                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
-                        walk(<info:fedora/' . $pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
-                      )';
-  $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
-  if (count($results) > 0) {
-      $parent_serial = $results[0]['parentObject']['value'];
-  }
-  $parent_serial_object = islandora_object_load($parent_serial);
+
   $serial_output .= islandoratheme_create_mods_table($parent_serial_object, 'islandora-serial-thumbnail');
 
   $parent_collections = islandora_get_parents_from_rels_ext($parent_serial_object);

@@ -24,6 +24,11 @@
 
 <?php
 
+if (isset($serial_navigation_links))
+{
+  print $serial_navigation_links;
+}
+
 if (isset($islandora_object_label))
 {
   drupal_set_title("$islandora_object_label");
