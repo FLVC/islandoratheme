@@ -157,7 +157,9 @@ if (isset($islandora_object_label))
 
             <?php if($row_field == 0): ?>
               <td class="islandora-large-image-thumbnail" rowspan="8">
-                <?php if(isset($islandora_full_url)): ?>
+                <?php if(isset($parent_thumbnail_img)): ?>
+                  <?php print $parent_thumbnail_img; ?>
+                <?php elseif(isset($islandora_full_url)): ?>
                   <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
                   <a href="javascript:document.location.reload();"><?php print $islandora_thumbnail_img; ?></a>

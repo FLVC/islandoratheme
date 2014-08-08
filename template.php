@@ -921,6 +921,10 @@ function get_branding_info(&$variables)
  * This function checks if an Islandora Object is part of a Compound Object. If it is, it sets a variable.
  */
 function compound_object_check($islandora_object, &$variables) {
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
 
   $rels_predicate = variable_get('islandora_compound_object_relationship', 'isConstituentOf');
   $part_of = $islandora_object->relationships->get('info:fedora/fedora-system:def/relations-external#', $rels_predicate);
@@ -932,6 +936,8 @@ function compound_object_check($islandora_object, &$variables) {
       $parent_object = islandora_object_load($parent_pid);
       $parent_mods = $parent_object['MODS']->content;
       $variables['parent_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
+      $variables['parent_thumbnail_img'] = '<img src="' . $base_path . 'islandora/object/' . $parent_pid . '/datastream/TN/view"' . '/>';
+
     }
   }
 }
