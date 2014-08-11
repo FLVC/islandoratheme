@@ -943,6 +943,24 @@ class MODS {
               $mods_array[$i]['class'] = $relatedItem->part->detail->number->getName();
               $i++;
           }
+          $issue_display = '';
+          $detail_count = count($relatedItem->part->detail);
+          for ($d=$detail_count-1; $d>=0; $d--)
+          {
+              $detail = $relatedItem->part->detail[$d];
+              if (strlen($issue_display) > 0)
+                $issue_display .= ', ';
+              if (isset($detail->caption))
+                $issue_display .= $detail->caption;
+              if (isset($detail->number))
+                $issue_display .= ' ' . $detail->number;
+          }
+          if (strlen($issue_display) > 0)
+          {
+              $mods_array[$i]['value'] = $issue_display;
+              $mods_array[$i]['label'] = 'Issue';
+              $mods_array[$i]['class'] = $detail->getName();
+          }
         }
       }
     }    
