@@ -929,20 +929,6 @@ class MODS {
         }
         if ((isset($relatedItem->part))&&(isset($relatedItem->part->detail)))
         {
-          if (isset($relatedItem->part->detail->caption))
-          {
-              $mods_array[$i]['value'] = $relatedItem->part->detail->caption;
-              $mods_array[$i]['label'] = 'Caption';
-              $mods_array[$i]['class'] = $relatedItem->part->detail->caption->getName();
-              $i++;
-          }
-          if (isset($relatedItem->part->detail->number))
-          {
-              $mods_array[$i]['value'] = $relatedItem->part->detail->number;
-              $mods_array[$i]['label'] = 'Number';
-              $mods_array[$i]['class'] = $relatedItem->part->detail->number->getName();
-              $i++;
-          }
           $issue_display = '';
           $detail_count = count($relatedItem->part->detail);
           for ($d=$detail_count-1; $d>=0; $d--)
@@ -960,6 +946,7 @@ class MODS {
               $mods_array[$i]['value'] = $issue_display;
               $mods_array[$i]['label'] = 'Issue';
               $mods_array[$i]['class'] = $detail->getName();
+              $i++;
           }
         }
       }
