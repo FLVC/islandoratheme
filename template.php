@@ -345,7 +345,7 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
   $islandora_object = $variables['islandora_object'];
 
   // Create the full view link
-  $variables['islandora_download_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Download File</a>';
+  $variables['islandora_download_link'] = '<a href="' . $base_url . request_uri() . '/datastream/JPG/view' . '" download="view">Download File</a>';
   
   try {
     $mods = $islandora_object['MODS']->content;

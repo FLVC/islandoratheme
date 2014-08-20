@@ -930,6 +930,7 @@ class MODS {
         if ((isset($relatedItem->part))&&(isset($relatedItem->part->detail)))
         {
           $issue_display = '';
+          $issue_title = '';
           $detail_count = count($relatedItem->part->detail);
           for ($d=$detail_count-1; $d>=0; $d--)
           {
@@ -940,6 +941,17 @@ class MODS {
                 $issue_display .= $detail->caption;
               if (isset($detail->number))
                 $issue_display .= ' ' . $detail->number;
+              if (isset($detail->title))
+              {
+                  $issue_title = $detail->title;
+              }
+          }
+          if (strlen($issue_title) > 0)
+          {
+              $issue_display = $issue_title . '. ' . $issue_display;
+              //if (strlen($issue_display) > 0)
+              //    $issue_display .= '. ';
+              //$issue_display .= $issue_title;
           }
           if (strlen($issue_display) > 0)
           {
