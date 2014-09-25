@@ -348,17 +348,36 @@ class MODS {
     // Language Section
     if (isset($mods_object->language))
     {
+      $lang_display = '';
       foreach ($mods_object->language as $language) {
-        switch((string) $language->languageTerm['type']) { // Get attributes as element indices
-          case 'text':
-            $mods_array[$i]['value'] = $language->languageTerm;
-            $mods_array[$i]['label'] = 'Language';
-            $mods_array[$i]['class'] = $language->languageTerm->getName() . '_text';
-            $i++;
-            break;
-          default:
+        $lang_code = '';
+        $lang_text = '';
+        foreach ($language->languageTerm as $languageterm) {
+          switch((string) $languageterm['type']) { // Get attributes as element indices
+            case 'text':
+              //$mods_array[$i]['value'] = $language->languageTerm;
+              //$mods_array[$i]['label'] = 'Language';
+              //$mods_array[$i]['class'] = $language->languageTerm->getName() . '_text';
+              //$i++;
+              $lang_text = $languageterm;
+              break;
+            case 'code':
+              $lang_code = $languageterm;
+              break;
+            default:
+          }
         }
+        if ((strlen($lang_display) > 0)&&((strlen($lang_text) > 0)||(strlen($lang_code) > 0)))
+          $lang_display .= '<br>';
+        if (strlen($lang_text) > 0)
+          $lang_display .= $lang_text;
+        else if (strlen($lang_code) > 0)
+          $lang_display .= $lang_code;
       }
+      $mods_array[$i]['value'] = $lang_display;
+      $mods_array[$i]['label'] = 'Language(s)';
+      $mods_array[$i]['class'] = $language->languageTerm->getName() . '_text';
+      $i++;
     }
     
     // Abstract/Description Section    
@@ -531,6 +550,7 @@ class MODS {
         $name_flag = false;
         $title_flag = false;
         $hierarchical_geographic_flag = false;
+        $geographic_code_flag = false;
         $subject_as_type = null;
         $cartographic_info_array = array();
         
@@ -558,12 +578,16 @@ class MODS {
               $hierarchical_geographic_flag = true;
               $subject_as_type = $subject_child;
               break;
+            case 'geographicCode':
+              $geographic_code_flag = true;
+              $subject_as_type = $subject_child;
+              break;
             default:
               break;
           }
         }
         
-        $total_counter++;
+        //$total_counter++;
         
         if($name_flag == true)
         {
@@ -653,6 +677,11 @@ class MODS {
           $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($temp_subject) . ')">' . $temp_subject . '</a>';
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $temp_subject;
         }
+        else if ($geographic_code_flag == true)
+        {
+          // do nothing
+          continue;
+        }
         else
         {
           $temp_subject = NULL;
@@ -668,8 +697,9 @@ class MODS {
  
           $temp_subject = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($temp_subject) . ')">' . $temp_subject . '</a>';
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $temp_subject;
+
         }
-       
+/* removing for now       
         // If the Subject has a genre, add it
         if(isset($subject->genre) && $subject->genre != '')
         {
@@ -677,7 +707,7 @@ class MODS {
             $mods_array[$i]['value'] = $mods_array[$i]['value'] . ' -- ' . $genre;
           }
         }
- 
+*/
         /*foreach($cartographic_info_array as $cartographic_info)
         {
           if (isset($cartographic_info->coordinates) && trim($cartographic_info->coordinates) != '')
@@ -704,6 +734,8 @@ class MODS {
             $i++;
           }
         }*/
+
+        $total_counter++;
       }
       
       $mods_array[$i]['class'] = $mods_object->subject->getName();
