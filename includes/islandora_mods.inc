@@ -638,7 +638,7 @@ class MODS {
             }
           }
 
-          $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
+          $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
 
           // If it has a Role, add it
           if(isset($subject->name->role))
@@ -895,11 +895,17 @@ class MODS {
     if (isset($mods_object->relatedItem))
     {
       foreach ($mods_object->relatedItem as $relatedItem) {
-        if (isset($relatedItem->titleInfo))
-        {
-          $title = static::formatTitleInfo($relatedItem->titleInfo);
-          
-          if(isset($relatedItem['displayLabel']))
+        //if (isset($relatedItem->titleInfo))
+        //{
+          $title = '';
+          $class_name = $relatedItem->getName();
+          if (isset($relatedItem->titleInfo))
+          {
+            $title = static::formatTitleInfo($relatedItem->titleInfo);
+            $class_name = $relatedItem->titleInfo->title->getName();
+          }
+
+          if (isset($relatedItem['displayLabel']))
           {
             $title = $title . " (" . $relatedItem['displayLabel'] . ")";
           }
@@ -915,76 +921,76 @@ class MODS {
             case 'preceding':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Preceding Title';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_preceding';
+              $mods_array[$i]['class'] = $class_name . '_preceding';
               $i++;
               break;
             case 'succeeding':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Succeeding Title';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_succeeding';
+              $mods_array[$i]['class'] = $class_name . '_succeeding';
               $i++;
               break;
             case 'original':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Original Title';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_original';
+              $mods_array[$i]['class'] = $class_name . '_original';
               $i++;
               break;
             case 'host':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Is Part Of';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_host';
+              $mods_array[$i]['class'] = $class_name . '_host';
               $i++;
               break;
             case 'constituent':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Has Part';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_constituent';
+              $mods_array[$i]['class'] = $class_name . '_constituent';
               $i++;
               break;
             case 'series':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Is Part of Series';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_series';
+              $mods_array[$i]['class'] = $class_name . '_series';
               $i++;
               break;
             case 'otherVersion':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Other Version';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_otherversion';
+              $mods_array[$i]['class'] = $class_name . '_otherversion';
               $i++;
               break;
             case 'otherFormat':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Other Format';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_otherformat';
+              $mods_array[$i]['class'] = $class_name . '_otherformat';
               $i++;
               break;
             case 'isReferencedBy':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Is Referenced By';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_isreferencedby';
+              $mods_array[$i]['class'] = $class_name . '_isreferencedby';
               $i++;
               break;
             case 'references':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'References';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_references';
+              $mods_array[$i]['class'] = $class_name . '_references';
               $i++;
               break;
             case 'reviewOf':
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Review Of';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName() . '_reviewof';
+              $mods_array[$i]['class'] = $class_name . '_reviewof';
               $i++;
               break; 
             default:
               $mods_array[$i]['value'] = $title;
               $mods_array[$i]['label'] = 'Related Title';
-              $mods_array[$i]['class'] = $relatedItem->titleInfo->title->getName();
+              $mods_array[$i]['class'] = $class_name;
               $i++;
           }
-        }
+        //}
         if ((isset($relatedItem->part))&&(isset($relatedItem->part->detail)))
         {
           $issue_display = '';
@@ -1123,7 +1129,7 @@ class MODS {
   {
     $space_check = substr($value, -6);
     
-    if ($space_check != '<br />') {
+    if ((strlen($value) > 0)&&($space_check != '<br />')) {
         $value .= '<br />' . $string;
     }
     else {
