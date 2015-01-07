@@ -637,6 +637,9 @@ class MODS {
               }
             }
           }
+          if (isset($subject->name->titleInfo->title)) {
+            $name_value = $name_value . '--' . $subject->name->titleInfo->title;
+          }
 
           $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
 
