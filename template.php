@@ -48,10 +48,11 @@ function islandoratheme_preprocess_islandora_binary_object(&$variables) {
 
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/binary-object.css', array('group' => CSS_THEME, 'type' => 'file'));
 
-  // Create the download link
-  $variables['islandora_download_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/download' . '">Download</a>';
-
   $islandora_object = $variables['islandora_object'];
+  
+  // Create the download link
+  $variables['islandora_download_link'] = '<a href="' . $base_url . '/islandora/object/' . $islandora_object . '/datastream/OBJ/download' . '">Download</a>';
+
   $variables['islandora_object_label'] = $islandora_object->label;
 
   if (isset($islandora_object['OBJ']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['OBJ'])) {
@@ -106,11 +107,11 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
   
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/basic-image.css', array('group' => CSS_THEME, 'type' => 'file'));
   
-  // Create the full view link
-  $variables['islandora_view_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Full Screen View</a>';
-
   $islandora_object = $variables['islandora_object'];
-  
+
+  // Create the full view link
+  $variables['islandora_view_link'] = '<a href="' . $base_url . '/islandora/object/' . $islandora_object . '/datastream/OBJ/view' . '">Full Screen View</a>';
+
   try {
     $mods = $islandora_object['MODS']->content;
     $mods_object = simplexml_load_string($mods);
@@ -138,13 +139,14 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
   // base path
   global $base_path;
 
+  $islandora_object = $variables['islandora_object'];
+
   // Create the full view link
-  $variables['islandora_view_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Full Screen View</a>';
-  $variables['islandora_full_url'] = $base_url . request_uri() . '/datastream/OBJ/view';  
+  $variables['islandora_view_link'] = '<a href="' . $base_url . '/islandora/object/' . $islandora_object . '/datastream/OBJ/view' . '">Full Screen View</a>';
+  $variables['islandora_full_url'] = $base_url . '/islandora/object/' . $islandora_object . '/datastream/OBJ/view';
 
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/audio.css', array('group' => CSS_THEME, 'type' => 'file'));
 
-  $islandora_object = $variables['islandora_object'];
   $repository = $islandora_object->repository;
   
   try {
@@ -345,7 +347,7 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
   $islandora_object = $variables['islandora_object'];
 
   // Create the full view link
-  $variables['islandora_download_link'] = '<a href="' . $base_url . request_uri() . '/datastream/JPG/view' . '" download="view">Download File</a>';
+  $variables['islandora_download_link'] = '<a href="' . $base_url . '/islandora/object/' . $islandora_object . '/datastream/JPG/view' . '" download="view">Download File</a>';
   
   try {
     $mods = $islandora_object['MODS']->content;
@@ -427,13 +429,14 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
 
   $viewer_dsid = 'MP4';
 
+  $islandora_object = $variables['object'];
+
   // Create the full view link
-  $variables['islandora_view_link'] = '<a href="' . $base_url . request_uri() . '/datastream/OBJ/view' . '">Full Screen View</a>';
-  $variables['islandora_full_url'] = $base_url . request_uri() . '/datastream/OBJ/view';
+  $variables['islandora_view_link'] = '<a href="' . $base_url . '/islandora/object/' . $islandora_object . '/datastream/OBJ/view' . '">Full Screen View</a>';
+  $variables['islandora_full_url'] = $base_url . '/islandora/object/' . $islandora_object . '/datastream/OBJ/view';
 
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/video.css', array('group' => CSS_THEME, 'type' => 'file'));
 
-  $islandora_object = $variables['object'];
   $repository = $islandora_object->repository;
 
   try {
