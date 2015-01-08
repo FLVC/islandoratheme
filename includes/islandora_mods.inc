@@ -647,7 +647,10 @@ class MODS {
               }
 	      elseif ($namePart != '')
               {
-                $name_value = $name_value . ' ' . $namePart;
+                if (strlen($name_value) > 0) {
+                  $name_value = $name_value . ' ';
+                }
+                $name_value = $name_value . $namePart;
               }
             }
           }
