@@ -197,84 +197,98 @@ class MODS {
     // Dates Section
     if (isset($mods_object->originInfo->copyrightDate))
     {
+      $last_date_point = '';
       foreach ($mods_object->originInfo->copyrightDate as $copyrightDate) {
-        $mods_array[$i]['value'] = $copyrightDate;
-        $mods_array[$i]['label'] = 'Copyright Date';
-        $mods_array[$i]['class'] = $copyrightDate->getName();
-        $i++;
+        //$mods_array[$i]['value'] = $copyrightDate;
+        //$mods_array[$i]['label'] = 'Copyright Date';
+        //$mods_array[$i]['class'] = $copyrightDate->getName();
+        //$i++;
+        static::addDate($copyrightDate, 'Copyright Date', $last_date_point, $mods_array, $i);
       }
     }
     
     if (isset($mods_object->originInfo->dateCreated))
     {
+      $last_date_point = '';
       foreach ($mods_object->originInfo->dateCreated as $dateCreated) {
-        $mods_array[$i]['value'] = $dateCreated;
-        $mods_array[$i]['label'] = 'Date Created';
-        $mods_array[$i]['class'] = $dateCreated->getName();
-        $i++;
+        //$mods_array[$i]['value'] = $dateCreated;
+        //$mods_array[$i]['label'] = 'Date Created';
+        //$mods_array[$i]['class'] = $dateCreated->getName();
+        //$i++;
+        static::addDate($dateCreated, 'Date Created', $last_date_point, $mods_array, $i);
       }
     }
     
     if (isset($mods_object->originInfo->dateIssued))
     {
       $date_counter = 0;      
-
+      $last_date_point = '';
       foreach ($mods_object->originInfo->dateIssued as $dateIssued) {
         
-        if ($date_counter == 0 && $dateIssued != '')
-        {
-          $mods_array['mods:date']['value'] = $dateIssued;
-          $mods_array['mods:date']['label'] = 'Date Issued';
-          $mods_array['mods:date']['class'] = $dateIssued->getName();
-          $date_counter++;
-        }       
-        elseif ($dateIssued != '')
-        {
-          if(isset($dateIssued['point']) && $dateIssued['point'] == 'end')
-          {
-            $mods_array['mods:date']['value'] = $mods_array['mods:date']['value'] . ' - ' . $dateIssued; 
-          }
-        }
+        //if ($date_counter == 0 && $dateIssued != '')
+        //{
+        //  $mods_array['mods:date']['value'] = $dateIssued;
+        //  $mods_array['mods:date']['label'] = 'Date Issued';
+        //  $mods_array['mods:date']['class'] = $dateIssued->getName();
+        //  $date_counter++;
+        //}       
+        //elseif ($dateIssued != '')
+        //{
+        //  if(isset($dateIssued['point']) && $dateIssued['point'] == 'end')
+        //  {
+        //    $mods_array['mods:date']['value'] = $mods_array['mods:date']['value'] . ' - ' . $dateIssued; 
+        //  }
+        //}
+        static::addDate($dateIssued, 'Date Issued', $last_date_point, $mods_array, $i);
+
       }
     }    
     
     if (isset($mods_object->originInfo->dateCaptured))
     {
+      $last_date_point = '';
       foreach ($mods_object->originInfo->dateCaptured as $dateCaptured) {
-        $mods_array[$i]['value'] = $dateCaptured;
-        $mods_array[$i]['label'] = 'Date Captured';
-        $mods_array[$i]['class'] = $dateCaptured->getName();
-        $i++;
+        //$mods_array[$i]['value'] = $dateCaptured;
+        //$mods_array[$i]['label'] = 'Date Captured';
+        //$mods_array[$i]['class'] = $dateCaptured->getName();
+        //$i++;
+        static::addDate($dateCaptured, 'Date Captured', $last_date_point, $mods_array, $i);
       }
     }
     
     if (isset($mods_object->originInfo->dateValid))
     {
+      $last_date_point = '';
       foreach ($mods_object->originInfo->dateValid as $dateValid) {
-        $mods_array[$i]['value'] = $dateValid;
-        $mods_array[$i]['label'] = 'Date Valid';
-        $mods_array[$i]['class'] = $dateValid->getName();
-        $i++;
+        //$mods_array[$i]['value'] = $dateValid;
+        //$mods_array[$i]['label'] = 'Date Valid';
+        //$mods_array[$i]['class'] = $dateValid->getName();
+        //$i++;
+        static::addDate($dateValid, 'Date Valid', $last_date_point, $mods_array, $i);
       }
     }
     
     if (isset($mods_object->originInfo->dateModified))
     {
+      $last_date_point = '';
       foreach ($mods_object->originInfo->dateModified as $dateModified) {
-        $mods_array[$i]['value'] = $dateModified;
-        $mods_array[$i]['label'] = 'Date Modified';
-        $mods_array[$i]['class'] = $dateModified->getName();
-        $i++;
+        //$mods_array[$i]['value'] = $dateModified;
+        //$mods_array[$i]['label'] = 'Date Modified';
+        //$mods_array[$i]['class'] = $dateModified->getName();
+        //$i++;
+        static::addDate($dateModified, 'Date Modified', $last_date_point, $mods_array, $i);
       }
     }
     
     if (isset($mods_object->originInfo->dateOther))
     {
+      $last_date_point = '';
       foreach ($mods_object->originInfo->dateOther as $dateOther) {
-        $mods_array[$i]['value'] = $dateOther;
-        $mods_array[$i]['label'] = 'Other Date';
-        $mods_array[$i]['class'] = $dateOther->getName();
-        $i++;
+        //$mods_array[$i]['value'] = $dateOther;
+        //$mods_array[$i]['label'] = 'Other Date';
+        //$mods_array[$i]['class'] = $dateOther->getName();
+        //$i++;
+        static::addDate($dateOther, 'Other Date', $last_date_point, $mods_array, $i);
       }
     }     
     
@@ -638,7 +652,7 @@ class MODS {
             }
           }
           if (isset($subject->name->titleInfo->title)) {
-            $name_value = $name_value . '--' . $subject->name->titleInfo->title;
+            $name_value = $name_value . ' -- ' . $subject->name->titleInfo->title;
           }
 
           $name_value = '<a href="' . base_path() . 'islandora/search/catch_all_subjects_mt%3A(' . static::stripSolrValue($name_value) . ')">' . $name_value . '</a>';
@@ -1292,6 +1306,31 @@ class MODS {
     return $string;
   }
 
+  protected static function addDate($newdate, $label, &$last_date_point, &$mods_array, &$i)
+  {
+        if (isset($newdate['point']) && $newdate['point'] == 'end' && $i>0 && $last_date_point == 'start') {
+          $mods_array[$i-1]['value'] .= $newdate;
+        }
+        else {
+          $mods_array[$i]['value'] = '';
+          if (isset($newdate['point']) && $newdate['point'] == 'end') {
+            $mods_array[$i]['value'] = '- ';
+          }
+          $mods_array[$i]['value'] .= $newdate;
+          if (isset($newdate['point']) && $newdate['point'] == 'start') {
+            $mods_array[$i]['value'] .= ' - ';
+          }
+          $mods_array[$i]['label'] = $label;
+          $mods_array[$i]['class'] = $newdate->getName();
+          $i++;
+        }
+        if (isset($newdate['point'])) {
+          $last_date_point = $newdate['point'];
+        }
+        else {
+          $last_date_point = '';
+        }
+  }
 }
 
 
