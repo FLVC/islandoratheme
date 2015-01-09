@@ -199,10 +199,6 @@ class MODS {
     {
       $last_date_point = '';
       foreach ($mods_object->originInfo->copyrightDate as $copyrightDate) {
-        //$mods_array[$i]['value'] = $copyrightDate;
-        //$mods_array[$i]['label'] = 'Copyright Date';
-        //$mods_array[$i]['class'] = $copyrightDate->getName();
-        //$i++;
         static::addDate($copyrightDate, 'Copyright Date', $last_date_point, $mods_array, $i);
       }
     }
@@ -211,10 +207,6 @@ class MODS {
     {
       $last_date_point = '';
       foreach ($mods_object->originInfo->dateCreated as $dateCreated) {
-        //$mods_array[$i]['value'] = $dateCreated;
-        //$mods_array[$i]['label'] = 'Date Created';
-        //$mods_array[$i]['class'] = $dateCreated->getName();
-        //$i++;
         static::addDate($dateCreated, 'Date Created', $last_date_point, $mods_array, $i);
       }
     }
@@ -224,21 +216,6 @@ class MODS {
       $date_counter = 0;      
       $last_date_point = '';
       foreach ($mods_object->originInfo->dateIssued as $dateIssued) {
-        
-        //if ($date_counter == 0 && $dateIssued != '')
-        //{
-        //  $mods_array['mods:date']['value'] = $dateIssued;
-        //  $mods_array['mods:date']['label'] = 'Date Issued';
-        //  $mods_array['mods:date']['class'] = $dateIssued->getName();
-        //  $date_counter++;
-        //}       
-        //elseif ($dateIssued != '')
-        //{
-        //  if(isset($dateIssued['point']) && $dateIssued['point'] == 'end')
-        //  {
-        //    $mods_array['mods:date']['value'] = $mods_array['mods:date']['value'] . ' - ' . $dateIssued; 
-        //  }
-        //}
         static::addDate($dateIssued, 'Date Issued', $last_date_point, $mods_array, $i);
 
       }
@@ -248,10 +225,6 @@ class MODS {
     {
       $last_date_point = '';
       foreach ($mods_object->originInfo->dateCaptured as $dateCaptured) {
-        //$mods_array[$i]['value'] = $dateCaptured;
-        //$mods_array[$i]['label'] = 'Date Captured';
-        //$mods_array[$i]['class'] = $dateCaptured->getName();
-        //$i++;
         static::addDate($dateCaptured, 'Date Captured', $last_date_point, $mods_array, $i);
       }
     }
@@ -260,10 +233,6 @@ class MODS {
     {
       $last_date_point = '';
       foreach ($mods_object->originInfo->dateValid as $dateValid) {
-        //$mods_array[$i]['value'] = $dateValid;
-        //$mods_array[$i]['label'] = 'Date Valid';
-        //$mods_array[$i]['class'] = $dateValid->getName();
-        //$i++;
         static::addDate($dateValid, 'Date Valid', $last_date_point, $mods_array, $i);
       }
     }
@@ -272,10 +241,6 @@ class MODS {
     {
       $last_date_point = '';
       foreach ($mods_object->originInfo->dateModified as $dateModified) {
-        //$mods_array[$i]['value'] = $dateModified;
-        //$mods_array[$i]['label'] = 'Date Modified';
-        //$mods_array[$i]['class'] = $dateModified->getName();
-        //$i++;
         static::addDate($dateModified, 'Date Modified', $last_date_point, $mods_array, $i);
       }
     }
@@ -284,10 +249,6 @@ class MODS {
     {
       $last_date_point = '';
       foreach ($mods_object->originInfo->dateOther as $dateOther) {
-        //$mods_array[$i]['value'] = $dateOther;
-        //$mods_array[$i]['label'] = 'Other Date';
-        //$mods_array[$i]['class'] = $dateOther->getName();
-        //$i++;
         static::addDate($dateOther, 'Other Date', $last_date_point, $mods_array, $i);
       }
     }     
@@ -311,18 +272,19 @@ class MODS {
     }
     
     // Place of Publication Section
-    if (isset($mods_object->originInfo->place->placeTerm))
+    if (isset($mods_object->originInfo->place))
     {
-      $counter = 0;
       $mods_array[$i]['value'] = '';
       $mods_array[$i]['label'] = 'Place of Publication';
-      foreach ($mods_object->originInfo->place->placeTerm as $place_of_publication) {
-        if ($counter == 0 && ($place_of_publication['type'] != 'code')) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $place_of_publication;
-        } elseif($place_of_publication['type'] != 'code') {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $place_of_publication;
+      foreach ($mods_object->originInfo->place as $place) {
+        foreach ($place->placeTerm as $place_of_publication) {
+          if ($place_of_publication['type'] != 'code') {
+            if (strlen($mods_array[$i]['value']) > 0) {
+              $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />';
+            }
+            $mods_array[$i]['value'] = $mods_array[$i]['value'] . $place_of_publication;
+          }
         }
-        $counter++;
       }
       $mods_array[$i]['class'] = $mods_object->originInfo->place->placeTerm->getName();
       $i++;
@@ -632,6 +594,8 @@ class MODS {
         if($name_flag == true)
         {
           $name_value = '';
+          $name_date = '';
+          $name_termsofaddress = '';
 
           // If it has a Name Part, add it
           if(isset($subject->name->namePart))
@@ -643,7 +607,12 @@ class MODS {
               }
 	      elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
               {
-                $name_value = $name_value . ', ' . $namePart;
+                //$name_value = $name_value . ', ' . $namePart;
+                $name_date = $name_date . ', ' . $namePart;
+              }
+              elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'termsOfAddress')
+              {
+                $name_termsofaddress = $name_termsofaddress . ', ' . $namePart;
               }
 	      elseif ($namePart != '')
               {
@@ -652,6 +621,12 @@ class MODS {
                 }
                 $name_value = $name_value . $namePart;
               }
+            }
+            if (strlen($name_termsofaddress) > 0) {
+              $name_value = $name_value . $name_termsofaddress;
+            }
+            if (strlen($name_date) > 0) {
+              $name_value = $name_value . $name_date;
             }
           }
           if (isset($subject->name->titleInfo->title)) {
