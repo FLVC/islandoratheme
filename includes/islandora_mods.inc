@@ -607,7 +607,6 @@ class MODS {
               }
 	      elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
               {
-                //$name_value = $name_value . ', ' . $namePart;
                 $name_date = $name_date . ', ' . $namePart;
               }
               elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'termsOfAddress')
@@ -1081,7 +1080,9 @@ class MODS {
       if($child->getName() == 'name')
       {
         $string = '';
-        
+        $name_date = '';
+        $name_termsofaddress = '';
+ 
         foreach ($child->namePart as $namePart) {
           if($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'family')
           {
@@ -1089,12 +1090,22 @@ class MODS {
           }
           elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
           {
-            $string = $string . ', ' . $namePart;
+            $name_date = $name_date . ', ' . $namePart;
+          }
+          elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'termsOfAddress')
+          {
+            $name_termsofaddress = $name_termsofaddress . ', ' . $namePart;
           }
           elseif ($namePart != '')
           {
             $string = $string . ' ' . $namePart;
           }
+        }
+        if (strlen($name_termsofaddress) > 0) {
+          $string = $string . $name_termsofaddress;
+        }
+        if (strlen($name_date) > 0) {
+          $string = $string . $name_date;
         }
         
         $string = '<a href="' . base_path() . 'islandora/search/catch_all_names_mt%3A(' . static::stripSolrValue($string) . ')">' . $string . '</a>';
@@ -1184,7 +1195,9 @@ class MODS {
   protected static function addMODSName($label, $name, &$mods_array, &$i, $randomize_name = NULL)
   {
     $name_value = '';
-    
+    $name_date = '';
+    $name_termsofaddress = '';
+
     // If it has a Name Part, add it
     if(isset($name->namePart))
     {
@@ -1195,13 +1208,23 @@ class MODS {
         }
         elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'date')
         {
-          $name_value = $name_value . ', ' . $namePart;
+          $name_date = $name_date . ', ' . $namePart;
+        }
+        elseif ($namePart != '' && isset($namePart['type']) && $namePart['type'] == 'termsOfAddress')
+        {
+          $name_termsofaddress = $name_termsofaddress . ', ' . $namePart;
         }
         elseif ($namePart != '')
         {
           $name_value = $name_value . ' ' . $namePart;
         }
       } 
+      if (strlen($name_termsofaddress) > 0) {
+        $name_value = $name_value . $name_termsofaddress;
+      }
+      if (strlen($name_date) > 0) {
+        $name_value = $name_value . $name_date;
+      }
     }
     
     if($randomize_name == NULL) {
