@@ -4,6 +4,7 @@
  * @file
  * Implements a simple class for working with MODS data
  */
+require_once('mods_origin_info.inc');
 
 /**
  * Mods Class
@@ -27,8 +28,8 @@ class MODS {
           // If it has a subtitle, add it
           if(isset($titleInfo->subTitle))
           {
-            $subTitle = static::addPeriod($titleInfo->subTitle);
-            $title = static::addColon($title) . ' ' . $subTitle;
+            $subTitle = addPeriod($titleInfo->subTitle);
+            $title = addColon($title) . ' ' . $subTitle;
           }
           
           // If it has a NonSort element, add it before the title
@@ -40,14 +41,14 @@ class MODS {
           // If it has a Display Label attribute, add it before the NonSort and Title
           if(isset($titleInfo['displayLabel']))
           {
-            $title = static::addColon($titleInfo['displayLabel']) . ' ' . $title;
+            $title = addColon($titleInfo['displayLabel']) . ' ' . $title;
           }
           
           // If it has a Part Number, add it
           if(isset($titleInfo->partNumber))
           {
             foreach ($titleInfo->partNumber as $partNumber) {
-              $partNumber = static::addPeriod($partNumber);
+              $partNumber = addPeriod($partNumber);
               $title = $title . ' ' . $partNumber;
             } 
           }
@@ -56,14 +57,14 @@ class MODS {
           if(isset($titleInfo->partName))
           {
             foreach ($titleInfo->partName as $partName) {
-              $partName = static::addPeriod($partName);
+              $partName = addPeriod($partName);
               $title = $title . ' ' . $partName;
             } 
           }
           
           if ($title != '')
           {
-            $title = static::addPeriod($title);
+            $title = addPeriod($title);
           }
           
           switch((string) $titleInfo['type']) { // Get attributes as element indices
@@ -158,137 +159,8 @@ class MODS {
       $i++;
     }
       
-    // Issuance Section
-    if(isset($mods_object->originInfo->issuance))
-    {
-      $counter = 0;
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Issuance';
-      foreach ($mods_object->originInfo->issuance as $issued_as) {
-        if ($counter == 0) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $issued_as;
-        } else {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $issued_as;
-        }
-        $counter++;
-      }
-      $mods_array[$i]['class'] = $mods_object->originInfo->issuance->getName();
-      $i++;
-    }
-    
-    // Frequency Section
-    if(isset($mods_object->originInfo->frequency))
-    {
-      $counter = 0;
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Frequency';
-      foreach ($mods_object->originInfo->frequency as $frequency) {
-        if ($counter == 0) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $frequency;
-        } else {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $frequency;
-        }
-        $counter++;
-      }
-      $mods_array[$i]['class'] = $mods_object->originInfo->frequency->getName();
-      $i++;
-    }
-      
-    // Dates Section
-    if (isset($mods_object->originInfo->copyrightDate))
-    {
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->copyrightDate as $copyrightDate) {
-        static::addDate($copyrightDate, 'Copyright Date', $last_date_point, $mods_array, $i);
-      }
-    }
-    
-    if (isset($mods_object->originInfo->dateCreated))
-    {
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->dateCreated as $dateCreated) {
-        static::addDate($dateCreated, 'Date Created', $last_date_point, $mods_array, $i);
-      }
-    }
-    
-    if (isset($mods_object->originInfo->dateIssued))
-    {
-      $date_counter = 0;      
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->dateIssued as $dateIssued) {
-        static::addDate($dateIssued, 'Date Issued', $last_date_point, $mods_array, $i);
-
-      }
-    }    
-    
-    if (isset($mods_object->originInfo->dateCaptured))
-    {
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->dateCaptured as $dateCaptured) {
-        static::addDate($dateCaptured, 'Date Captured', $last_date_point, $mods_array, $i);
-      }
-    }
-    
-    if (isset($mods_object->originInfo->dateValid))
-    {
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->dateValid as $dateValid) {
-        static::addDate($dateValid, 'Date Valid', $last_date_point, $mods_array, $i);
-      }
-    }
-    
-    if (isset($mods_object->originInfo->dateModified))
-    {
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->dateModified as $dateModified) {
-        static::addDate($dateModified, 'Date Modified', $last_date_point, $mods_array, $i);
-      }
-    }
-    
-    if (isset($mods_object->originInfo->dateOther))
-    {
-      $last_date_point = '';
-      foreach ($mods_object->originInfo->dateOther as $dateOther) {
-        static::addDate($dateOther, 'Other Date', $last_date_point, $mods_array, $i);
-      }
-    }     
-    
-    // Publisher Section
-    if (isset($mods_object->originInfo->publisher))
-    {
-      $counter = 0;
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Publisher';
-      foreach ($mods_object->originInfo->publisher as $publisher) {
-        if ($counter == 0) {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . $publisher;
-        } else {
-          $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $publisher;
-        }
-        $counter++;
-      }
-      $mods_array[$i]['class'] = $mods_object->originInfo->publisher->getName();
-      $i++;
-    }
-    
-    // Place of Publication Section
-    if (isset($mods_object->originInfo->place))
-    {
-      $mods_array[$i]['value'] = '';
-      $mods_array[$i]['label'] = 'Place of Publication';
-      foreach ($mods_object->originInfo->place as $place) {
-        foreach ($place->placeTerm as $place_of_publication) {
-          if ($place_of_publication['type'] != 'code') {
-            if (strlen($mods_array[$i]['value']) > 0) {
-              $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />';
-            }
-            $mods_array[$i]['value'] = $mods_array[$i]['value'] . $place_of_publication;
-          }
-        }
-      }
-      $mods_array[$i]['class'] = $mods_object->originInfo->place->placeTerm->getName();
-      $i++;
-    }
+    // Origin Info Section
+    processOriginInfo($mods_object, $mods_array, $i);
     
     // Physical Description Section
     if (isset($mods_object->physicalDescription->form))
@@ -463,10 +335,10 @@ class MODS {
         if (isset ($identifier['type']) && $identifier != '') {
           
           if($count > 0) {
-            $mods_array['mods:identifier']['value'] .= ', ' . trim($identifier) . ' ' . static::addParentheses($identifier['type']);
+            $mods_array['mods:identifier']['value'] .= ', ' . trim($identifier) . ' ' . addParentheses($identifier['type']);
           }
           else {
-            $mods_array['mods:identifier']['value'] .= trim($identifier) . ' ' . static::addParentheses($identifier['type']);
+            $mods_array['mods:identifier']['value'] .= trim($identifier) . ' ' . addParentheses($identifier['type']);
           }  
           
           $mods_array['mods:identifier']['label'] = 'Identifier';
@@ -1150,8 +1022,8 @@ class MODS {
     // If it has a subtitle, add it
     if(isset($titleInfo->subTitle))
     {
-      $subTitle = static::addPeriod($titleInfo->subTitle);
-      $title = static::addColon($title) . ' ' . $subTitle;
+      $subTitle = addPeriod($titleInfo->subTitle);
+      $title = addColon($title) . ' ' . $subTitle;
     }
           
     // If it has a NonSort element, add it before the title
@@ -1163,14 +1035,14 @@ class MODS {
     // If it has a Display Label attribute, add it before the NonSort and Title
     if(isset($titleInfo['displayLabel']))
     {
-      $title = static::addColon($titleInfo['displayLabel']) . ' ' . $title;
+      $title = addColon($titleInfo['displayLabel']) . ' ' . $title;
     }
           
     // If it has a Part Number, add it
     if(isset($titleInfo->partNumber))
     {
       foreach ($titleInfo->partNumber as $partNumber) {
-        $partNumber = static::addPeriod($partNumber);
+        $partNumber = addPeriod($partNumber);
         $title = $title . ' ' . $partNumber;
       } 
     }
@@ -1179,14 +1051,14 @@ class MODS {
     if(isset($titleInfo->partName))
     {
       foreach ($titleInfo->partName as $partName) {
-        $partName = static::addPeriod($partName);
+        $partName = addPeriod($partName);
         $title = $title . ' ' . $partName;
       } 
     }
 
     if ($title != '')
     {
-      $title = static::addPeriod($title);
+      $title = addPeriod($title);
     }
     
     return $title;
@@ -1254,49 +1126,6 @@ class MODS {
       $mods_array[$add_to_array]['class'] = $add_to_array;
     }
   }
-  
-  // if there isn't a period at the end of $string, add one
-  protected static function addPeriod($string)
-  { 
-    if (substr($string, -1) != '.')
-    {
-      $string.= '.';
-    }
-    
-    return $string;
-  }
-  
-  // if there isn't a colon at the end of $string, add one
-  protected static function addColon($string)
-  {
-    if (substr($string, -1) != ':')
-    {
-      $string.= ':';
-    }
-    
-    return $string;
-  }
-
-  // if there isn't a parentheses at the beginning and end of $string, add one
-  protected static function addParentheses($string)
-  {
-    if($string == '')
-    {
-      return $string;
-    }
-    
-    if (substr($string, 0, 1) != '(')
-    {
-      $string = '(' . $string;
-    }
-
-    if (substr($string, -1) != ')')
-    {
-      $string.= ')';
-    }
-    
-    return $string;
-  }
 
   protected static function stripSolrValue($string)
   {
@@ -1305,32 +1134,6 @@ class MODS {
     $string = str_replace($match, $replace, $string);
 
     return $string;
-  }
-
-  protected static function addDate($newdate, $label, &$last_date_point, &$mods_array, &$i)
-  {
-        if (isset($newdate['point']) && $newdate['point'] == 'end' && $i>0 && $last_date_point == 'start') {
-          $mods_array[$i-1]['value'] .= $newdate;
-        }
-        else {
-          $mods_array[$i]['value'] = '';
-          if (isset($newdate['point']) && $newdate['point'] == 'end') {
-            $mods_array[$i]['value'] = '- ';
-          }
-          $mods_array[$i]['value'] .= $newdate;
-          if (isset($newdate['point']) && $newdate['point'] == 'start') {
-            $mods_array[$i]['value'] .= ' - ';
-          }
-          $mods_array[$i]['label'] = $label;
-          $mods_array[$i]['class'] = $newdate->getName();
-          $i++;
-        }
-        if (isset($newdate['point'])) {
-          $last_date_point = $newdate['point'];
-        }
-        else {
-          $last_date_point = '';
-        }
   }
 }
 
