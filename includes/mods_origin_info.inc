@@ -125,6 +125,9 @@ function processDates($origin, &$mods_array, &$i) {
     foreach ($origin->dateIssued as $dateIssued) {
       addDate($dateIssued, 'Date Issued', $last_date_point, $mods_array, $i);
     }
+    
+    $last_date_issued = array_pop($mods_array); 
+    $mods_array['mods:date'] = $last_date_issued;
   }
 
   if (isset($origin->dateCaptured)) {
