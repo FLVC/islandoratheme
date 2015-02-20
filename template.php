@@ -11,6 +11,7 @@
  */
 
 require_once 'includes/islandora_mods.inc';
+require_once 'includes/theme_helper.inc';
 
 /*
  * Custom function to set some variables used throughout the theme
@@ -499,11 +500,30 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
 }
 
 /**
+ * Override the Islandora Collection Wrapper preprocess function
+ */
+function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variables) { 
+  $islandora_object = $variables['islandora_object'];
+
+  //If the object has a DESC-TEXT datastream, get description information.
+  $variables['description_text'] = false;
+  if (isset($islandora_object['DESC-TEXT']))
+  {
+    $variables['description_text'] = $islandora_object['DESC-TEXT']->content;
+  }
+  
+  //If the collection contains a RELATED-LINKS datastream, process it
+  $variables['related_links_html'] = false;
+  if (isset($islandora_object['RELATED-LINKS']))
+  {
+    $variables['related_links_html'] = create_related_links_html($islandora_object); 
+  }
+}
+
+/**
  * Override the Islandora Collection preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_collection(&$variables) {  
-  // base url
-  global $base_url;
   // base path
   global $base_path;
   $islandora_object = $variables['islandora_object'];
@@ -541,12 +561,11 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
     $title = $results[$i]['title']['value'];
     
     //If the object is a collection, get description information.
-    $collection_description = false;
+    $description_text = false;
     if (isset($fc_object['DESC-TEXT']))
     {
-        $collection_description = $fc_object['DESC-TEXT']->content;
+      $description_text = $fc_object['DESC-TEXT']->content;
     }
-    //end of obtaining collection description
     
     $associated_objects_mods_array[$pid]['pid'] = $pid;
     $associated_objects_mods_array[$pid]['path'] = $object_url;
@@ -563,9 +582,9 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
     $associated_objects_mods_array[$pid]['title_link'] = l($title, $object_url, array('html' => TRUE, 'attributes' => array('title' => $title)));
     $associated_objects_mods_array[$pid]['thumb_link'] = l($thumbnail_img, $object_url, array('html' => TRUE, 'attributes' => array('title' => $title)));
     
-    if($collection_description)
+    if($description_text)
     {
-      $associated_objects_mods_array[$pid]['collection_description'] = $collection_description;
+      $associated_objects_mods_array[$pid]['collection_description'] = $description_text;
     }
   }
   $variables['associated_objects_mods_array'] = $associated_objects_mods_array;

@@ -21,10 +21,11 @@
       print '<h1 id="page-title">' . $islandora_object->label . '</h1>';
     }
     
-    if (isset($islandora_object['DESC-TEXT'])) {
-      //$description_text_url = '/islandora/object/' . $islandora_object->id . '/datastream/DESC-TEXT/view'; 
-      //$description_text = file_get_contents($base_url . $description_text_url);
-      $description_text = $islandora_object['DESC-TEXT']->content;
+    if ($related_links_html) {
+      print $related_links_html;
+    }
+    
+    if ($description_text) {
       $search_url = '/islandora/object/' . $islandora_object->id; ?>
       <div id="local-collection-search">
       <div id="local-search-container">
@@ -40,7 +41,12 @@
       </div>
 
   <?php
-      print '<p>' . $description_text . '</p></div>';
+      if ($related_links_html) {
+        print '<p class="related-links-present">' . $description_text . '</p></div>';
+      }
+      else {
+        print '<p>' . $description_text . '</p></div>';
+      }
     }
   ?>
   
