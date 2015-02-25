@@ -11,7 +11,6 @@
  */
 
 require_once 'includes/islandora_mods.inc';
-require_once 'includes/theme_helper.inc';
 
 /*
  * Custom function to set some variables used throughout the theme
