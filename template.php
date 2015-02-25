@@ -32,6 +32,16 @@ function islandoratheme_preprocess_html(&$vars) {
   drupal_add_js('jQuery(document).ready(function(){ jQuery("#islandora-solr-metadata-search-form").submit(function () { jQuery("input[name^=\'terms\']").removeAttr("autocomplete"); }); });', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionBlankSearch();});', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionAdvancedSearch();});', 'inline');
+  
+  //Retrieve the object
+  $parsed_request = explode('/', $_SERVER['REQUEST_URI']);
+  $islandora_object = islandora_object_load(end($parsed_request));
+  
+  //If it is a collection, add a class to body tag
+  if(isset($islandora_object['COLLECTION_POLICY']))
+  {
+    $vars['classes_array'][] = 'collection-page';
+  }
 }
 
 function islandoratheme_process_html(&$vars) {

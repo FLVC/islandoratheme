@@ -104,6 +104,7 @@ div#logo img
 /* Main Content Wide Styles */
 
 #content-wrapper { margin-bottom: 0; }
+.not-logged-in.collection-page div#tasks { display: none; }
 
 /* Basic Search Module Styles */
 div#top-panels-wrapper {
