@@ -221,7 +221,8 @@ p.related-links-present { margin-left: 240px; }
   right: -12px;
   text-align: center;
   top: -10px;
-  width: 24px;
+  width: 30px;
+  font-size: 120%;
   text-decoration: none;
   font-weight: bold;
   -webkit-border-radius: 12px;
