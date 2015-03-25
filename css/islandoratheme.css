@@ -208,9 +208,9 @@ p.related-links-present { margin-left: 240px; }
   padding: 13px 20px 13px 20px;
   border-radius: 10px;
   background: #fff;
-  background: -moz-linear-gradient(#fff, #999);
-  background: -webkit-linear-gradient(#fff, #999);
-  background: -o-linear-gradient(#fff, #999);    
+  background: -moz-linear-gradient(#fff, #ccc);
+  background: -webkit-linear-gradient(#fff, #ccc);
+  background: -o-linear-gradient(#fff, #ccc);    
 }
 
 .closeModal {
