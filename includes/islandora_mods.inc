@@ -363,9 +363,12 @@ class MODS {
     
     // Notes Section
     if (isset($mods_object->note))
-    {
+    {   
       // display notes with displayLabel first
       foreach ($mods_object->note as $note) {
+        
+        $found = false;
+        
         switch((string) $note['type']) { // Get attributes as element indices
           case 'rights':
             break;
@@ -373,10 +376,21 @@ class MODS {
             break;
           default:
             if(isset($note['displayLabel'])) {     
-              $mods_array[$i]['value'] = $note;
-              $mods_array[$i]['label'] = $note['displayLabel'];
-              $mods_array[$i]['class'] = $note->getName() . '_text';
-              $i++;
+              foreach($mods_array as &$array_element) {
+                if((string)$array_element['label'] == (string)$note['displayLabel']) {
+                  $array_element['value'] = $array_element['value'] . '<br />' . $note;
+                  $found = true;
+                }
+                
+                echo var_dump($array_element);
+              }
+              
+              if(!$found) {
+                $mods_array[$i]['value'] = $note;
+                $mods_array[$i]['label'] = $note['displayLabel'];
+                $mods_array[$i]['class'] = $note->getName() . '_text';
+                $i++;
+              }
             }
         }
       }
