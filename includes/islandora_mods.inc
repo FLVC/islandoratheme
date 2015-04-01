@@ -16,6 +16,7 @@ class MODS {
     $mods_array = array();
     $i = 0;
     $counter = 0;
+    $label = NULL;
 
     // Title Section
     if (isset($mods_object->titleInfo))
@@ -36,12 +37,6 @@ class MODS {
           if(isset($titleInfo->nonSort))
           {
             $title = $titleInfo->nonSort . ' ' . $title;
-          }
-          
-          // If it has a Display Label attribute, add it before the NonSort and Title
-          if(isset($titleInfo['displayLabel']))
-          {
-            $title = addColon($titleInfo['displayLabel']) . ' ' . $title;
           }
           
           // If it has a Part Number, add it
@@ -67,34 +62,40 @@ class MODS {
             $title = addPeriod($title);
           }
           
+          // If it has a Display Label attribute change the label variable
+          if(isset($titleInfo['displayLabel']))
+          {
+            $label = $titleInfo['displayLabel'];
+          }          
+          
           switch((string) $titleInfo['type']) { // Get attributes as element indices
             case 'abbreviated':
               $mods_array[$i]['value'] = $title;
-              $mods_array[$i]['label'] = 'Abbreviated Title';
+              $mods_array[$i]['label'] = isset($label) ? $label : 'Abbreviated Title';
               $mods_array[$i]['class'] = $titleInfo->title->getName() . '_abbreviated';
               $i++;
               break;
             case 'alternative':
               $mods_array[$i]['value'] = $title;
-              $mods_array[$i]['label'] = 'Alternative Title';
+              $mods_array[$i]['label'] = isset($label) ? $label : 'Alternative Title';
               $mods_array[$i]['class'] = $titleInfo->title->getName() . '_alternative';
               $i++;
               break;
             case 'translated':
               $mods_array[$i]['value'] = $title;
-              $mods_array[$i]['label'] = 'Translated Title';
+              $mods_array[$i]['label'] = isset($label) ? $label : 'Translated Title';
               $mods_array[$i]['class'] = $titleInfo->title->getName() . '_translated';
               $i++;
               break;
             case 'uniform':
               $mods_array[$i]['value'] = $title;
-              $mods_array[$i]['label'] = 'Uniform Title';
+              $mods_array[$i]['label'] = isset($label) ? $label : 'Uniform Title';
               $mods_array[$i]['class'] = $titleInfo->title->getName() . '_uniform';
               $i++;
               break;          
             default:
               $mods_array['mods:title']['value'] = $title;
-              $mods_array['mods:title']['label'] = 'Title';
+              $mods_array['mods:title']['label'] = isset($label) ? $label : 'Title';
               $mods_array['mods:title']['class'] = $titleInfo->title->getName();
               $i++;
           }
