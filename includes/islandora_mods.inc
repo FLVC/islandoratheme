@@ -381,8 +381,6 @@ class MODS {
                   $array_element['value'] = $array_element['value'] . '<br />' . $note;
                   $found = true;
                 }
-                
-                echo var_dump($array_element);
               }
               
               if(!$found) {
