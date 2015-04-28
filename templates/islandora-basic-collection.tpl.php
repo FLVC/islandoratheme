@@ -22,6 +22,8 @@
  */
 ?>
 
+<?php global $base_url; ?>
+
 <?php if(isset($islandora_object_label)): ?>
   <?php drupal_set_title("$islandora_object_label"); ?>
 <?php endif; ?>
@@ -29,6 +31,7 @@
 <div class="islandora islandora-basic-collection">
     <?php $row_field = 0; ?>
     <?php $description_length = 300; ?>
+    <?php $number_of_collections = 0; ?>
     <?php foreach($associated_objects_mods_array as $associated_object): ?>
       <div class="islandora-basic-collection-object islandora-basic-collection-list-item clearfix"> 
         <dl class="<?php print $associated_object['class']; ?>">
@@ -66,6 +69,22 @@
             <?php endif; ?>            
         </dl>
       </div>
+      <?php $collection_policy = $associated_object['object']->getDataStream('COLLECTION_POLICY'); ?>
+      <?php if($collection_policy): ?>
+      <?php $number_of_collections++; ?>
+      <?php endif; ?>
     <?php $row_field++; ?>
     <?php endforeach; ?>
+
+  <?php
+    
+    //This code sends drupal to the search display if this is the bottom collection
+    if ($number_of_collections == 0 && !user_is_logged_in()) {
+      $dc_array = DublinCore::importFromXMLString($islandora_object['DC']->content)->asArray();
+      echo drupal_goto($base_url. '/islandora/search?type=edismax&collection=' . $dc_array['dc:identifier'][
+'value']);
+    }
+  
+  ?>
+
 </div>
