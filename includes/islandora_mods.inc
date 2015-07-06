@@ -251,7 +251,7 @@ class MODS {
       }
       $mods_array[$i]['value'] = $lang_display;
       $mods_array[$i]['label'] = 'Language(s)';
-      $mods_array[$i]['class'] = $language->languageTerm->getName() . '_text';
+      $mods_array[$i]['class'] = $language->getName() . '_text';
       $i++;
     }
     
