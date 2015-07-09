@@ -38,7 +38,7 @@
     }
 
     // For PALMM, all non-administrator users go to search display if at bottom collection
-    if ($number_of_collections == 0 && substr($islandora_object->id, 0, 5) == 'palmm' && !user_has_role('administrator')) {
+    if ($number_of_collections == 0 && substr($islandora_object->id, 0, 5) == 'palmm' && user_role_load_by_name('administrator') == false) {
       echo drupal_goto($base_url. '/islandora/search?type=edismax&collection=' . $islandora_object->id);
     }
   
