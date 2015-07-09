@@ -34,8 +34,12 @@
     
     //This code sends drupal to the search display if this is the bottom collection
     if ($number_of_collections == 0 && !user_is_logged_in()) {
-      $dc_array = DublinCore::importFromXMLString($islandora_object['DC']->content)->asArray();
-      echo drupal_goto($base_url. '/islandora/search?type=edismax&collection=' . $dc_array['dc:identifier']['value']);
+      echo drupal_goto($base_url. '/islandora/search?type=edismax&collection=' . $islandora_object->id);
+    }
+
+    // For PALMM, all non-administrator users go to search display if at bottom collection
+    if ($number_of_collections == 0 && substr($islandora_object->id, 0, 5) == 'palmm' && !user_has_role('administrator')) {
+      echo drupal_goto($base_url. '/islandora/search?type=edismax&collection=' . $islandora_object->id);
     }
   
   ?>
