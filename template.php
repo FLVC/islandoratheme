@@ -36,12 +36,14 @@ function islandoratheme_preprocess_html(&$vars) {
   
   //Retrieve the object
   $parsed_request = explode('/', $_SERVER['REQUEST_URI']);
-  $islandora_object = islandora_object_load(end($parsed_request));
+  if (islandora_is_valid_pid(urldecode(end($parsed_request)))) {
+    $islandora_object = islandora_object_load(urldecode(end($parsed_request)));
   
-  //If it is a collection, add a class to body tag
-  if(isset($islandora_object['COLLECTION_POLICY']))
-  {
-    $vars['classes_array'][] = 'collection-page';
+    //If it is a collection, add a class to body tag
+    if(isset($islandora_object['COLLECTION_POLICY']))
+    {
+      $vars['classes_array'][] = 'collection-page';
+    }
   }
 }
 
