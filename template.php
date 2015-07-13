@@ -33,6 +33,8 @@ function islandoratheme_preprocess_html(&$vars) {
   drupal_add_js('jQuery(document).ready(function(){ jQuery("#islandora-solr-metadata-search-form").submit(function () { jQuery("input[name^=\'terms\']").removeAttr("autocomplete"); }); });', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionBlankSearch();});', 'inline');
   drupal_add_js('jQuery(document).ready(function(){collectionAdvancedSearch();});', 'inline');
+
+  module_load_include('inc', 'islandora', 'includes/utilities');
   
   //Retrieve the object
   $parsed_request = explode('/', $_SERVER['REQUEST_URI']);
