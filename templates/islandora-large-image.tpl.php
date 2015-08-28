@@ -123,7 +123,7 @@ if (isset($islandora_object_label))
           <ul>
 	    <?php foreach ($parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
-                 <!--- <li><?php print l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li> -->
+                  <li><?php print l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>
                  <li><?php print l($collection->label, "islandora/object/{$collection->id}"); ?></li>
        	       <?php endif; ?>
@@ -183,7 +183,7 @@ if (isset($islandora_object_label))
           <ul>
             <?php foreach ($parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
-                 <!--- <li><?php print l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li> -->
+                  <li><?php print l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>
                  <li><?php print l($collection->label, "islandora/object/{$collection->id}"); ?></li>
                <?php endif; ?>

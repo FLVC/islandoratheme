@@ -535,6 +535,84 @@ function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variable
 }
 
 /**
+ * Implements hook_preprocess_HOOK for islandora_scholar_citation
+ */
+function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
+  global $base_url;
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . 'css/citation.css', 
+    array('group' => CSS_THEME, 'type' => 'file'));  
+  $islandora_object = $variables['islandora_object'];
+  
+  if (isset($islandora_object['PDF']) && 
+    islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
+    $variables['islandora_view_link'] = 
+      l(t('Full Screen View'), "islandora/object/$islandora_object->id/datastream/PDF/view/citation.pdf");
+    $variables['islandora_download_link'] =
+      l(t('Download pdf'), "islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf");
+    $variables['citation_view'] = 
+      $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/PDF/view';
+  }
+
+  if (isset($islandora_object['TN'])) {
+    $variables['islandora_thumbnail_img'] =
+      $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/TN/view';
+  }
+
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', 
+      array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array(); 
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
+}
+
+/**
+ * Implements hook_preprocess_HOOK for islandora_scholar_thesis
+ */
+function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
+  global $base_url;
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . 'css/thesis.css', 
+    array('group' => CSS_THEME, 'type' => 'file'));
+  $islandora_object = $variables['islandora_object'];
+  
+  if (isset($islandora_object['PDF']) &&
+    islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
+    $variables['islandora_view_link'] =
+      l(t('Full Screen View'), "islandora/object/$islandora_object->id/datastream/PDF/view/citation.pdf");
+    $variables['islandora_download_link'] =
+      l(t('Download pdf'), "islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf");
+    $variables['citation_view'] =
+      $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/PDF/view';
+  }
+
+  if (isset($islandora_object['TN'])) {
+    $variables['islandora_thumbnail_img'] =
+      $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/TN/view';
+  }
+
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', 
+      array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+
+  // Grab the branding information
+  $variables['branding_info'] = get_branding_info($variables);
+}
+
+/**
  * Override the Islandora Collection preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_collection(&$variables) {  
@@ -714,7 +792,12 @@ function islandoratheme_islandora_newspaper(array $variables) {
   if (count($parent_collections) > 0) {
     $newspaper_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
-      if (substr($collection->id, 0, 5) != 'palmm') {
+      if (substr($collection->id, 0, 5) == 'palmm') {
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
+      else {
         $newspaper_output .= '<li>';
         $newspaper_output .=  l($collection->label, "islandora/object/{$collection->id}");
         $newspaper_output .= '</li>';
@@ -746,7 +829,12 @@ function islandoratheme_islandora_serial_object(array $variables) {
   if (count($parent_collections) > 0) {
     $serial_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
-      if (substr($collection->id, 0, 5) != 'palmm') {
+      if (substr($collection->id, 0, 5) == 'palmm') {
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
+      else {
         $serial_output .= '<li>';
         $serial_output .=  l($collection->label, "islandora/object/{$collection->id}");
         $serial_output .= '</li>';
@@ -859,7 +947,12 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   if (count($parent_collections) > 0) {
     $serial_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
-      if (substr($collection->id, 0, 5) != 'palmm') {
+      if (substr($collection->id, 0, 5) == 'palmm') {
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
+      else {
         $serial_output .= '<li>';
         $serial_output .=  l($collection->label, "islandora/object/{$collection->id}");
         $serial_output .= '</li>';
