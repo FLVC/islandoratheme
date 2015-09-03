@@ -23,6 +23,13 @@ function addPeriod($string) {
   return $string;
 }
 
+//if there are quotes, remove them
+function removeQuotes($string) {
+  $no_sq_string = str_replace("'", "", $string);
+  $final_string = str_replace('"', '', $no_sq_string);
+  return $final_string;
+}
+
 // if there isn't a parentheses at the beginning and end of $string, add one
 function addParentheses($string) {
   if ($string == '') {

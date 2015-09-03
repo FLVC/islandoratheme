@@ -385,7 +385,7 @@ class MODS {
               
               if(!$found) {
                 $mods_array[$i]['value'] = $note;
-                $mods_array[$i]['label'] = $note['displayLabel'];
+                $mods_array[$i]['label'] = removeQuotes((string)$note['displayLabel']);
                 $mods_array[$i]['class'] = $note->getName() . '_text';
                 $i++;
               }
