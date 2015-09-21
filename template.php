@@ -110,6 +110,9 @@ function islandoratheme_preprocess_islandora_binary_object(&$variables) {
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
 }
 
 /**
@@ -144,6 +147,9 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
 }
 
 /**
@@ -183,6 +189,9 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
 
  // Start getting parameters for the player...
   $audio_params = array(
@@ -263,6 +272,9 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
 
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
+
   // if serial article, set parent serial mods array
   $part_of = $islandora_object->relationships->get(ISLANDORA_RELS_EXT_URI, 'isComponentOf');
   if(!empty($part_of)) {
@@ -286,7 +298,7 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
         $variables['serial_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
         $object_url = 'islandora/object/' . $parent_serial_id;
         $variables['serial_tn_html'] = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $variables['serial_parent_collections'] = islandora_get_parents_from_rels_ext($parent_serial_object);
+        $variables['serial_parent_collections'] = remove_non_public_sites_from_collections(islandora_get_parents_from_rels_ext($parent_serial_object));
 
         // build navigation links
         $links = array();
@@ -381,6 +393,9 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
 }
 
 /**
@@ -422,7 +437,7 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
         $variables['newspaper_mods_array'] = MODS::as_formatted_array(simplexml_load_string($parent_mods));
         $object_url = 'islandora/object/' . $parent_pid;
         $variables['newspaper_tn_html'] = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
-        $variables['newspaper_parent_collections'] = islandora_get_parents_from_rels_ext($parent_object);
+        $variables['newspaper_parent_collections'] = remove_non_public_sites_from_collections(islandora_get_parents_from_rels_ext($parent_object));
       }
     }
   }
@@ -432,6 +447,9 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
 }
 
 /**
@@ -473,6 +491,9 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
 
   // Check if the object is part of a Compound Object
   compound_object_check($islandora_object, $variables);
+
+  // remove non-public sites from collection links
+  $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
 
   // Get parameters for the player...
   $video_params = array(
@@ -788,7 +809,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
   $newspaper_output .= '</div><div id="tabs-2">';
   $newspaper_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-newspaper-thumbnail');
 
-  $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
+  $parent_collections = remove_non_public_sites_from_collections(islandora_get_parents_from_rels_ext($islandora_object));
   if (count($parent_collections) > 0) {
     $newspaper_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
@@ -825,7 +846,7 @@ function islandoratheme_islandora_serial_object(array $variables) {
   $serial_output .= '</div><div id="tabs-2">';
   $serial_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-serial-thumbnail');
 
-  $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
+  $parent_collections = remove_non_public_sites_from_collections(islandora_get_parents_from_rels_ext($islandora_object));
   if (count($parent_collections) > 0) {
     $serial_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
@@ -943,7 +964,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
 
   $serial_output .= islandoratheme_create_mods_table($parent_serial_object, 'islandora-serial-thumbnail');
 
-  $parent_collections = islandora_get_parents_from_rels_ext($parent_serial_object);
+  $parent_collections = remove_non_public_sites_from_collections(islandora_get_parents_from_rels_ext($parent_serial_object));
   if (count($parent_collections) > 0) {
     $serial_output .= '<div><h2>In Collections</h2><ul>';
     foreach ($parent_collections as $collection) {
@@ -1126,6 +1147,23 @@ function islandoratheme_create_mods_table($islandora_object, $thumbclass) {
   $full_description .= '</tbody></table></div>';
 
   return $full_description;
+}
+
+function remove_non_public_sites_from_collections($orig_collections)
+{
+    $non_public_sites = array("fiu", "uf", "unf", "usf", "uwf");
+
+    $new_collections = array();
+    if (count($orig_collections) > 0) {
+      foreach ($orig_collections as $collection) {
+        $matches = array();
+        preg_match('/^([^:]*)/', $collection->id, $matches);
+        if (!in_array($matches[0],$non_public_sites)) {
+          $new_collections[] = $collection;
+        }
+      }
+      return $new_collections;
+    }
 }
 
 /**
