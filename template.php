@@ -794,7 +794,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
     foreach ($parent_collections as $collection) {
       if (substr($collection->id, 0, 5) == 'palmm') {
         $full_description .= '<li>';
-        $full_description .=  l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
       else {
@@ -831,7 +831,7 @@ function islandoratheme_islandora_serial_object(array $variables) {
     foreach ($parent_collections as $collection) {
       if (substr($collection->id, 0, 5) == 'palmm') {
         $full_description .= '<li>';
-        $full_description .=  l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
       else {
@@ -949,7 +949,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
     foreach ($parent_collections as $collection) {
       if (substr($collection->id, 0, 5) == 'palmm') {
         $full_description .= '<li>';
-        $full_description .=  l($collection->label, "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
       else {
