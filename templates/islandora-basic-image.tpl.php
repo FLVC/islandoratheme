@@ -22,6 +22,8 @@
  */
 ?>
 
+<?php global $base_url; ?>
+
 <?php if(isset($islandora_object_label)): ?>
   <?php drupal_set_title("$islandora_object_label"); ?>
 <?php endif; ?>
@@ -124,6 +126,9 @@
 	    <?php foreach ($parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
                   <li><?php print l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
+               <?php elseif (substr($base_url, 7, 5) == 'palmm'): ?>
+                  <?php $parsed_pid = explode(':',$collection->id); ?>
+                  <li><?php print l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>
                  <li><?php print l($collection->label, "islandora/object/{$collection->id}"); ?></li>
                <?php endif; ?>
@@ -185,6 +190,9 @@
             <?php foreach ($parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
                   <li><?php print l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
+               <?php elseif (substr($base_url, 7, 5) == 'palmm'): ?>
+                  <?php $parsed_pid = explode(':',$collection->id); ?>
+                  <li><?php print l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>
                  <li><?php print l($collection->label, "islandora/object/{$collection->id}"); ?></li>
                <?php endif; ?>

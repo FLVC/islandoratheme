@@ -818,6 +818,12 @@ function islandoratheme_islandora_newspaper(array $variables) {
         $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
+      else if (substr($base_url, 7, 5) == 'palmm') {
+        $parsed_pid = explode(':',$collection->id);
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
       else {
         $newspaper_output .= '<li>';
         $newspaper_output .=  l($collection->label, "islandora/object/{$collection->id}");
@@ -853,6 +859,12 @@ function islandoratheme_islandora_serial_object(array $variables) {
       if (substr($collection->id, 0, 5) == 'palmm') {
         $full_description .= '<li>';
         $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
+      else if (substr($base_url, 7, 5) == 'palmm') {
+        $parsed_pid = explode(':',$collection->id);
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
       else {
@@ -971,6 +983,12 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
       if (substr($collection->id, 0, 5) == 'palmm') {
         $full_description .= '<li>';
         $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
+        $full_description .= '</li>';
+      }
+      else if (substr($base_url, 7, 5) == 'palmm') {
+        $parsed_pid = explode(':',$collection->id);
+        $full_description .= '<li>';
+        $full_description .=  l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
       else {
