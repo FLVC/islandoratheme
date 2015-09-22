@@ -139,7 +139,7 @@ if (isset($islandora_content))
 	    <?php foreach ($parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
                   <li><?php print l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
-               <?php elseif (substr($base_url, 7, 5) == 'palmm'): ?>
+               <?php elseif (strpos($base_url, 'palmm') !== false): ?>
                   <?php $parsed_pid = explode(':',$collection->id); ?>
                   <li><?php print l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>
@@ -201,7 +201,7 @@ if (isset($islandora_content))
             <?php foreach ($parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
                   <li><?php print l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
-               <?php elseif (substr($base_url, 7, 5) == 'palmm'): ?>
+               <?php elseif (strpos($base_url, 'palmm') !== false): ?>
                   <?php $parsed_pid = explode(':',$collection->id); ?>
                   <li><?php print l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>
@@ -259,7 +259,7 @@ if (isset($islandora_content))
             <?php foreach ($serial_parent_collections as $collection): ?>
                <?php if(substr($collection->id, 0, 5) == 'palmm'): ?>
                   <li><?php print l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}"); ?></li>
-               <?php elseif (substr($base_url, 7, 5) == 'palmm'): ?>
+               <?php elseif (strpos($base_url, 'palmm') !== false): ?>
                   <?php $parsed_pid = explode(':',$collection->id); ?>
                   <li><?php print l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}"); ?></li>
                <?php else: ?>

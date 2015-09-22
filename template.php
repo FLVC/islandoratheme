@@ -818,7 +818,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
         $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
-      else if (substr($base_url, 7, 5) == 'palmm') {
+      else if (strpos($base_url, 'palmm') !== false) {
         $parsed_pid = explode(':',$collection->id);
         $full_description .= '<li>';
         $full_description .=  l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}");
@@ -861,7 +861,7 @@ function islandoratheme_islandora_serial_object(array $variables) {
         $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
-      else if (substr($base_url, 7, 5) == 'palmm') {
+      else if (strpos($base_url, 'palmm') !== false) {
         $parsed_pid = explode(':',$collection->id);
         $full_description .= '<li>';
         $full_description .=  l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}");
@@ -985,7 +985,7 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
         $full_description .=  l($collection->label . " (PALMM)", "http://palmm.digital.flvc.org/islandora/object/{$collection->id}");
         $full_description .= '</li>';
       }
-      else if (substr($base_url, 7, 5) == 'palmm') {
+      else if (strpos($base_url, 'palmm') !== false) {
         $parsed_pid = explode(':',$collection->id);
         $full_description .= '<li>';
         $full_description .=  l($collection->label, str_replace('palmm', $parsed_pid[0], $base_url) . "/islandora/object/{$collection->id}");
@@ -1173,7 +1173,7 @@ function remove_non_public_sites_from_collections($orig_collections)
 
     $non_public_sites = array("fiu", "uf", "unf", "usf", "uwf");
 
-    if (substr($base_url, 7, 5) != 'palmm')
+    if (strpos($base_url, 'palmm') === false)
       return $orig_collections;
 
     $new_collections = array();
