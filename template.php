@@ -1151,7 +1151,12 @@ function islandoratheme_create_mods_table($islandora_object, $thumbclass) {
 
 function remove_non_public_sites_from_collections($orig_collections)
 {
+    global $base_url;
+
     $non_public_sites = array("fiu", "uf", "unf", "usf", "uwf");
+
+    if (substr($base_url, 7, 5) != 'palmm')
+      return $orig_collections;
 
     $new_collections = array();
     if (count($orig_collections) > 0) {
