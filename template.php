@@ -650,7 +650,7 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   $start = $page_size * ($page_number);
   $end = min($start + $page_size, $total_count);
 
-  for ($i = $start; $i < $end; $i++) {
+  for ($i=0; $i < $total_count; $i++) {
     $pid = $results[$i]['object']['value'];
     $fc_object = islandora_object_load($pid);
     if (!isset($fc_object)) {
