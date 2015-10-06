@@ -560,7 +560,7 @@ function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variable
  */
 function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   global $base_url;
-  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . 'css/citation.css', 
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/citation.css', 
     array('group' => CSS_THEME, 'type' => 'file'));  
   $islandora_object = $variables['islandora_object'];
   
@@ -599,7 +599,7 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
  */
 function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   global $base_url;
-  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . 'css/thesis.css', 
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/thesis.css', 
     array('group' => CSS_THEME, 'type' => 'file'));
   $islandora_object = $variables['islandora_object'];
   
