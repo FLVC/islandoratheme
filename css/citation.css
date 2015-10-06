@@ -2,3 +2,11 @@
 body.no-sidebars .islandora-citation-content { float: none; width: 100%; }
 body.no-sidebars .islandora-citation-sidebar { float: none; width: 100%; }
 .islandora-citation-content { float: none; width: 100%; }
+
+/* FSU Site specific CSS */
+.site-name-fsudigitalflvcorg .typeOfResource { display: none; }
+.site-name-fsudigitalflvcorg .genre { display: none; }
+.site-name-fsudigitalflvcorg .issuance { display: none; }
+.site-name-fsudigitalflvcorg .form { display: none; }
+.site-name-fsudigitalflvcorg .extent { display: none; }
+.site-name-fsudigitalflvcorg .language_text { display: none; }
