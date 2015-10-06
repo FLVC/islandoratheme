@@ -61,7 +61,7 @@ if (isset($islandora_object->label))
 
           <?php if(trim($value['value']) != ''): ?>
 
-            <tr class="islandora-definition-row">
+            <tr class="islandora-definition-row <?php print $value['class']; ?>">
             <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['label']; ?>:
             </th>
