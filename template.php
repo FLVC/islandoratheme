@@ -568,8 +568,7 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
     islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
     $variables['islandora_view_link'] = 
       l(t('Full Screen View'), "islandora/object/$islandora_object->id/datastream/PDF/view/citation.pdf");
-    $variables['islandora_download_link'] =
-      l(t('Download pdf'), "islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf");
+    $variables['islandora_download_link'] = "/islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf";
     $variables['citation_view'] = 
       $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/PDF/view';
   }
@@ -607,8 +606,7 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
     islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
     $variables['islandora_view_link'] =
       l(t('Full Screen View'), "islandora/object/$islandora_object->id/datastream/PDF/view/citation.pdf");
-    $variables['islandora_download_link'] =
-      l(t('Download pdf'), "islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf");
+    $variables['islandora_download_link'] = "/islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf";
     $variables['citation_view'] =
       $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/PDF/view';
   }
