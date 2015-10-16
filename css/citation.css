@@ -7,7 +7,9 @@ button.download {
   height: 40px;
   width: 145px;
   margin: 15px 0px 0px 0px;
+  border-radius: 5px;
 }
+
 /* FSU Site specific CSS */
 .site-name-fsudigitalflvcorg .typeOfResource { display: none; }
 .site-name-fsudigitalflvcorg .genre { display: none; }
