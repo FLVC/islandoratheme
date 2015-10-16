@@ -76,7 +76,7 @@ if (isset($islandora_object->label))
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
                   <?php print '<img src="' . $islandora_thumbnail_img . '">'; ?>
                 <?php endif; ?>
-                <button class="download">Download &dArr;</button>
+                <button class="download">Download PDF</button>
                 </a>
                 </td>
             <?php endif; ?>

@@ -5,8 +5,8 @@ body.no-sidebars .islandora-citation-sidebar { float: none; width: 100%; }
 button.download {
   float: right;
   height: 40px;
-  width: 130px;
-  margin: 15px 7px 0px 0px;
+  width: 145px;
+  margin: 15px 0px 0px 0px;
 }
 /* FSU Site specific CSS */
 .site-name-fsudigitalflvcorg .typeOfResource { display: none; }
