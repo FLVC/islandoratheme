@@ -3,12 +3,12 @@ body.no-sidebars .islandora-thesis-content { float: none; width: 100%; }
 body.no-sidebars .islandora-thesis-sidebar { float: none; width: 100%; }
 .islandora-thesis-content { float: none; width: 100%; }
 button.download {
-  float: right;
   height: 40px;
   width: 145px;
-  margin: 15px 0px 0px 0px;
+  margin: 15px 0px 0px 7px;
   border-radius: 5px;
 }
+.islandora-basic-image-thumbnail { text-align: center; }
 
 /* FSU Site specific CSS */
 .site-name-fsudigitalflvcorg .typeOfResource { display: none; }
