@@ -70,14 +70,16 @@ if (isset($islandora_object->label))
 
             <?php if($row_field == 0): ?>
               <td class="islandora-basic-image-thumbnail" rowspan="8">
-                <a href="<?php print $islandora_download_link; ?>">
-                <?php if(isset($islandora_full_url)): ?>
-                  <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
-                <?php elseif(isset($islandora_thumbnail_img)): ?>
-                  <?php print '<img src="' . $islandora_thumbnail_img . '">'; ?>
+                <?php if(isset($islandora_download_link)): ?>
+                  <a href="<?php print $islandora_download_link; ?>">
+                  <?php if(isset($islandora_full_url)): ?>
+                    <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
+                  <?php elseif(isset($islandora_thumbnail_img)): ?>
+                    <?php print '<img src="' . $islandora_thumbnail_img . '">'; ?>
+                  <?php endif; ?>
+                  <button class="download">Download PDF</button>
+                  </a>
                 <?php endif; ?>
-                <button class="download">Download PDF</button>
-                </a>
               </td>
             <?php endif; ?>
             </tr>
