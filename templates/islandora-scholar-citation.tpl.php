@@ -98,9 +98,11 @@ if (isset($islandora_object->label))
 <div id="tabs-2">
   <div class="islandora-citation-object islandora">
     <div class="islandora-citation-content-wrapper clearfix">
-      <div class="islandora-citation-content">
-        <p><embed height="600" src="<?php print $citation_view ?>" width="100%"></embed></p>
-      </div>
+      <?php if(isset($citation_view)): ?>
+        <div class="islandora-citation-content">
+          <p><embed height="600" src="<?php print $citation_view ?>" width="100%"></embed></p>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>
