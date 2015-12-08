@@ -70,7 +70,8 @@ if (isset($islandora_object->label))
 
             <?php if($row_field == 0): ?>
               <td class="islandora-basic-image-thumbnail" rowspan="8">
-
+          
+                <?php if (module_exists('islandora_usage_stats_callbacks')): ?>
                 <?php $callback_url = url('islandora_usage_stats_callbacks/object_stats/' . $islandora_object->id, array('absolute' => TRUE)); ?>
                 <?php $stats = json_decode(file_get_contents($callback_url), TRUE); ?>
                 <?php $views = count($stats['views']); ?>
@@ -79,7 +80,7 @@ if (isset($islandora_object->label))
                   <span id="usage-stages-views">Views: <?php print $views; ?></span><br/>
                   <span id="usage-stages-downloads">Downloads: <?php print $downloads; ?></span>
                 </div>
-
+                <?php endif; ?>
 
                 <?php if(isset($islandora_download_link)): ?>
                   <a href="<?php print $islandora_download_link; ?>">
