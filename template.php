@@ -803,7 +803,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
 
   $newspaper_output = '<h3>' . $islandora_object->label . '</h3>';
   $newspaper_output .= '<div id="tabs"><ul><li><a href="#tabs-1">Summary</a></li><li><a href="#tabs-2">Newspaper Details</a></li></ul><div id="tabs-1">';
-  $newspaper_output .= theme_islandora_newspaper($variables);
+  $newspaper_output .= $variables['islandora_content'];
   $newspaper_output .= '</div><div id="tabs-2">';
   $newspaper_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-newspaper-thumbnail');
 
