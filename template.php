@@ -1169,7 +1169,7 @@ function remove_non_public_sites_from_collections($orig_collections)
 {
     global $base_url;
 
-    $non_public_sites = array("fiu", "uf", "unf", "usf", "uwf");
+    $non_public_sites = array("fiu", "uf", "unf", "usf");
 
     if (strpos($base_url, 'palmm') === false)
       return $orig_collections;
