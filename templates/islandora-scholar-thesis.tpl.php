@@ -70,18 +70,6 @@ if (isset($islandora_object->label))
 
             <?php if($row_field == 0): ?>
                 <td class="islandora-basic-image-thumbnail" rowspan="8">
-
-                <?php if (module_exists('islandora_usage_stats_callbacks')): ?>
-                <?php $callback_url = url('islandora_usage_stats_callbacks/object_stats/' . $islandora_object->id, array('absolute' => TRUE)); ?>
-                <?php $stats = json_decode(file_get_contents($callback_url), TRUE); ?>
-                <?php $views = count($stats['views']); ?>
-                <?php $downloads = count($stats['downloads']); ?>
-                <div id="usage-stats-display">
-                  <span id="usage-stages-views">Views: <?php print $views; ?></span><br/>
-                  <span id="usage-stages-downloads">Downloads: <?php print $downloads; ?></span>
-                </div>
-                <?php endif; ?>
-
                 <?php if(isset($islandora_download_link)): ?>
                 <a href="<?php print $islandora_download_link; ?>">
                 <?php if(isset($islandora_full_url)): ?>
@@ -89,9 +77,9 @@ if (isset($islandora_object->label))
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
                   <?php print '<img src="' . $islandora_thumbnail_img . '">'; ?>
                 <?php endif; ?>
-                <?php endif; ?>
                 <button class="download">Download PDF</button>
                 </a>
+                <?php endif; ?>
                 </td>
             <?php endif; ?>
             </tr>
@@ -110,9 +98,11 @@ if (isset($islandora_object->label))
 <div id="tabs-2">
   <div class="islandora-thesis-object islandora">
     <div class="islandora-thesis-content-wrapper clearfix">
-      <div class="islandora-thesis-content">
-        <p><embed height="600" src="<?php print $citation_view ?>" width="100%"></embed></p>
-      </div>
+      <?php if(isset($thesis_view)): ?>
+        <div class="islandora-thesis-content">
+          <p><embed height="600" src="<?php print $thesis_view ?>" width="100%"></embed></p>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>
