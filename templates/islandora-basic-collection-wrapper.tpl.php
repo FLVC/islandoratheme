@@ -15,7 +15,7 @@
   <?php
     if (isset($islandora_object['BANNER'])) {
       $banner_url = '/islandora/object/' . $islandora_object->id . '/datastream/BANNER/view';
-      print '<p><img src="' . $banner_url . '"></p>';
+      print '<p><img class="islandora-basic-collection-datastream-banner" src="' . $banner_url . '"></p>';
     }
     else {
       print '<h1 id="page-title">' . $islandora_object->label . '</h1>';
