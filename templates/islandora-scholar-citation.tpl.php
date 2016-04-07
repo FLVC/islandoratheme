@@ -23,6 +23,33 @@
 
 <?php
 
+// Test to see if the object is embargoed, and if so, when does it expire? 
+if (!islandora_datastream_load('RELS-INT', $islandora_object)) {
+  $embargoed = FALSE;
+} 
+else {
+
+  // This is not the right way to get the embargo date, replace with tuque relationships call later 
+  $rels_int_xml = $islandora_object['RELS-INT']->content;
+  $xml_obj = simplexml_load_string($rels_int_xml);
+  $xml_obj->registerXPathNamespace('islandora-embargo', 'info:islandora/islandora-system:def/scholar#');
+  $expiry_array = $xml_obj->xpath('//islandora-embargo:embargo-until');
+  if (!empty($expiry_array)) {
+    $embargoed = TRUE;
+    $expiry = $expiry_array[0][0];
+    if ($expiry == "indefinite") {
+      $expiry_msg = "This record is permanently embargoed";
+    }
+    else {
+      $expiry_date = date("F j, Y", strtotime($expiry));
+      $expiry_msg = "This record is embargoed until {$expiry_date}";
+    }
+  } 
+  else {
+    $embargoed = FALSE;
+  }
+}
+
 if (isset($islandora_object->label))
 {
   drupal_set_title($islandora_object->label);
@@ -46,7 +73,9 @@ if (isset($islandora_object->label))
     <li><a href="#tabs-2">Full Description</a></li>
     <li><a href="#tabs-3">Serial Details</a></li>
   <?php else: ?>
+    <?php if (!$embargoed) { ?>
     <li><a href="#tabs-2">View Document</a></li>
+    <?php } ?>
   <?php endif; ?>
 </ul>
 
@@ -57,9 +86,7 @@ if (isset($islandora_object->label))
         <tbody>
         <?php $row_field = 0; ?>
         <?php foreach($mods_array as $key => $value): ?>
-
           <?php if(trim($value['value']) != ''): ?>
-
             <tr class="islandora-definition-row <?php print $value['class']; ?>">
             <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
               <?php print $value['label']; ?>:
@@ -70,24 +97,35 @@ if (isset($islandora_object->label))
 
             <?php if($row_field == 0): ?>
               <td class="islandora-basic-image-thumbnail" rowspan="8">
-                <?php if(isset($islandora_download_link)): ?>
-                  <a href="<?php print $islandora_download_link; ?>">
+
+
                   <?php if(isset($islandora_full_url)): ?>
                     <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
+
                   <?php elseif(isset($islandora_thumbnail_img)): ?>
                     <?php print '<img src="' . $islandora_thumbnail_img . '">'; ?>
+
                   <?php endif; ?>
-                  <button class="download">Download PDF</button>
-                  </a>
-                <?php endif; ?>
+
+                  <?php if (!$embargoed) { ?>
+                    <?php if(isset($islandora_download_link)): ?>
+                      <a href="<?php print $islandora_download_link; ?>">
+                        <button class="download">Download PDF</button>
+                      </a>
+                    <?php endif; ?>
+
+                  <?php } else { ?>
+                  <button disabled class="download">Download PDF</button>
+                  <p class="error"><?php print $expiry_msg ?></p>
+
+                  <?php } ?>
+
               </td>
+
             <?php endif; ?>
             </tr>
-
             <?php $row_field++; ?>
-
           <?php endif; ?>
-
         <?php endforeach; ?>
         </tbody>
         </table>
