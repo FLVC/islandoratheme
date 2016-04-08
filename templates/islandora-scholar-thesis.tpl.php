@@ -38,11 +38,11 @@ else {
     $embargoed = TRUE;
     $expiry = $expiry_array[0][0];
     if ($expiry == "indefinite") {
-      $expiry_msg = "Under indefinite embargo";
+      $expiry_msg = "Embargoed indefinitely";
     }
     else {
-      $expiry_date = date("F j, Y", strtotime($expiry));
-      $expiry_msg = "Under embargo until {$expiry_date}";
+      $expiry_date = date("M j, Y", strtotime($expiry));
+      $expiry_msg = "Embargoed until {$expiry_date}";
     }
   } 
   else {
