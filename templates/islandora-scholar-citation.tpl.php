@@ -38,11 +38,11 @@ else {
     $embargoed = TRUE;
     $expiry = $expiry_array[0][0];
     if ($expiry == "indefinite") {
-      $expiry_msg = "This record is permanently embargoed";
+      $expiry_msg = "Under indefinite embargo";
     }
     else {
       $expiry_date = date("F j, Y", strtotime($expiry));
-      $expiry_msg = "This record is embargoed until {$expiry_date}";
+      $expiry_msg = "Under embargo until {$expiry_date}";
     }
   } 
   else {
@@ -116,7 +116,7 @@ if (isset($islandora_object->label))
 
                   <?php } else { ?>
                   <button disabled class="download">Download PDF</button>
-                  <p class="error"><?php print $expiry_msg ?></p>
+                  <p style="margin-top:10px;" class="error"><?php print $expiry_msg ?></p>
 
                   <?php } ?>
 
