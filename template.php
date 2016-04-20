@@ -607,7 +607,7 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
     $variables['islandora_view_link'] =
       l(t('Full Screen View'), "islandora/object/$islandora_object->id/datastream/PDF/view/citation.pdf");
     $variables['islandora_download_link'] = "/islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf";
-    $variables['citation_view'] =
+    $variables['thesis_view'] =
       $base_url . '/islandora/object/' . $islandora_object->id . '/datastream/PDF/view';
   }
 
