@@ -596,7 +596,7 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   $variables['embargoed'] = $embargo_data['embargoed'];
   $variables['expiry_msg'] = $embargo_data['expiry_msg'];
 
-  if (module_exists('islandora_usage_stats_callbacks')) {
+  if (module_exists('islandora_usage_stats_callbacks') && !$variables['embargoed']) {
     $usage_data = get_usage_stats($islandora_object);
     $variables['usage_views'] = $usage_data['views'];
     $variables['usage_downloads'] = $usage_data['downloads'];
@@ -644,7 +644,7 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   $variables['embargoed'] = $embargo_data['embargoed'];
   $variables['expiry_msg'] = $embargo_data['expiry_msg'];
 
-  if (module_exists('islandora_usage_stats_callbacks')) {
+  if (module_exists('islandora_usage_stats_callbacks') && !$variables['embargoed']) {
     $usage_data = get_usage_stats($islandora_object);
     $variables['usage_views'] = $usage_data['views'];
     $variables['usage_downloads'] = $usage_data['downloads'];
