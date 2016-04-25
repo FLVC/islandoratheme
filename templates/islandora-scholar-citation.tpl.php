@@ -23,33 +23,6 @@
 
 <?php
 
-// Test to see if the object is embargoed, and if so, when does it expire? 
-if (!islandora_datastream_load('RELS-INT', $islandora_object)) {
-  $embargoed = FALSE;
-} 
-else {
-
-  // This is not the right way to get the embargo date, replace with tuque relationships call later 
-  $rels_int_xml = $islandora_object['RELS-INT']->content;
-  $xml_obj = simplexml_load_string($rels_int_xml);
-  $xml_obj->registerXPathNamespace('islandora-embargo', 'info:islandora/islandora-system:def/scholar#');
-  $expiry_array = $xml_obj->xpath('//islandora-embargo:embargo-until');
-  if (!empty($expiry_array)) {
-    $embargoed = TRUE;
-    $expiry = $expiry_array[0][0];
-    if ($expiry == "indefinite") {
-      $expiry_msg = "Embargoed indefinitely";
-    }
-    else {
-      $expiry_date = date("M j, Y", strtotime($expiry));
-      $expiry_msg = "Embargoed until {$expiry_date}";
-    }
-  } 
-  else {
-    $embargoed = FALSE;
-  }
-}
-
 if (isset($islandora_object->label))
 {
   drupal_set_title($islandora_object->label);

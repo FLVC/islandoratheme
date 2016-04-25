@@ -591,6 +591,13 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  $embargo_data = get_embargo_status($islandora_object);
+  $variables['embargoed'] = $embargo_data['embargoed'];
+  $variables['expiry_msg'] = $embargo_data['expiry_msg'];
+
+  $variables['usage_views'] = 0;
+  $variables['usage_downloads'] = 0;
 }
 
 /**
@@ -599,11 +606,11 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
 function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   global $base_url;
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/thesis.css', 
-    array('group' => CSS_THEME, 'type' => 'file'));
+      array('group' => CSS_THEME, 'type' => 'file'));
   $islandora_object = $variables['islandora_object'];
-  
+
   if (isset($islandora_object['PDF']) &&
-    islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
+      islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
     $variables['islandora_view_link'] =
       l(t('Full Screen View'), "islandora/object/$islandora_object->id/datastream/PDF/view/citation.pdf");
     $variables['islandora_download_link'] = "/islandora/object/$islandora_object->id/datastream/PDF/download/citation.pdf";
@@ -621,7 +628,7 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
     $mods_object = simplexml_load_string($mods);
   } catch (Exception $e) {
     drupal_set_message(t('Error retrieving object %s %t', 
-      array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+          array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
   }
 
   $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
@@ -629,6 +636,13 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
 
   // Grab the branding information
   $variables['branding_info'] = get_branding_info($variables);
+
+  $embargo_data = get_embargo_status($islandora_object);
+  $variables['embargoed'] = $embargo_data['embargoed'];
+  $variables['expiry_msg'] = $embargo_data['expiry_msg'];
+
+  $variables['usage_views'] = 0;
+  $variables['usage_downloads'] = 0;
 }
 
 /**
@@ -638,7 +652,7 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
   // base path
   global $base_path;
   $islandora_object = $variables['islandora_object'];
-  
+
   $page_number = (empty($_GET['page'])) ? 0 : $_GET['page'];
   $page_size = (empty($_GET['pagesize'])) ? variable_get('islandora_basic_collection_page_size', '10') : $_GET['pagesize'];
   $results = $variables['collection_results']; //islandora_basic_collection_get_objects($islandora_object, $page_number, $page_size); 
@@ -666,18 +680,18 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
         drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
       }
     }
-      
+
     $object_url = 'islandora/object/' . $pid;
     $thumbnail_img = '<img src="' . $base_path . $object_url . '/datastream/TN/view"' . '/>';
     $title = $results[$i]['title']['value'];
-    
+
     //If the object is a collection, get description information.
     $description_text = false;
     if (isset($fc_object['DESC-TEXT']))
     {
       $description_text = $fc_object['DESC-TEXT']->content;
     }
-    
+
     $associated_objects_mods_array[$pid]['pid'] = $pid;
     $associated_objects_mods_array[$pid]['path'] = $object_url;
     $associated_objects_mods_array[$pid]['title'] = $title;
@@ -692,7 +706,7 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
     $associated_objects_mods_array[$pid]['thumbnail'] = $thumbnail_img;
     $associated_objects_mods_array[$pid]['title_link'] = l($title, $object_url, array('html' => TRUE, 'attributes' => array('title' => $title)));
     $associated_objects_mods_array[$pid]['thumb_link'] = l($thumbnail_img, $object_url, array('html' => TRUE, 'attributes' => array('title' => $title)));
-    
+
     if($description_text)
     {
       $associated_objects_mods_array[$pid]['collection_description'] = $description_text;
@@ -705,89 +719,89 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
  * Implements theme from newspaper module.
  */
 /*
-function islandoratheme_islandora_newspaper(array $variables) {
-  drupal_add_js('misc/collapse.js');
-  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/newspaper.css', array('group' => CSS_THEME, 'type' => 'file'));
-  $object = $variables['object'];
-  $issues = islandora_newspaper_get_issues($object);
-  $grouped_issues = islandora_newspaper_group_issues($issues);
-  $output = array(
-    'pagetitle' => array(
-      '#markup' => '<h3>' . $object->label . '</h3>',
-    ),
-    'controls' => array(
-      '#theme' => 'links',
-      '#attributes' => array(
-        'class' => array('links', 'inline'),
-        'id' => array('newspaper-controls'),
-      ),
-      '#links' => array(
-        array(
-          'title' => t('Expand all months'),
-          'href' => "javascript://void(0)",
-          'html' => TRUE,
-          'external' => TRUE,
-          'attributes' => array(
-            'onclick' => "Drupal.toggleFieldset(jQuery('fieldset.month.collapsed'));",
-          ),
-	),
-	array(
-          'title' => t('Collapse all months'),
-          'href' => "javascript://void(0)",
-          'html' => TRUE,
-          'external' => TRUE,
-          'attributes' => array(
-            'onclick' => "Drupal.toggleFieldset(jQuery('fieldset.month:not(.collapsed)'));",
-          ),
-	),
-      ),
-    ),
-    'tabs' => array(
-      '#type' => 'vertical_tabs',
+   function islandoratheme_islandora_newspaper(array $variables) {
+   drupal_add_js('misc/collapse.js');
+   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/newspaper.css', array('group' => CSS_THEME, 'type' => 'file'));
+   $object = $variables['object'];
+   $issues = islandora_newspaper_get_issues($object);
+   $grouped_issues = islandora_newspaper_group_issues($issues);
+   $output = array(
+   'pagetitle' => array(
+   '#markup' => '<h3>' . $object->label . '</h3>',
+   ),
+   'controls' => array(
+   '#theme' => 'links',
+   '#attributes' => array(
+   'class' => array('links', 'inline'),
+   'id' => array('newspaper-controls'),
+   ),
+   '#links' => array(
+   array(
+   'title' => t('Expand all months'),
+   'href' => "javascript://void(0)",
+   'html' => TRUE,
+   'external' => TRUE,
+   'attributes' => array(
+   'onclick' => "Drupal.toggleFieldset(jQuery('fieldset.month.collapsed'));",
+   ),
+   ),
+   array(
+   'title' => t('Collapse all months'),
+   'href' => "javascript://void(0)",
+   'html' => TRUE,
+   'external' => TRUE,
+   'attributes' => array(
+   'onclick' => "Drupal.toggleFieldset(jQuery('fieldset.month:not(.collapsed)'));",
+   ),
+   ),
+   ),
+   ),
+   'tabs' => array(
+   '#type' => 'vertical_tabs',
+   ),
+   );
+   $tabs = &$output['tabs'];
+   foreach ($grouped_issues as $year => $months) {
+   $tabs[$year] = array(
+   '#title' => $year,
+   '#type' => 'fieldset',
+   );
+   foreach ($months as $month => $days) {
+   $month_name = t("@date", array(
+   "@date" => date("F", mktime(0, 0, 0, $month, 1, 2000)),
+   ));
+   $tabs[$year][$month] = array(
+   '#title' => $month_name,
+   '#type' => 'fieldset',
+   '#attributes' => array(
+   'class' => array('collapsible', 'collapsed', 'month'),
+   ),
+   );
+   foreach ($days as $day => $issues) {
+   foreach ($issues as $issue) {
+   $tabs[$year][$month][$day][] = array(
+   '#theme' => 'link',
+   '#prefix' => '<div>',
+   '#suffix' => '</div>',
+   '#text' => t("@month @day, @year", array(
+   '@year' => $year,
+   '@month' => $month_name,
+   '@day' => $day,
+   )),
+   '#path' => "islandora/object/{$issue['pid']}",
+'#options' => array(
+    'attributes' => array(),
+    'html' => FALSE,
     ),
   );
-  $tabs = &$output['tabs'];
-  foreach ($grouped_issues as $year => $months) {
-    $tabs[$year] = array(
-      '#title' => $year,
-      '#type' => 'fieldset',
-    );
-    foreach ($months as $month => $days) {
-      $month_name = t("@date", array(
-        "@date" => date("F", mktime(0, 0, 0, $month, 1, 2000)),
-      ));
-      $tabs[$year][$month] = array(
-        '#title' => $month_name,
-        '#type' => 'fieldset',
-        '#attributes' => array(
-          'class' => array('collapsible', 'collapsed', 'month'),
-        ),
-      );
-      foreach ($days as $day => $issues) {
-        foreach ($issues as $issue) {
-          $tabs[$year][$month][$day][] = array(
-            '#theme' => 'link',
-            '#prefix' => '<div>',
-            '#suffix' => '</div>',
-            '#text' => t("@month @day, @year", array(
-                '@year' => $year,
-                '@month' => $month_name,
-                '@day' => $day,
-                )),
-            '#path' => "islandora/object/{$issue['pid']}",
-            '#options' => array(
-              'attributes' => array(),
-              'html' => FALSE,
-            ),
-          );
-	}
-      }
-      ksort($tabs[$year][$month]);
-    }
-    ksort($tabs[$year]);
-  }
-  ksort($tabs);
-  return drupal_render($output);
+}
+}
+ksort($tabs[$year][$month]);
+}
+ksort($tabs[$year]);
+}
+ksort($tabs);
+return drupal_render($output);
 }
 */
 /**
@@ -894,11 +908,11 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   if(!empty($part_of)) {
     $parent_pid = $part_of[0]['object']['value'];
     $query_siblings = 'select $object $sequence_number from <#ri>
-                        where (
-                        $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $parent_pid . '> and
-                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
-                      )
-                      order by $sequence_number';
+      where (
+          $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $parent_pid . '> and
+          $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
+          )
+      order by $sequence_number';
     $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
     foreach ($results as $result) {
       $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
@@ -909,35 +923,35 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
     if (isset($siblings[$index - 1])) {
       $previous_sibling = $siblings[$index - 1];
       $links[] = array(
-        'title' => t('Prev'),
-        'href' => url("islandora/object/{$previous_sibling}", array('absolute' => TRUE)),
-      );
+          'title' => t('Prev'),
+          'href' => url("islandora/object/{$previous_sibling}", array('absolute' => TRUE)),
+          );
     }
     if (isset($siblings[$index + 1])) {
       $next_sibling = $siblings[$index + 1];
       $links[] = array(
-        'title' => t('Next'),
-        'href' => url("islandora/object/{$next_sibling}", array('absolute' => TRUE)),
-      );
+          'title' => t('Next'),
+          'href' => url("islandora/object/{$next_sibling}", array('absolute' => TRUE)),
+          );
     }
   }
 
   $parent_serial = '';
   $query_serial = 'select $parentObject $collection from <#ri>
-                        where (
-                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
-                        walk(<info:fedora/' . $pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
-                      )';
+    where (
+        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
+        walk(<info:fedora/' . $pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
+        )';
   $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
   if (count($results) > 0) {
-      $parent_serial = $results[0]['parentObject']['value'];
+    $parent_serial = $results[0]['parentObject']['value'];
   }
   $parent_serial_object = islandora_object_load($parent_serial);
 
   $links[] = array(
-    'title' => t('All Issues'),
-    'href' => url("islandora/object/{$parent_serial_object->id}", array('absolute' => TRUE)),
-  );
+      'title' => t('All Issues'),
+      'href' => url("islandora/object/{$parent_serial_object->id}", array('absolute' => TRUE)),
+      );
   $attributes = array('class' => array('links', 'inline'));
   $serial_output = theme('links', array('links' => $links, 'attributes' => $attributes));
 
@@ -954,20 +968,20 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   $serial_output .= '</div><div id="tabs-2">';
   $serial_output .= islandoratheme_create_mods_table($islandora_object, 'islandora-serial-thumbnail');
 
-/*
-  $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
-  if (count($parent_collections) > 0) {
-    $full_description .= '<div><h2>In</h2><ul>';
-    foreach ($parent_collections as $collection) {
-      if (substr($collection->id, 0, 5) != 'palmm') {
-        $full_description .= '<li>';
-        $full_description .=  l($collection->label, "islandora/object/{$collection->id}");
-        $full_description .= '</li>';
-      }
-    }
-    $full_description .= '</ul></div>';
-  }
-*/
+  /*
+     $parent_collections = islandora_get_parents_from_rels_ext($islandora_object);
+     if (count($parent_collections) > 0) {
+     $full_description .= '<div><h2>In</h2><ul>';
+     foreach ($parent_collections as $collection) {
+     if (substr($collection->id, 0, 5) != 'palmm') {
+     $full_description .= '<li>';
+     $full_description .=  l($collection->label, "islandora/object/{$collection->id}");
+     $full_description .= '</li>';
+     }
+     }
+     $full_description .= '</ul></div>';
+     }
+   */
 
   // add parent serial
   $serial_output .= '</div><div id="tabs-3">';
@@ -1024,28 +1038,28 @@ function get_branding_info(&$variables)
 {
   // Get custom islandoratheme variables
   $variables = islandoratheme_variables($variables);
-  
+
   //Create local variables
   $branding_info = array();
   $branding_info['institution_logo']['image_filename'] = $variables['default_brand_logo'];
   $branding_info['institution_logo']['institution_link'] = $variables['default_brand_link'];
-  
-  
+
+
   //if the MODS metadata has an owner institution, grab the logo information
   if (isset($variables['mods_array']['mods:owner_inst']) && ($variables['mods_array']['mods:owner_inst']['value'] != ''))
   {
     $owner_institution = $variables['mods_array']['mods:owner_inst']['value'];
-    
+
     $query = new EntityFieldQuery();
     $results = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'object_branding')
       ->propertyCondition('title', strtoupper($owner_institution))
       ->execute();
-      
+
     if($results)
     {
       $object_branding_array = entity_load('node', array_keys($results['node']));
-     
+
       foreach($object_branding_array as $object_branding)
       {
         $branding_info['institution_logo']['image_filename'] = $object_branding->field_institution_logo_upload['und'][0]['filename'];
@@ -1058,7 +1072,7 @@ function get_branding_info(&$variables)
   $local_counter = 0;
 
   while (isset($variables['other_logo_array']['mods:other_logo_' . $local_counter]) && 
-    ($variables['other_logo_array']['mods:other_logo_' . $local_counter]['value'] != ''))
+      ($variables['other_logo_array']['mods:other_logo_' . $local_counter]['value'] != ''))
   {
     $other_logo = $variables['other_logo_array']['mods:other_logo_' . $local_counter]['value'];
 
@@ -1081,7 +1095,7 @@ function get_branding_info(&$variables)
 
     $local_counter++;
   }
-  
+
   return $branding_info;
 }
 
@@ -1167,45 +1181,76 @@ function islandoratheme_create_mods_table($islandora_object, $thumbclass) {
 
 function remove_non_public_sites_from_collections($orig_collections)
 {
-    global $base_url;
+  global $base_url;
 
-    $non_public_sites = array("fiu", "uf", "unf", "usf");
+  $non_public_sites = array("fiu", "uf", "unf", "usf");
 
-    if (strpos($base_url, 'palmm') === false)
-      return $orig_collections;
+  if (strpos($base_url, 'palmm') === false)
+    return $orig_collections;
 
-    $new_collections = array();
-    if (count($orig_collections) > 0) {
-      foreach ($orig_collections as $collection) {
-        $matches = array();
-        preg_match('/^([^:]*)/', $collection->id, $matches);
-        if (!in_array($matches[0],$non_public_sites)) {
-          $new_collections[] = $collection;
-        }
+  $new_collections = array();
+  if (count($orig_collections) > 0) {
+    foreach ($orig_collections as $collection) {
+      $matches = array();
+      preg_match('/^([^:]*)/', $collection->id, $matches);
+      if (!in_array($matches[0],$non_public_sites)) {
+        $new_collections[] = $collection;
       }
-      return $new_collections;
     }
+    return $new_collections;
+  }
+}
+
+// Test to see if the object is embargoed, and if so, when does it expire? 
+function get_embargo_status($islandora_object) {
+  if (!islandora_datastream_load('RELS-INT', $islandora_object)) {
+    $embargo_data['embargoed'] = FALSE;
+    $embargo_data['expiry_msg'] = "";
+  } 
+  else {
+    // This is not the right way to get the embargo date, replace with tuque relationships call later 
+    $rels_int_xml = $islandora_object['RELS-INT']->content;
+    $xml_obj = simplexml_load_string($rels_int_xml);
+    $xml_obj->registerXPathNamespace('islandora-embargo', 'info:islandora/islandora-system:def/scholar#');
+    $expiry_array = $xml_obj->xpath('//islandora-embargo:embargo-until');
+    if (!empty($expiry_array)) {
+      $embargo_data['embargoed'] = TRUE;
+      $expiry = $expiry_array[0][0];
+      if ($expiry == "indefinite") {
+        $embargo_data['expiry_msg'] = "Embargoed indefinitely";
+      }
+      else {
+        $expiry_date = date("M j, Y", strtotime($expiry));
+        $embargo_data['expiry_msg'] = "Embargoed until {$expiry_date}";
+      }
+    } 
+    else {
+      $embargo_data['embargoed'] = FALSE;
+      $embargo_data['expiry_msg'] = "";
+    }
+  }
+  return $embargo_data;
 }
 
 /**
  * Override or insert variables for the page templates.
  */
 /*
-function islandoratheme_preprocess_page(&$variables) {
-}
- 
-function islandoratheme_process_page(&$variables) {
-}
-*/
+   function islandoratheme_preprocess_page(&$variables) {
+   }
+
+   function islandoratheme_process_page(&$variables) {
+   }
+ */
 
 /**
  * Override or insert variables into the node templates.
  */
 /* -- Delete this line if you want to use these functions
-function islandoratheme_preprocess_node(&$vars) {
-}
-function islandoratheme_process_node(&$vars) {
-}
+   function islandoratheme_preprocess_node(&$vars) {
+   }
+   function islandoratheme_process_node(&$vars) {
+   }
 // */
 
 
@@ -1213,10 +1258,10 @@ function islandoratheme_process_node(&$vars) {
  * Override or insert variables into the comment templates.
  */
 /* -- Delete this line if you want to use these functions
-function islandoratheme_preprocess_comment(&$vars) {
-}
-function islandoratheme_process_comment(&$vars) {
-}
+   function islandoratheme_preprocess_comment(&$vars) {
+   }
+   function islandoratheme_process_comment(&$vars) {
+   }
 // */
 
 
@@ -1224,8 +1269,8 @@ function islandoratheme_process_comment(&$vars) {
  * Override or insert variables into the block templates.
  */
 /* -- Delete this line if you want to use these functions
-function islandoratheme_preprocess_block(&$vars) {
-}
-function islandoratheme_process_block(&$vars) {
-}
+   function islandoratheme_preprocess_block(&$vars) {
+   }
+   function islandoratheme_process_block(&$vars) {
+   }
 // */
