@@ -596,8 +596,9 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   $variables['embargoed'] = $embargo_data['embargoed'];
   $variables['expiry_msg'] = $embargo_data['expiry_msg'];
 
-  $variables['usage_views'] = 0;
-  $variables['usage_downloads'] = 0;
+  $usage_data = get_usage_stats($islandora_object);
+  $variables['usage_views'] = $usage_data['views'];
+  $variables['usage_downloads'] = $usage_data['downloads'];
 }
 
 /**
@@ -641,8 +642,9 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   $variables['embargoed'] = $embargo_data['embargoed'];
   $variables['expiry_msg'] = $embargo_data['expiry_msg'];
 
-  $variables['usage_views'] = 0;
-  $variables['usage_downloads'] = 0;
+  $usage_data = get_usage_stats($islandora_object);
+  $variables['usage_views'] = $usage_data['views'];
+  $variables['usage_downloads'] = $usage_data['downloads'];
 }
 
 /**
@@ -1230,6 +1232,16 @@ function get_embargo_status($islandora_object) {
     }
   }
   return $embargo_data;
+}
+
+function get_usage_stats($islandora_object) {
+  global $base_url;
+  $usage_stats_json = file_get_contents("{$base_url}/islandora_usage_stats_callbacks/object_stats/{$islandora_object->id}");
+  $usage_stats_array = json_decode($usage_stats_json, TRUE);
+  $views = count($usage_stats_array['views']) + $usage_stats_array['legacy-views'];
+  $downloads = count($usage_stats_array['downloads']) + $usage_stats_array['legacy-downloads'];
+  $usage_data = array('views' => $views, 'downloads' => $downloads);
+  return $usage_data;
 }
 
 /**

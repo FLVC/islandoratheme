@@ -71,6 +71,10 @@ if (isset($islandora_object->label))
             <?php if($row_field == 0): ?>
               <td class="islandora-basic-image-thumbnail" rowspan="8">
 
+                  <?php if(isset($usage_views) && isset($usage_downloads)): ?>
+                    <?php print "<span class=\"usage-stats-views\">Views: $usage_views</span>"; ?>
+                    <?php print "<span class=\"usage-stats-downloads\">Downloads: $usage_downloads</span>"; ?>
+                  <?php endif; ?>
 
                   <?php if(isset($islandora_full_url)): ?>
                     <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
