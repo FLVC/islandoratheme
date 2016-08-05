@@ -559,6 +559,20 @@ function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variable
  * Implements hook_preprocess_HOOK for islandora_scholar_citation
  */
 function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
+  
+  // Altmetric testing
+  $doc = new DOMDocument();
+  $doc->loadXML($variables['islandora_object']['MODS']->content);
+  $xpath = new DOMXPath($doc);
+  $xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+  $xpath_results = $xpath->query(variable_get('islandora_altmetrics_doi_xpath', '/mods:mods/mods:identifier[@type="doi"]'));
+  $doi = $xpath_results->item(0)->nodeValue;
+  if ($doi !== '') {
+    $variables['altmetric_badge_html'] = "<div class='altmetric-embed' data-badge-popover='left' data-doi='" . $doi . "'></div>";
+    // This uses the default public Scopus API key. We might want to change it later, and find a way not to store it in GitHub.
+    $variables['scopus_badge_html'] = file_get_contents("http://api.elsevier.com:80/content/abstract/citation-count?doi=" . $doi . "&apiKey=b3a71de2bde04544495881ed9d2f9c5b&httpAccept=text%2Fhtml");
+  }
+
   global $base_url;
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/citation.css', 
     array('group' => CSS_THEME, 'type' => 'file'));  

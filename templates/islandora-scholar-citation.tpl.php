@@ -69,7 +69,14 @@ if (isset($islandora_object->label))
             </td>
 
             <?php if($row_field == 0): ?>
+
               <td class="islandora-basic-image-thumbnail" rowspan="8">
+
+                  <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
+                  <?php print "<div id='islandora-metric-badges'>"; ?>
+                    <?php if (isset($altmetric_badge_html)) { print $altmetric_badge_html; } ?>
+                    <?php if (isset($scopus_badge_html)) { print $scopus_badge_html; } ?>
+                  <?php print "</div>"; ?>
 
                   <?php if(isset($usage_views) && isset($usage_downloads)): ?>
                     <?php print "<span class=\"usage-stats-views\">Views: $usage_views</span>"; ?>
@@ -89,6 +96,7 @@ if (isset($islandora_object->label))
                       <a href="<?php print $islandora_download_link; ?>">
                         <button class="download">Download PDF</button>
                       </a>
+
                     <?php endif; ?>
 
                   <?php } else { ?>
