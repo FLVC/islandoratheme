@@ -105,6 +105,9 @@ if (isset($islandora_object->label))
 
                   <?php } ?>
 
+		    <div id="sharing-button-box">
+                    <?php print $sharing_buttons; ?>
+		    </div>
               </td>
 
             <?php endif; ?>
