@@ -72,16 +72,18 @@ if (isset($islandora_object->label))
 
               <td class="islandora-basic-image-thumbnail" rowspan="8">
 
-                  <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
-                  <?php print "<div id='islandora-metric-badges'>"; ?>
-                    <?php if (isset($altmetric_badge_html)) { print $altmetric_badge_html; } ?>
-                    <?php if (isset($scopus_badge_html)) { print $scopus_badge_html; } ?>
-                  <?php print "</div>"; ?>
+                  <?php if(!$embargoed) { ?>
+                    <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
+                    <?php print "<div id='islandora-metric-badges'>"; ?>
+                      <?php if (isset($altmetric_badge_html)) { print $altmetric_badge_html; } ?>
+                      <?php if (isset($scopus_badge_html)) { print $scopus_badge_html; } ?>
+                    <?php print "</div>"; ?>
 
-                  <?php if(isset($usage_views) && isset($usage_downloads)): ?>
-                    <?php print "<span class=\"usage-stats-views\">Views: $usage_views</span>"; ?>
-                    <?php print "<span class=\"usage-stats-downloads\">Downloads: $usage_downloads</span>"; ?>
-                  <?php endif; ?>
+                    <?php if(isset($usage_views) && isset($usage_downloads)) { ?>
+                      <?php print "<span class=\"usage-stats-views\">Views: $usage_views</span>"; ?>
+                      <?php print "<span class=\"usage-stats-downloads\">Downloads: $usage_downloads</span>"; ?>
+                    <?php } ?>
+                  <?php } ?>
 
                   <?php if(isset($islandora_full_url)): ?>
                     <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
@@ -97,6 +99,9 @@ if (isset($islandora_object->label))
                         <button class="download">Download PDF</button>
                       </a>
 
+                      <div id="sharing-button-box">
+                        <?php print $sharing_buttons; ?>
+                      </div>
                     <?php endif; ?>
 
                   <?php } else { ?>
@@ -105,9 +110,6 @@ if (isset($islandora_object->label))
 
                   <?php } ?>
 
-		    <div id="sharing-button-box">
-                    <?php print $sharing_buttons; ?>
-		    </div>
               </td>
 
             <?php endif; ?>

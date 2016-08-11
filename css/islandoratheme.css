@@ -499,6 +499,10 @@ div.region-sidebar-first .block
   margin-left: 0.4em;
 } 
 
+#sharing-button-box a:hover {
+  text-decoration: none;
+}
+
 .resp-sharing-button {
   display: inline-block;
   border-radius: 5px;
