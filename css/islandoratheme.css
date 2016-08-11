@@ -319,7 +319,7 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
 }
 
 .islandora-ir-thumbnail-container {
-  max-width: 25px;
+  width: 25px;
 }
 
 #islandora-metric-badges img 
