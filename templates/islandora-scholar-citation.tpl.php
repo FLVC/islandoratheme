@@ -70,19 +70,23 @@ if (isset($islandora_object->label))
 
             <?php if($row_field == 0): ?>
 
-              <td class="islandora-basic-image-thumbnail" rowspan="8">
+              <td class="islandora-basic-image-thumbnail islandora-ir-thumbnail-container" rowspan="8">
 
                   <?php if(!$embargoed) { ?>
+
+                    <?php if(isset($usage_views) && isset($usage_downloads)) { ?>
+ 		      <?php print "<div id=\"usage-stats-box\">"; ?>
+                      <?php print "<span class=\"usage-stats-views\"><img class=\"usage-stats-icon\" src=\"$usage_view_icon\" /> $usage_views</span><br/>"; ?>
+                      <?php print "<span class=\"usage-stats-downloads\"><img class=\"usage-stats-icon\" src=\"$usage_download_icon\" /> $usage_downloads</span>"; ?>
+ 		      <?php print "</div>"; ?>
+                    <?php } ?>
+
                     <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
                     <?php print "<div id='islandora-metric-badges'>"; ?>
                       <?php if (isset($altmetric_badge_html)) { print $altmetric_badge_html; } ?>
                       <?php if (isset($scopus_badge_html)) { print $scopus_badge_html; } ?>
                     <?php print "</div>"; ?>
 
-                    <?php if(isset($usage_views) && isset($usage_downloads)) { ?>
-                      <?php print "<span class=\"usage-stats-views\">Views: $usage_views</span>"; ?>
-                      <?php print "<span class=\"usage-stats-downloads\">Downloads: $usage_downloads</span>"; ?>
-                    <?php } ?>
                   <?php } ?>
 
                   <?php if(isset($islandora_full_url)): ?>
@@ -123,6 +127,7 @@ if (isset($islandora_object->label))
     </div>
 </div>
 
+<?php if(!$embargoed) { ?> 
 <div id="tabs-2">
   <div class="islandora-citation-object islandora">
     <div class="islandora-citation-content-wrapper clearfix">
@@ -134,6 +139,7 @@ if (isset($islandora_object->label))
     </div>
   </div>
 </div>
+<?php } ?>
 
 </div>
 <div class="islandora-object-branding">

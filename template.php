@@ -619,6 +619,8 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
     $usage_data = get_usage_stats($islandora_object);
     $variables['usage_views'] = $usage_data['views'];
     $variables['usage_downloads'] = $usage_data['downloads'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+    $variables['usage_download_icon'] = $usage_data['download_icon_path'];
   }
 }
 
@@ -1263,7 +1265,10 @@ function get_usage_stats($islandora_object) {
   $usage_stats_array = json_decode($usage_stats_json, TRUE);
   $views = count($usage_stats_array['views']) + $usage_stats_array['legacy-views'];
   $downloads = count($usage_stats_array['downloads']) + $usage_stats_array['legacy-downloads'];
-  $usage_data = array('views' => $views, 'downloads' => $downloads);
+  $view_icon_path = $base_url . "/sites/all/themes/islandoratheme/images/view_icon.png";
+  $download_icon_path = $base_url . "/sites/all/themes/islandoratheme/images/download_icon.png";
+  
+  $usage_data = array('views' => $views, 'view_icon_path' => $view_icon_path, 'downloads' => $downloads, 'download_icon_path' => $download_icon_path);
   return $usage_data;
 }
 
@@ -1321,6 +1326,7 @@ function build_sharing_button_html($islandora_object) {
 EOS;
   return $sharing_button_html;
 }
+
 
 /**
  * Override or insert variables for the page templates.

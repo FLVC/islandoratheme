@@ -318,6 +318,10 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
   max-width: none;
 }
 
+.islandora-ir-thumbnail-container {
+  max-width: 25px;
+}
+
 #islandora-metric-badges img 
 {
   box-shadow: none; 
@@ -600,3 +604,17 @@ div.region-sidebar-first .block
   border-color: #2B2B2B;
 }
 
+/* usage stats icons */
+div#usage-stats-box > span > img {
+  max-width: 10%;
+  box-shadow: none;
+}
+
+div#usage-stats-box {
+  text-align: left;
+  padding-bottom: 2%;
+}
+
+#islandora-metric-badges > div > a > img {
+  width: 100%;
+}
