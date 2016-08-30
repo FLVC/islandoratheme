@@ -318,6 +318,16 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
   max-width: none;
 }
 
+.islandora-ir-thumbnail-container {
+  width: 25px;
+}
+
+#islandora-metric-badges img 
+{
+  box-shadow: none; 
+  width: 100%;
+}
+
 .islandora-video-thumbnail img
 {
   max-width: 200px;
@@ -485,4 +495,126 @@ div.region-sidebar-first .block
 
 @media screen and (max-width: 1140px) {
   
+}
+
+/* sharingbuttons.io styles */
+#sharing-button-box {
+  text-align: center;
+  margin-left: 0.4em;
+} 
+
+#sharing-button-box a:hover {
+  text-decoration: none;
+}
+
+.resp-sharing-button {
+  display: inline-block;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  transition: background-color 25ms ease-out, border-color 25ms ease-out, opacity 250ms ease-out;
+  margin-top: 0.3em;
+  padding: 0.2em 0.4em;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+.resp-sharing-button a {
+  text-decoration: none;
+  color: #FFF;
+  display: block;
+}
+
+.resp-sharing-button__icon {
+  display: inline-block;
+}
+
+.resp-sharing-button__icon svg {
+  width: 1em;
+  height: 1em;
+  margin-bottom: -0.1em;
+}
+
+/* Non solid icons get a stroke */
+.resp-sharing-button__icon {
+  stroke: #FFF;
+  fill: none;
+}
+
+/* Solid icons get a fill */
+.resp-sharing-button__icon--solid,
+.resp-sharing-button__icon--solidcircle {
+  fill: #FFF;
+  stroke: none;
+}
+
+.resp-sharing-button__link {
+  text-decoration: none;
+  color: #FFF;
+}
+
+.resp-sharing-button--large .resp-sharing-button__icon svg, .resp-sharing-button--medium .resp-sharing-button__icon svg {
+  padding-right: 0.4em;
+}
+
+.resp-sharing-button__wrapper {
+  display: inline-block;
+}
+
+.resp-sharing-button--facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+.resp-sharing-button--facebook:hover,
+.resp-sharing-button--facebook:active {
+  background-color: #2d4373;
+  border-color: #2d4373;
+}
+
+.resp-sharing-button--twitter {
+  background-color: #55acee;
+  border-color: #55acee;
+}
+
+.resp-sharing-button--twitter:hover,
+.resp-sharing-button--twitter:active {
+  background-color: #2795e9;
+  border-color: #2795e9;
+}
+
+.resp-sharing-button--google {
+  background-color: #dd4b39;
+  border-color: #dd4b39;
+}
+
+.resp-sharing-button--google:hover,
+.resp-sharing-button--google:active {
+  background-color: #c23321;
+  border-color: #c23321;
+}
+
+.resp-sharing-button--email {
+  background-color: #444444;
+  border-color: #444444;
+}
+
+.resp-sharing-button--email:hover
+.resp-sharing-button--email:active {
+  background-color: #2B2B2B;
+  border-color: #2B2B2B;
+}
+
+/* usage stats icons */
+div#usage-stats-box > span > img {
+  max-width: 10%;
+  box-shadow: none;
+}
+
+div#usage-stats-box {
+  text-align: left;
+  padding-bottom: 2%;
+}
+
+#islandora-metric-badges > div > a > img {
+  width: 100%;
 }
