@@ -1,0 +1,147 @@
+
+.islandora-metadata {
+  border: 0;
+  background: none;
+  padding: 0; }
+  .islandora-metadata legend {
+    display: none; }
+  .islandora-metadata p {
+    margin: 0; }
+  .islandora-metadata dt {
+    font-weight: bold;
+    width: 11%; }
+
+.islandora-metadata dt,
+.islandora-metadata dd {
+  border-top: 1px solid #e5e5e5; }
+
+.islandora-metadata dt.first,
+.islandora-metadata dd.first {
+  border-top: 0; }
+
+.scholar-page legend {
+  display: none; }
+
+.scholar-page fieldset.islandora-metadata {
+  border: 0px;
+  padding: 0;
+  background-color: none;
+  background: none;
+  margin-bottom: 0px; }
+
+.scholar .scholar-image {
+  width: 170px; }
+  .scholar .scholar-image img {
+    border: 1px solid #ccc;
+    padding: 4px;
+    width: 100%; }
+
+@media screen and (min-width: 600px) {
+  .scholar .scholar-image {
+    float: left;
+    margin-right: 1.5em; }
+  .scholar .metadata {
+    min-height: 270px; } }
+
+.scholar .bio {
+  clear: both;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.75em;
+  padding-bottom: 0.75em;
+  border-top: 1px solid #ccc;
+  margin-top: 0.75em;
+  padding-top: 0.75em; }
+  .scholar .bio br {
+    display: none; }
+
+.scholar .view--citations,
+.scholar .view--classification,
+.scholar .activities,
+.scholar .citations,
+.scholar .other-scholars {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.75em;
+  padding-bottom: 0.75em; }
+
+/*---------------------*/
+/*-  fellow scholars  -*/
+/*---------------------*/
+.fellow_scholars {
+  -webkit-column-count: 3;
+     -moz-column-count: 3;
+          column-count: 3; }
+
+.rss div {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .rss div img {
+margin-right: 0.75em; }
+
+/*
+ *Table stuff
+ */
+.page-scholars table {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  /*th.views-field.views-field-MADS-fullname-s {*/
+  /*width: 25%;*/
+  /*}*/
+  /*th.views-field.views-field-MADS-organization-mt {*/
+  /*width: 25%;*/
+  /*}*/
+  /*th.views-field.views-field-MADS-status-mt, th.views-field.views-field-MADS-given-s {*/
+  /*width: 8%;*/
+  /*}*/
+  /*th.views-field.views-field-MADS-fullname-s {}*/
+  /*th.views-field.views-field-MADS-family-s {*/
+  /*width: 15%;*/
+  /*}*/ }
+/*
+  .page-scholars table th {
+    background: #333;
+    color: #fff;
+    font-family: "Roboto Condensed", sans-serif; }
+    .page-scholars table th a {
+      color: #fff; }
+  .page-scholars table td {
+    border-bottom: 1px solid #ddd;
+    padding: 0.5em 0; }
+  .page-scholars table tr.odd {
+    background: white; }
+  .page-scholars table tr.even {
+    background: white; }
+  .page-scholars table td:first-child, .page-scholars table th:first-child {
+    padding-left: 10px; }
+  .page-scholars table td.active {
+    background: initial; }
+*/
+.block--recent-citations--title {
+  font-size: 1em;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  margin: 0;
+  padding: 0; }
+
+.block--recent-citations--publication {
+  font-style: italic; }
+
+.block--recent-citations dd {
+  margin-bottom: 0.75em; }
+  .block--recent-citations dd:before {
+    content: "\f105";
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-right: 4px; }
+
+.view-recent-citations .more-link {
+  text-align: initial; }
+
+.block--recent-citations--more,
+.more-link a {
+  text-align: initial;
+  margin-top: 0.75em; }

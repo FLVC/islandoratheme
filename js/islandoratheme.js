@@ -74,3 +74,18 @@ function collectionAdvancedSearch() {
 
 }
 
+(function ($) {
+	/*
+	 *adds placeholder text in the search box for the jQuery DataTables
+	 */
+	Drupal.behaviors.placeholder_text = {
+		attach: function (context, settings) {
+
+			var target = ".dataTables_filter input";
+			var placeholder_text = "Filter Results:";
+
+			$(target).attr("placeholder", placeholder_text).val("").focus().blur();
+		}
+
+        };
+})(jQuery);

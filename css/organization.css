@@ -1,0 +1,69 @@
+
+.islandora-metadata {
+  border: 0;
+  background: none;
+  padding: 0; }
+  .islandora-metadata legend {
+    display: none; }
+  .islandora-metadata p {
+    margin: 0; }
+  .islandora-metadata dt {
+    width: 11%; }
+
+.islandora-metadata dt,
+.islandora-metadata dd {
+  border-top: 1px solid #e5e5e5; }
+
+.islandora-metadata dt.first,
+.islandora-metadata dd.first {
+  border-top: 0; }
+
+.page-islandora-object legend {
+  display: none; }
+
+.page-islandora-object fieldset.islandora-metadata {
+  border: 0px;
+  padding: 0;
+  background-color: none;
+  background: none;
+  margin-bottom: 0px; }
+
+@media screen and (min-width: 600px) {
+  .islandora-department {
+    float: left;
+    margin-right: 1.5em; }
+  .departmental_metadata {
+    min-height: 200px; } }
+
+.scholar .view--citations,
+.scholar .view--classification,
+.scholar .activities,
+.scholar .citations,
+.scholar .other-scholars {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.75em;
+  padding-bottom: 0.75em; }
+
+/*
+ *Table stuff
+ */
+.page-scholars table {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  .page-scholars table th {
+    background: #333;
+    color: #fff;
+    font-family: "Roboto Condensed", sans-serif; }
+    .page-scholars table th a {
+      color: #fff; }
+  .page-scholars table td {
+    border-bottom: 1px solid #ddd;
+    padding: 0.5em 0; }
+  .page-scholars table tr.odd {
+    background: white; }
+  .page-scholars table tr.even {
+    background: white; }
+  .page-scholars table td:first-child, .page-scholars table th:first-child {
+    padding-left: 10px; }
+  .page-scholars table td.active {
+    background: initial; }

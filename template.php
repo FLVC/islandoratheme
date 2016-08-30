@@ -25,6 +25,7 @@ function islandoratheme_variables(&$vars) {
  * Override or insert variables for the html template.
  */
 function islandoratheme_preprocess_html(&$vars) {
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/datatables.css', array('group' => CSS_THEME, 'type' => 'file'));
   drupal_add_library ('system', 'ui.tabs');
   drupal_add_library ('system', 'ui.accordion');
   //drupal_add_js('jQuery(document).ready(function(){jQuery("#tabs").tabs();});', 'inline');
@@ -1269,6 +1270,13 @@ function islandoratheme_process_node(&$vars) {
 }
 // */
 
+/**
+ * Override or insert variables for the view templates.
+ */
+/*
+function islandoratheme_preprocess_views_view(&$variables) {
+  //drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/datatables.css', array('group' => CSS_THEME, 'type' => 'file'));
+}
 
 /**
  * Override or insert variables into the comment templates.
