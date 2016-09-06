@@ -10,6 +10,27 @@
   .islandora-metadata dt {
     width: 11%; }
 
+dl.islandora-inline-metadata {
+  margin: 0 auto;
+  letter-spacing: -0.31em;
+  *letter-spacing: normal;
+  word-spacing: -0.43em; }
+
+.islandora-inline-metadata dt {
+  margin-right: -1px;
+  width: 20%;
+  font-family: "Roboto Condensed", sans-serif;
+  /*font-weight: bold;*/
+  padding-right: 0;
+  word-wrap: normal; }
+
+.islandora-inline-metadata dd {
+  width: 80%;
+  padding-left: 40px; }
+
+dl.islandora-metadata-fields {
+  width: 100%; }
+
 .islandora-metadata dt,
 .islandora-metadata dd {
   border-top: 1px solid #e5e5e5; }
@@ -28,6 +49,13 @@
   background: none;
   margin-bottom: 0px; }
 
+.islandora-department {
+  width: 200px; }
+.islandora-department img {
+    border: 1px solid #ccc;
+    padding: 4px;
+    max-height: 200px; }
+
 @media screen and (min-width: 600px) {
   .islandora-department {
     float: left;
@@ -35,14 +63,25 @@
   .departmental_metadata {
     min-height: 200px; } }
 
-.scholar .view--citations,
-.scholar .view--classification,
-.scholar .activities,
+.departmental_metadata,
+.view--recent-publications-by-dept,
 .scholar .citations,
 .scholar .other-scholars {
   border-bottom: 1px solid #ccc;
   margin-bottom: 0.75em;
   padding-bottom: 0.75em; }
+
+.section-label h3 {
+  display: inline; }
+
+.section-label a {
+  float:right; }
+
+.section-label a h4 {
+  display: inline; }
+
+.department-tree-link {
+  float: right; }
 
 /*
  *Table stuff

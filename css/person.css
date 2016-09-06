@@ -11,6 +11,27 @@
     font-weight: bold;
     width: 11%; }
 
+dl.islandora-inline-metadata {
+  margin: 0 auto;
+  letter-spacing: -0.31em;
+  *letter-spacing: normal;
+  word-spacing: -0.43em; }
+
+.islandora-inline-metadata dt {
+  margin-right: -1px;
+  width: 20%;
+  font-family: "Roboto Condensed", sans-serif;
+  /*font-weight: bold;*/
+  padding-right: 0;
+  word-wrap: normal; }
+
+.islandora-inline-metadata dd {
+  width: 80%;
+  padding-left: 40px; }
+
+dl.islandora-metadata-fields {
+width: 100%; }
+
 .islandora-metadata dt,
 .islandora-metadata dd {
   border-top: 1px solid #e5e5e5; }
@@ -41,7 +62,7 @@
     float: left;
     margin-right: 1.5em; }
   .scholar .metadata {
-    min-height: 270px; } }
+    min-height: 150px; } }
 
 .scholar .bio {
   clear: both;

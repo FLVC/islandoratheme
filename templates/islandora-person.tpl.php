@@ -27,7 +27,7 @@ $affiliation = $variables['u2'];
 	</div>
 	<div class="view--citations">
 		<h3>Recent Publications</h3>
-	<?php print views_embed_view('recent_citations', 'citations', $identifier); ?>
+	<?php print views_embed_view('recent_publications_by_scholar', 'publications_by_scholar', $identifier); ?>
 	</div>
 	<div class="activities islandora-object-activities">
 	  <?php if (isset($variables['activities'])): ?>
@@ -41,7 +41,7 @@ $affiliation = $variables['u2'];
 <?php foreach ($affiliation as $dept): ?>
 <div class="other-scholars islandora-object-scholars">
 	  <h3>
-		  Current Scholars in <?php print "<a href='/islandora/search/MADS_organization_ms%3A(\"$dept\")?sort=MADS_family_s asc'>$dept</a>"; ?>
+		  Current Scholars in <?php print $dept; ?>
 	  </h3>
 
 <?php print views_embed_view('other_scholars_in_dept', 'dept_scholars', $dept); ?>
