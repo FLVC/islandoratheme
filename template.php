@@ -284,12 +284,18 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
 
         // query for parent serial object
         $parent_serial_id = '';
-        $query_serial = 'select $parentObject $collection from <#ri>
-                        where (
-                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
-                        walk(<info:fedora/' . $parent_pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
-                      )';
-        $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
+        $query_serial = <<<'EOQ'
+SELECT ?parentObject ?collection
+FROM <#ri>
+WHERE {
+  ?parentObject <fedora-rels-ext:isMemberOfCollection> ?collection .
+  <info:fedora/!pid> <fedora-rels-ext:isMemberOf>+ ?parentObject .
+}
+EOQ;
+        $formatted_query_serial = format_string($query_serial, array(
+          '!pid' => $parent_pid,
+        ));
+        $results = $islandora_object->repository->ri->sparqlQuery($formatted_query_serial, 'unlimited');
         if (count($results) > 0) {
             $parent_serial_id = $results[0]['parentObject']['value'];
         }
@@ -304,14 +310,20 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
         // build navigation links
         $links = array();
         $siblings = array();
-        $query_siblings = 'select $object $sequence_number from <#ri>
-                        where (
-                        $object <fedora-model:hasModel> <info:fedora/islandora:sp_pdf> and
-                        $object <http://islandora.ca/ontology/relsext#isComponentOf> <info:fedora/' . $parent_pid . '> and
-                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
-                      )
-                      order by $sequence_number';
-        $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
+        $query_siblings = <<<'EOQ'
+SELECT ?object ?sequence_number
+FROM <#ri>
+WHERE {
+  ?object <fedora-model:hasModel> <info:fedora/islandora:sp_pdf>;
+          <http://islandora.ca/ontology/relsext#isComponentOf> <info:fedora/!pid>;
+          <http://islandora.ca/ontology/relsext#sequence_position> ?sequence_number .
+}
+ORDER BY ?sequence_number
+EOQ;
+        $formatted_query_siblings = format_string($query_siblings, array(
+          '!pid' => $parent_pid,
+        ));
+        $results = $islandora_object->repository->ri->sparqlQuery($formatted_query_siblings, 'unlimited');
         foreach ($results as $result) {
           $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
         }
@@ -323,13 +335,19 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
           $parent_part_of = $parent_object->relationships->get('info:fedora/fedora-system:def/relations-external#', 'isMemberOf');
           if (!empty($parent_part_of)) {
               $grandparent_pid = $parent_part_of[0]['object']['value'];
-              $query_siblings = 'select $object $sequence_number from <#ri>
-                        where (
-                        $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $grandparent_pid . '> and
-                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
-                      )
-                      order by $sequence_number';
-              $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
+              $query_siblings = <<<'EOQ'
+SELECT ?object ?sequence_number
+FROM <#ri>
+WHERE {
+  ?object <fedora-rels-ext:isMemberOf> <info:fedora/!pid>;
+          <http://islandora.ca/ontology/relsext#sequence_position> ?sequence_number .
+}
+ORDER BY ?sequence_number
+EOQ;
+              $formatted_query_siblings = format_string($query_siblings, array(
+                '!pid' => $grandparent_pid,
+              ));
+              $results = $islandora_object->repository->ri->sparqlQuery($formatted_query_siblings, 'unlimited');
               foreach ($results as $result) {
                 $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
               }
@@ -935,13 +953,19 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   $part_of = $islandora_object->relationships->get('info:fedora/fedora-system:def/relations-external#', 'isMemberOf');
   if(!empty($part_of)) {
     $parent_pid = $part_of[0]['object']['value'];
-    $query_siblings = 'select $object $sequence_number from <#ri>
-                        where (
-                        $object <fedora-rels-ext:isMemberOf> <info:fedora/' . $parent_pid . '> and
-                        $object <http://islandora.ca/ontology/relsext#sequence_position> $sequence_number
-                      )
-                      order by $sequence_number';
-    $results = $islandora_object->repository->ri->itqlQuery($query_siblings, 'unlimited');
+    $query_siblings = <<<'EOQ'
+SELECT ?object ?sequence_number
+FROM <#ri>
+WHERE {
+  ?object <fedora-rels-ext:isMemberOf> <info:fedora/!pid>;
+          <http://islandora.ca/ontology/relsext#sequence_position> ?sequence_number .
+}
+ORDER BY ?sequence_number
+EOQ;
+    $formatted_query_siblings = format_string($query_siblings, array(
+       '!pid' => $parent_pid,
+    ));
+    $results = $islandora_object->repository->ri->sparqlQuery($formatted_query_siblings, 'unlimited');
     foreach ($results as $result) {
       $siblings[] = str_replace('info:fedora/','',$result['object']['value']);
     }
@@ -965,12 +989,18 @@ function islandoratheme_islandora_serial_intermediate_object(array $variables) {
   }
 
   $parent_serial = '';
-  $query_serial = 'select $parentObject $collection from <#ri>
-                        where (
-                        $parentObject <fedora-rels-ext:isMemberOfCollection> $collection and
-                        walk(<info:fedora/' . $pid . '> <fedora-rels-ext:isMemberOf> $parentObject and $subject <fedora-rels-ext:isMemberOf> $parentObject)
-                      )';
-  $results = $islandora_object->repository->ri->itqlQuery($query_serial, 'unlimited');
+  $query_serial = <<<'EOQ'
+SELECT ?parentObject ?collection
+FROM <#ri>
+WHERE {
+  ?parentObject <fedora-rels-ext:isMemberOfCollection> ?collection .
+  <info:fedora/!pid> <fedora-rels-ext:isMemberOf>+ ?parentObject .
+}
+EOQ;
+  $formatted_query_serial = format_string($query_serial, array(
+    '!pid' => $pid,
+  ));
+  $results = $islandora_object->repository->ri->sparqlQuery($formatted_query_serial, 'unlimited');
   if (count($results) > 0) {
       $parent_serial = $results[0]['parentObject']['value'];
   }
