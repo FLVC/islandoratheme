@@ -41,17 +41,24 @@ $webservice_links = array(
 		'field_name' => 'MADS_orcid_ms',
 		'url'        => 'orcid.org/',
 	),
+        'identifier_orcid' => array(
+                'field_name' => 'MADS_u1_ms',
+                'url'        => '',
+                'pattern'    => '/^orcid\.org\/[0-9]{4}\-[0-9]{4}\-[0-9]{4}\-[0-9]{4}$/',
+        ),
 );
 
 foreach ( $webservice_links as $webservice_link ) {
 	//get the id
 	$id = isset($solr_fields[$webservice_link['field_name']]) ? $solr_fields[$webservice_link['field_name']]['value'][0] : '';
 	//check to see if it is empty
-	if (!empty($id)){ 	
+	if (!empty($id)) { 	
+	    if ((!isset($webservice_link['pattern']))||(preg_match($webservice_link['pattern'],$id) != 0)) {
 		//make the new link
 		$new_link =  '<a href="http://' .  $webservice_link['url'] .  $id .  '">' .  $id .  '</a>';
 		//reset the target var
 		$solr_fields[$webservice_link['field_name']]['value'][0] = $new_link;
+	    }
 	}
 }
 ?>
