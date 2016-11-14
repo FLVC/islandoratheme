@@ -46,7 +46,7 @@ if (isset($islandora_object->label))
     <li><a href="#tabs-2">Full Description</a></li>
     <li><a href="#tabs-3">Serial Details</a></li>
   <?php else: ?>
-    <?php if (!$embargoed) { ?>
+    <?php if (!$cron_embargoed) { ?>
     <li><a href="#tabs-2">View Document</a></li>
     <?php } ?>
   <?php endif; ?>
@@ -69,32 +69,44 @@ if (isset($islandora_object->label))
             </td>
 
             <?php if($row_field == 0): ?>
-              <td class="islandora-basic-image-thumbnail" rowspan="8">
 
-                  <?php if(isset($usage_views) && isset($usage_downloads)): ?>
-                    <?php print "<span class=\"usage-stats-views\">Views: $usage_views</span>"; ?>
-                    <?php print "<span class=\"usage-stats-downloads\">Downloads: $usage_downloads</span>"; ?>
-                  <?php endif; ?>
+              <td class="islandora-basic-image-thumbnail islandora-ir-thumbnail-container" rowspan="8">
 
+ 	          <!-- Statistics -->
+                  <?php if(!$cron_embargoed) { ?>
+                    <?php if(isset($usage_views) && isset($usage_downloads)) { ?>
+ 		      <?php print "<div id=\"usage-stats-box\">"; ?>
+                      <?php print "<span class=\"usage-stats-views\"><img class=\"usage-stats-icon\" src=\"$usage_view_icon\" /> $usage_views views</span><br/>"; ?>
+                      <?php print "<span class=\"usage-stats-downloads\"><img class=\"usage-stats-icon\" src=\"$usage_download_icon\" /> $usage_downloads downloads</span>"; ?>
+ 		      <?php print "</div>"; ?>
+                    <?php } ?>
+                    <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
+                      <?php print "<div id='islandora-metric-badges'>"; ?>
+                      <?php if (isset($altmetric_badge_html)) { print $altmetric_badge_html; } ?>
+                    <?php print "</div>"; ?>
+ 		    <?php print "<div id='sharing-button-box'>$sharing_buttons</div>"; ?>
+                  <?php } ?>
+
+                  <!-- Coverpage Display -->
                   <?php if(isset($islandora_full_url)): ?>
                     <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
-
                   <?php elseif(isset($islandora_thumbnail_img)): ?>
                     <?php print '<img src="' . $islandora_thumbnail_img . '">'; ?>
-
                   <?php endif; ?>
 
-                  <?php if (!$embargoed) { ?>
+  		  <!-- Download and Share Buttons -->
+                  <?php if (!$cron_embargoed) { ?>
                     <?php if(isset($islandora_download_link)): ?>
                       <a href="<?php print $islandora_download_link; ?>">
                         <button class="download">Download PDF</button>
                       </a>
                     <?php endif; ?>
-
                   <?php } else { ?>
                   <button disabled class="download">Download PDF</button>
-                  <p style="margin-top:10px;" class="error"><?php print $expiry_msg ?></p>
-
+                  <p style="margin-top:10px;font-size:60%;" class="error"><?php print $cron_expiry_msg ?></p>
+                  <?php } ?>
+                  <?php if ($ip_embargoed) { ?>
+                  <p style="margin-top:10px;font-size:60%;" class="error">This record is restricted to on-campus access only.</p>
                   <?php } ?>
 
               </td>
@@ -110,6 +122,7 @@ if (isset($islandora_object->label))
     </div>
 </div>
 
+<?php if(!$cron_embargoed) { ?> 
 <div id="tabs-2">
   <div class="islandora-citation-object islandora">
     <div class="islandora-citation-content-wrapper clearfix">
@@ -121,6 +134,7 @@ if (isset($islandora_object->label))
     </div>
   </div>
 </div>
+<?php } ?>
 
 </div>
 <div class="islandora-object-branding">
