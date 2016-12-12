@@ -692,6 +692,28 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_HOOK().
+ */
+function islandoratheme_preprocess_islandora_basic_collection_grid(&$variables) {
+
+  //$associated_objects = $variables['associated_objects_array'];
+
+  foreach ($variables['associated_objects_array'] as $key => &$value) {
+    $pid = $value['pid'];
+    $fc_object = islandora_object_load($pid);
+
+    // adding class for content model specific display
+    if (in_array('islandora:organizationCModel', $fc_object->models)) {
+      $value['thumb_link'] = str_replace('class="','class="flvc_content_model_organization_tn ',$value['thumb_link']);
+    }
+    else if (in_array('islandora:personCModel', $fc_object->models)) {
+      $value['thumb_link'] = str_replace('class="','class="flvc_content_model_person_tn ',$value['thumb_link']);
+    }
+    
+  }
+}
+
+/**
  * Override the Islandora Collection preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_collection(&$variables) {  
@@ -747,11 +769,19 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
     }
     else {
       $image_path = drupal_get_path('module', 'islandora');
-      $thumbnail_img = '<img src="' . $base_path . $image_path . '/images/Crystal_Clear_action_filenew.png"/>';
+      $thumbnail_img = '<img src="' . $base_path . $image_path . '/images/folder.png"/>';
     }
     $associated_objects_mods_array[$pid]['thumbnail'] = $thumbnail_img;
     $associated_objects_mods_array[$pid]['title_link'] = l($title, $object_url, array('html' => TRUE, 'attributes' => array('title' => $title)));
-    $associated_objects_mods_array[$pid]['thumb_link'] = l($thumbnail_img, $object_url, array('html' => TRUE, 'attributes' => array('title' => $title)));
+    $attributes = array('title' => $title);
+    // adding class for content model specific display
+    if (in_array('islandora:organizationCModel', $fc_object->models)) {
+      $attributes['class'] = 'flvc_content_model_organization_tn';
+    }
+    else if (in_array('islandora:personCModel', $fc_object->models)) {
+      $attributes['class'] = 'flvc_content_model_person_tn';
+    }
+    $associated_objects_mods_array[$pid]['thumb_link'] = l($thumbnail_img, $object_url, array('html' => TRUE, 'attributes' => $attributes));
     
     if($description_text)
     {
