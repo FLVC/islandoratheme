@@ -557,6 +557,8 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
  * Override the Islandora Collection Wrapper preprocess function
  */
 function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variables) { 
+  drupal_add_js(drupal_get_path('theme', 'islandoratheme') . '/js/entity_overlay.js');
+
   $islandora_object = $variables['islandora_object'];
 
   //If the object has a DESC-TEXT datastream, get description information.
