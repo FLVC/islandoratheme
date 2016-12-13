@@ -577,23 +577,13 @@ function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variable
  * Implements hook_preprocess_HOOK for islandora_scholar_citation
  */
 function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
-  $doc = new DOMDocument();
-  $doc->loadXML($variables['islandora_object']['MODS']->content);
-  $xpath = new DOMXPath($doc);
-  $xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
-  $xpath_results = $xpath->query(variable_get('islandora_altmetrics_doi_xpath', '/mods:mods/mods:identifier[@type="doi"]'));
-  $doi = @$xpath_results->item(0)->nodeValue;
-  if (!empty($doi)) {
-    $variables['altmetric_badge_html'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-doi='" . $doi . "'></div>";
-  }
-
+  $variables['badges'] = get_doi_badges($variables['islandora_object']);
 
   global $base_url;
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/citation.css', 
     array('group' => CSS_THEME, 'type' => 'file'));  
   $islandora_object = $variables['islandora_object'];
 
-  // Sharing buttons testing
   $variables['sharing_buttons'] = build_sharing_button_html($islandora_object);
   
   if (isset($islandora_object['PDF']) && 
@@ -629,7 +619,7 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   $variables['cron_embargoed'] = $embargo_data['cron_embargoed'];
   $variables['cron_expiry_msg'] = $embargo_data['cron_expiry_msg'];
 
-  if (module_exists('islandora_usage_stats_callbacks') && !$variables['cron_embargoed']) {
+  if (module_exists('islandora_usage_stats_callbacks')) {
     $usage_data = get_usage_stats($islandora_object);
     $variables['usage_views'] = $usage_data['views'];
     $variables['usage_downloads'] = $usage_data['downloads'];
@@ -642,11 +632,15 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
  * Implements hook_preprocess_HOOK for islandora_scholar_thesis
  */
 function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
+  $variables['badges'] = get_doi_badges($variables['islandora_object']);
+
   global $base_url;
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/thesis.css', 
     array('group' => CSS_THEME, 'type' => 'file'));
   $islandora_object = $variables['islandora_object'];
   
+  $variables['sharing_buttons'] = build_sharing_button_html($islandora_object);
+
   if (isset($islandora_object['PDF']) &&
     islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PDF'])) {
     $variables['islandora_view_link'] =
@@ -680,10 +674,12 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   $variables['cron_embargoed'] = $embargo_data['cron_embargoed'];
   $variables['cron_expiry_msg'] = $embargo_data['cron_expiry_msg'];
 
-  if (module_exists('islandora_usage_stats_callbacks') && !$variables['cron_embargoed']) {
+  if (module_exists('islandora_usage_stats_callbacks')) {
     $usage_data = get_usage_stats($islandora_object);
     $variables['usage_views'] = $usage_data['views'];
     $variables['usage_downloads'] = $usage_data['downloads'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+    $variables['usage_download_icon'] = $usage_data['download_icon_path'];
   }
 }
 
@@ -1303,6 +1299,109 @@ function get_usage_stats($islandora_object) {
   
   $usage_data = array('views' => $views, 'view_icon_path' => $view_icon_path, 'downloads' => $downloads, 'download_icon_path' => $download_icon_path);
   return $usage_data;
+}
+
+function get_doi_badges($islandora_object) {
+  $badges = array();
+
+  $doc = new DOMDocument();
+  $doc->loadXML($islandora_object['MODS']->content);
+  $xpath = new DOMXPath($doc);
+  $xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+  $xpath_results = $xpath->query('/mods:mods/mods:identifier[@type="doi"]');
+  $doi = @$xpath_results->item(0)->nodeValue;
+  if (!empty($doi)) {
+    $badges['altmetric'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-doi='" . $doi . "'></div>";
+    $badges['scopus'] = get_scopus_badge_html($doi);
+    $badges['wos'] = get_wos_badge_html($doi);
+  } else {
+    $badges['altmetric'] = "";
+    $badges['scopus'] = "";
+    $badges['wos'] = "";
+  }
+  return $badges;
+}
+
+function get_scopus_badge_html($doi) {
+  /*
+  $scopus_key = "your key here";
+  $scopus_url = "http://api.elsevier.com:80/content/abstract/citation-count?doi=" . urlencode($doi) . "&apiKey=" . $scopus_key . "&httpAccept=text%2Fhtml";
+  $response = drupal_http_request($scopus_url);
+  if (preg_match('/alt=\"unavailable\"/', $response->data)) {
+    return "";
+  }
+  else {
+    return $response->data;;
+  }
+  */
+  return "";
+}
+
+function get_wos_badge_html($doi) {
+  /*
+  // What a mess. Fix later
+  $wos_username = "wos username";
+  $wos_password = "wos password";
+  $url = "https://ws.isiknowledge.com/cps/xrpc";
+  $input_xml = <<<EOX
+<?xml version="1.0" encoding="UTF-8" ?>
+<request xmlns="http://www.isinet.com/xrpc42" src="app.id=API Demo">
+  <fn name="LinksAMR.retrieve">
+    <list>
+      <map>   
+        <val name="username">' . $wos_username . '</val>       
+        <val name="password">' . $wos_password . '</val>            
+      </map>
+      <map>
+        <list name="WOS">
+          <val>timesCited</val>
+          <val>citingArticlesURL</val>
+        </list>
+      </map>
+      <map>  
+        <map name="cite_1">
+          <val name="doi">' . $doi . '</val>
+        </map>
+      </map>
+    </list>
+  </fn>
+</request> 
+EOX;
+
+  $result = drupal_http_request($url, array(
+      'headers' => array('Content-Type' => 'text/xml'),
+      'data' => $input_xml,
+      'method' => 'POST',
+      'timeout' => 10
+     )
+  );
+  $wos_result = simplexml_load_string($result->data, 'SimpleXMLElement', LIBXML_NOCDATA);
+  $timesCited = 0;
+  $citingArticlesURL = array();
+  foreach ($wos_result->fn->map->map->map->val as $val) {
+    switch((string) $val['name']) { // Get attributes as element indices
+      case 'timesCited':
+        $timesCited = $val[0];
+	break;
+      case 'citingArticlesURL':
+        $citingArticlesURL = $val[0];
+        break;
+    }
+  }
+
+  if (empty($result->error)) {
+    $badgeType = 0;
+    if ($badgeType == 1) {
+      $to_render['content'] = '<div class="wos_badge"><a href="' . $citingArticlesURL . '" target="_blank">Web of Science citations: ' . $timesCited . '</a></div>';
+    }
+    elseif ($badgeType == 0)  {
+      $to_render['content'] = '<a href="' . $citingArticlesURL[0] . '" target="_blank"><img src=https://img.shields.io/badge/Web%20of%20Science%20citations-' . $timesCited . '-orange.svg?style=flat"></img></a>';
+    }
+  }
+  return $to_render['content'];
+  */
+
+  return "";
 }
 
 function build_sharing_button_html($islandora_object) {
