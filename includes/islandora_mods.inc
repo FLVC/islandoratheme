@@ -332,7 +332,11 @@ class MODS {
       $mods_array['mods:identifier']['value'] = NULL;
       
       foreach ($mods_object->identifier as $identifier) {
-        
+   
+        if (strtolower($identifier['type']) == 'doi') {
+          $identifier[0] = "<a href='https://dx.doi.org/{$identifier[0]}'>{$identifier[0]}</a>";
+        }
+   
         if (isset ($identifier['type']) && $identifier != '') {
           
           if($count > 0) {
@@ -344,7 +348,9 @@ class MODS {
           
           $mods_array['mods:identifier']['label'] = 'Identifier';
           $mods_array['mods:identifier']['class'] = $identifier->getName() . '_' . $identifier['type'];
-        } elseif ($identifier != '') {
+
+        } 
+        elseif ($identifier != '') {
           
           if($count > 0) {
             $mods_array['mods:identifier']['value'] .= ', ' . trim($identifier);

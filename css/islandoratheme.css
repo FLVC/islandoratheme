@@ -499,8 +499,8 @@ div.region-sidebar-first .block
 
 /* sharingbuttons.io styles */
 #sharing-button-box {
-  text-align: center;
-  margin-left: 0.4em;
+  text-align: left;
+  margin-bottom: 1em;
 } 
 
 #sharing-button-box a:hover {
@@ -514,7 +514,7 @@ div.region-sidebar-first .block
   border-style: solid;
   transition: background-color 25ms ease-out, border-color 25ms ease-out, opacity 250ms ease-out;
   margin-top: 0.3em;
-  padding: 0.2em 0.4em;
+  padding: 0.4em 0.58em;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
