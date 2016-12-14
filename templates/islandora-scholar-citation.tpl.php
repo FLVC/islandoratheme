@@ -104,10 +104,6 @@ if (isset($islandora_object->label))
                       <a href="<?php print $islandora_download_link; ?>">
                         <button class="download">Download PDF</button>
                       </a>
-
-                      <div id="sharing-button-box">
-                        <?php print $sharing_buttons; ?>
-                      </div>
                     <?php endif; ?>
                   <?php } else { ?>
                   <button disabled class="download">Download PDF</button>
