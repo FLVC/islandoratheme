@@ -1279,12 +1279,15 @@ function get_embargo_status($islandora_object) {
       $embargo_data['cron_expiry_msg'] = "";
     }
   }
+
   if (module_exists('islandora_ip_embargo')) {
-    $embargo_data['ip_embargoed'] = islandora_ip_embargo_restrict_access($islandora_object->id);
+    //$embargo_data['ip_embargoed'] = islandora_ip_embargo_restrict_access($islandora_object->id);
+    $embargo_data['ip_embargoed'] = islandora_ip_embargo_get_embargo($islandora_object->id);
   }
   else {
     $embargo_data['ip_embargoed'] = FALSE;
   }
+
   return $embargo_data;
 }
 

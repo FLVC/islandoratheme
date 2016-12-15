@@ -99,7 +99,7 @@ if (isset($islandora_object->label))
                   <?php endif; ?>
 
   		  <!-- Download button and embargo messages -->
-                  <?php if (!$cron_embargoed && !$ip_embargoed) { ?>
+                  <?php if (!$cron_embargoed) { ?>
                     <?php if(isset($islandora_download_link)): ?>
                       <a href="<?php print $islandora_download_link; ?>">
                         <button class="download">Download PDF</button>
@@ -109,6 +109,7 @@ if (isset($islandora_object->label))
                   <button disabled class="download">Download PDF</button>
                   <p style="margin-top:10px;font-size:60%;" class="error"><?php print $cron_expiry_msg ?></p>
                   <?php } ?>
+
                   <?php if ($ip_embargoed) { ?>
                   <p style="margin-top:10px;font-size:60%;" class="error">This record is restricted to on-campus access only.</p>
                   <?php } ?>
