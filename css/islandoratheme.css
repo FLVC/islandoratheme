@@ -319,7 +319,7 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
 }
 
 .islandora-ir-thumbnail-container {
-  width: 25px;
+  width: 140px;
 }
 
 #islandora-metric-badges img 
@@ -514,7 +514,7 @@ div.region-sidebar-first .block
   border-style: solid;
   transition: background-color 25ms ease-out, border-color 25ms ease-out, opacity 250ms ease-out;
   margin-top: 0.3em;
-  padding: 0.4em 0.58em;
+  padding: 2% 4.5%;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 

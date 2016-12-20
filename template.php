@@ -626,6 +626,9 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
     $variables['usage_view_icon'] = $usage_data['view_icon_path'];
     $variables['usage_download_icon'] = $usage_data['download_icon_path'];
   }
+  
+  // Check if object has PDF
+  $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
 }
 
 /**
@@ -681,6 +684,9 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
     $variables['usage_view_icon'] = $usage_data['view_icon_path'];
     $variables['usage_download_icon'] = $usage_data['download_icon_path'];
   }
+  
+  // Check if object has PDF
+  $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
 }
 
 /**
