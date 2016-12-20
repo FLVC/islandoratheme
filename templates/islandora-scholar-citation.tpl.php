@@ -46,7 +46,7 @@ if (isset($islandora_object->label))
     <li><a href="#tabs-2">Full Description</a></li>
     <li><a href="#tabs-3">Serial Details</a></li>
   <?php else: ?>
-    <?php if (!$cron_embargoed) { ?>
+    <?php if (!$cron_embargoed AND !$pdfless) { ?>
     <li><a href="#tabs-2">View Document</a></li>
     <?php } ?>
   <?php endif; ?>
