@@ -314,7 +314,7 @@ body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
 .full-description-heading { width: 20%; min-width: 200px; }
 .islandora-pdf-thumbnail img, .islandora-basic-image-thumbnail img, .islandora-large-image-thumbnail img
 {
-  box-shadow: 8px 8px 5px #888888;
+  box-shadow: 2px 2px 5px #888888;
   max-width: none;
 }
 
