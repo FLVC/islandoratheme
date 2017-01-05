@@ -629,6 +629,9 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
     $variables['usage_view_icon'] = $usage_data['view_icon_path'];
     $variables['usage_download_icon'] = $usage_data['download_icon_path'];
   }
+  
+  // Check if object has PDF
+  $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
 }
 
 /**
@@ -684,6 +687,9 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
     $variables['usage_view_icon'] = $usage_data['view_icon_path'];
     $variables['usage_download_icon'] = $usage_data['download_icon_path'];
   }
+  
+  // Check if object has PDF
+  $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
 }
 
 /**
@@ -1314,11 +1320,17 @@ function get_embargo_status($islandora_object) {
   }
 
   if (module_exists('islandora_ip_embargo')) {
-    //$embargo_data['ip_embargoed'] = islandora_ip_embargo_restrict_access($islandora_object->id);
-    $embargo_data['ip_embargoed'] = islandora_ip_embargo_get_embargo($islandora_object->id);
-  }
-  else {
-    $embargo_data['ip_embargoed'] = FALSE;
+    $query = db_select('islandora_ip_embargo_embargoes')
+      ->fields('islandora_ip_embargo_embargoes', array('pid'))
+      ->condition('pid', $islandora_object->id)
+      ->execute();
+    $result = $query->fetchAssoc();
+    if ($result) {
+      $embargo_data['ip_embargoed'] = TRUE;
+    }
+    else {
+      $embargo_data['ip_embargoed'] = FALSE;
+    }
   }
 
   return $embargo_data;

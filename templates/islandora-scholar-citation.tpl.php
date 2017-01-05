@@ -46,7 +46,7 @@ if (isset($islandora_object->label))
     <li><a href="#tabs-2">Full Description</a></li>
     <li><a href="#tabs-3">Serial Details</a></li>
   <?php else: ?>
-    <?php if (!$cron_embargoed) { ?>
+    <?php if (!$cron_embargoed AND !$pdfless) { ?>
     <li><a href="#tabs-2">View Document</a></li>
     <?php } ?>
   <?php endif; ?>
@@ -76,7 +76,7 @@ if (isset($islandora_object->label))
                   <?php if(isset($usage_views) && isset($usage_downloads)) { ?>
  		    <?php print "<div id=\"usage-stats-box\">"; ?>
                     <?php print "<span class=\"usage-stats-views\"><img class=\"usage-stats-icon\" src=\"$usage_view_icon\" /> $usage_views views</span><br/>"; ?>
-	  	    <?php if(!$cron_embargoed) { print "<span class=\"usage-stats-downloads\"><img class=\"usage-stats-icon\" src=\"$usage_download_icon\" /> $usage_downloads downloads</span>"; } ?>
+	  	    <?php if(!$cron_embargoed && !$pdfless) { print "<span class=\"usage-stats-downloads\"><img class=\"usage-stats-icon\" src=\"$usage_download_icon\" /> $usage_downloads downloads</span>"; } ?>
  		    <?php print "</div>"; ?>
                   <?php } ?>
 
@@ -113,7 +113,7 @@ if (isset($islandora_object->label))
                   <?php if ($ip_embargoed) { ?>
                   <p style="margin-top:10px;font-size:60%;" class="error">This record is restricted to on-campus access only.</p>
                   <?php } ?>
-
+ 
               </td>
 
             <?php endif; ?>
