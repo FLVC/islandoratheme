@@ -1323,7 +1323,7 @@ function get_doi_badges($islandora_object) {
   $doc->loadXML($islandora_object['MODS']->content);
   $xpath = new DOMXPath($doc);
   $xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
-  $xpath_results = $xpath->query('/mods:mods/mods:identifier[@type="doi"]');
+  $xpath_results = $xpath->query('/mods:mods/mods:identifier[@type="doi" or @type="DOI"]');
   $doi = @$xpath_results->item(0)->nodeValue;
   if (!empty($doi)) {
     $badges['altmetric'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-doi='" . $doi . "'></div>";
