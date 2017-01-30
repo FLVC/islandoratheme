@@ -1326,7 +1326,7 @@ function get_doi_badges($islandora_object) {
   $xpath_results = $xpath->query('/mods:mods/mods:identifier[@type="doi" or @type="DOI"]');
   $doi = @$xpath_results->item(0)->nodeValue;
   if (!empty($doi)) {
-    $badges['altmetric'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-doi='" . $doi . "'></div>";
+    $badges['altmetric'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-hide-less-than='1' data-doi='" . $doi . "'></div>";
     $badges['scopus'] = get_scopus_badge_html($doi);
     $badges['wos'] = get_wos_badge_html($doi);
   } else {
