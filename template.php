@@ -632,6 +632,7 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   
   // Check if object has PDF
   $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
+  $variables['pdfless_icon'] = $base_url . "/sites/all/themes/islandoratheme/images/no-full-text.jpg";
 }
 
 /**
@@ -690,6 +691,7 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   
   // Check if object has PDF
   $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
+  $variables['pdfless_icon'] = $base_url . "/sites/all/themes/islandoratheme/images/no-full-text.jpg";
 }
 
 /**
@@ -1356,10 +1358,10 @@ function get_doi_badges($islandora_object) {
   $doc->loadXML($islandora_object['MODS']->content);
   $xpath = new DOMXPath($doc);
   $xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
-  $xpath_results = $xpath->query('/mods:mods/mods:identifier[@type="doi"]');
+  $xpath_results = $xpath->query('/mods:mods/mods:identifier[@type="doi" or @type="DOI"]');
   $doi = @$xpath_results->item(0)->nodeValue;
   if (!empty($doi)) {
-    $badges['altmetric'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-doi='" . $doi . "'></div>";
+    $badges['altmetric'] = "<div class='altmetric-embed' data-badge-type='bar' data-badge-popover='left' data-hide-less-than='1' data-doi='" . $doi . "'></div>";
     $badges['scopus'] = get_scopus_badge_html($doi);
     $badges['wos'] = get_wos_badge_html($doi);
   } else {
