@@ -377,6 +377,14 @@ EOQ;
         $variables['serial_navigation_links'] = theme('links', array('links' => $links, 'attributes' => $attributes));
   }
 
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_downloads'] = $usage_data['downloads'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+    $variables['usage_download_icon'] = $usage_data['download_icon_path'];
+  }
+
 }
 
 /**
