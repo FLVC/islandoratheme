@@ -606,7 +606,7 @@ div.region-sidebar-first .block
 
 /* usage stats icons */
 div#usage-stats-box > span > img {
-  max-width: 10%;
+  max-width: 15px;
   box-shadow: none;
 }
 
