@@ -334,7 +334,7 @@ class MODS {
       foreach ($mods_object->identifier as $identifier) {
    
         if (strtolower($identifier['type']) == 'doi') {
-          $identifier[0] = "<a href='https://dx.doi.org/{$identifier[0]}'>{$identifier[0]}</a>";
+          $identifier[0] = "<a href='https://doi.org/{$identifier[0]}'>{$identifier[0]}</a>";
         }
    
         if (isset ($identifier['type']) && $identifier != '') {
