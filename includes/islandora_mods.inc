@@ -261,6 +261,10 @@ class MODS {
       $description_counter = 0;
 
       foreach($mods_object->abstract as $abstract) {
+
+        #$abstract[0] = preg_replace("/(http[s]?:\/\/[\S]*[^\.\s|^,]+)/", "<a href='\\1'>\\1</a>", $abstract);
+        #$abstract[0] = static::linkify($abstract);
+
         if ($description_counter == 0 && $abstract != '')
         {
           $mods_array['mods:description']['value'] = $abstract;
@@ -1154,6 +1158,13 @@ class MODS {
 
     return $string;
   }
+
+  /*
+  protected static function linkify($string)
+  {
+    return preg_replace("/(http[s]?:\/\/[\S]*[^\.\s|^,]+)/", "<a href='\\1'>\\1</a>", $string);
+  }
+  */
 }
 
 
