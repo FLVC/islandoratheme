@@ -88,11 +88,11 @@ class MODS {
               $i++;
               break;
             case 'uniform':
-              $mods_array[$i]['value'] = $title;
-              $mods_array[$i]['label'] = isset($label) ? $label : 'Uniform Title';
-              $mods_array[$i]['class'] = $titleInfo->title->getName() . '_uniform';
+              $mods_array['mods:title']['value'] = $title;
+              $mods_array['mods:title']['label'] = isset($label) ? $label : 'Uniform Title';
+              $mods_array['mods:title']['class'] = $titleInfo->title->getName() . '_uniform';
               $i++;
-              break;          
+              break;
             default:
               $mods_array['mods:title']['value'] = $title;
               $mods_array['mods:title']['label'] = isset($label) ? $label : 'Title';
