@@ -262,8 +262,7 @@ class MODS {
 
       foreach($mods_object->abstract as $abstract) {
 
-        #$abstract[0] = preg_replace("/(http[s]?:\/\/[\S]*[^\.\s|^,]+)/", "<a href='\\1'>\\1</a>", $abstract);
-        #$abstract[0] = static::linkify($abstract);
+        $abstract[0] = static::linkify($abstract);
 
         if ($description_counter == 0 && $abstract != '')
         {
@@ -394,7 +393,7 @@ class MODS {
               }
               
               if(!$found) {
-                $mods_array[$i]['value'] = $note;
+                $mods_array[$i]['value'] = static::linkify($note);
                 $mods_array[$i]['label'] = removeQuotes((string)$note['displayLabel']);
                 $mods_array[$i]['class'] = $note->getName() . '_text';
                 $i++;
@@ -407,6 +406,7 @@ class MODS {
       $note_value = '';
       $total_counter = 0;
       foreach ($mods_object->note as $note) {
+        $note[0] = static::linkify($note);
         switch((string) $note['type']) { // Get attributes as element indices
           case 'rights':
             break;
@@ -1159,12 +1159,11 @@ class MODS {
     return $string;
   }
 
-  /*
   protected static function linkify($string)
   {
     return preg_replace("/(http[s]?:\/\/[\S]*[^\.\s|^,]+)/", "<a href='\\1'>\\1</a>", $string);
   }
-  */
+
 }
 
 
