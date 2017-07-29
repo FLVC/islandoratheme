@@ -1540,14 +1540,6 @@ function islandoratheme_process_node(&$vars) {
 // */
 
 /**
- * Override or insert variables for the view templates.
- */
-/*
-function islandoratheme_preprocess_views_view(&$variables) {
-  //drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/datatables.css', array('group' => CSS_THEME, 'type' => 'file'));
-}
-
-/**
  * Override or insert variables into the comment templates.
  */
 /* -- Delete this line if you want to use these functions
