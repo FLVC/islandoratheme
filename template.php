@@ -114,6 +114,13 @@ function islandoratheme_preprocess_islandora_binary_object(&$variables) {
 
   // remove non-public sites from collection links
   $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
+
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+  }
+
 }
 
 /**
