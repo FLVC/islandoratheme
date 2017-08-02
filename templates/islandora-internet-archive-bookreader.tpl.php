@@ -91,6 +91,12 @@
 
           <?php if($row_field == 0): ?>             
             <td class="islandora-book-thumbnail" rowspan="8">
+                  <?php if(isset($usage_views)) { ?>
+                    <?php print "<div id=\"usage-stats-box\">"; ?>
+                    <?php print "<span class=\"usage-stats-views\"><img class=\"usage-stats-icon\" src=\"$usage_view_icon\" /> $usage_views views</span><br/>"; ?>
+                    <?php print "</div>"; ?>
+                  <?php } ?>
+
               <?php if(isset($islandora_tn_html)): ?>
                 <a href="javascript:document.location.reload();"><?php print $islandora_tn_html; ?></a>
               <?php endif; ?>
@@ -130,7 +136,6 @@
 <?php if (isset($newspaper_mods_array)): ?>
 <div id="tabs-3">
     <div class="islandora-book-sidebar">
-      
       <table class="islandora-table-display">
       <tbody>
       <?php $row_field = 0; ?>
@@ -148,6 +153,7 @@
 
           <?php if($row_field == 0): ?>             
             <td class="islandora-book-thumbnail" rowspan="8">
+
               <?php if(isset($islandora_tn_html)): ?>
                 <a href="javascript:document.location.reload();"><?php print $newspaper_tn_html; ?></a>
               <?php endif; ?>
