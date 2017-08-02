@@ -64,10 +64,11 @@
 
             <?php if($row_field == 0): ?>
               <td class="islandora-binary-object-thumbnail" rowspan="8"> 
-                  <?php if(isset($usage_views)) { ?>
-                    <?php print "<div id=\"usage-stats-box\">"; ?>
+                  <?php if(isset($usage_views) && isset($usage_downloads)) { ?>
+ 		    <?php print "<div id=\"usage-stats-box\">"; ?>
                     <?php print "<span class=\"usage-stats-views\"><img class=\"usage-stats-icon\" src=\"$usage_view_icon\" /> $usage_views views</span><br/>"; ?>
-                    <?php print "</div>"; ?>
+	  	    <?php print "<span class=\"usage-stats-downloads\"><img class=\"usage-stats-icon\" src=\"$usage_download_icon\" /> $usage_downloads downloads</span>"; ?>
+ 		    <?php print "</div>"; ?>
                   <?php } ?>
 
               <?php if(isset($islandora_full_url)): ?>
