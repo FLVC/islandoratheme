@@ -88,11 +88,11 @@ class MODS {
               $i++;
               break;
             case 'uniform':
-              $mods_array[$i]['value'] = $title;
-              $mods_array[$i]['label'] = isset($label) ? $label : 'Uniform Title';
-              $mods_array[$i]['class'] = $titleInfo->title->getName() . '_uniform';
+              $mods_array['mods:title']['value'] = $title;
+              $mods_array['mods:title']['label'] = isset($label) ? $label : 'Uniform Title';
+              $mods_array['mods:title']['class'] = $titleInfo->title->getName() . '_uniform';
               $i++;
-              break;          
+              break;
             default:
               $mods_array['mods:title']['value'] = $title;
               $mods_array['mods:title']['label'] = isset($label) ? $label : 'Title';
@@ -261,6 +261,9 @@ class MODS {
       $description_counter = 0;
 
       foreach($mods_object->abstract as $abstract) {
+
+        $abstract[0] = static::linkify($abstract);
+
         if ($description_counter == 0 && $abstract != '')
         {
           $mods_array['mods:description']['value'] = $abstract;
@@ -334,7 +337,7 @@ class MODS {
       foreach ($mods_object->identifier as $identifier) {
    
         if (strtolower($identifier['type']) == 'doi') {
-          $identifier[0] = "<a href='https://dx.doi.org/{$identifier[0]}'>{$identifier[0]}</a>";
+          $identifier[0] = "<a href='https://doi.org/{$identifier[0]}'>{$identifier[0]}</a>";
         }
    
         if (isset ($identifier['type']) && $identifier != '') {
@@ -390,7 +393,7 @@ class MODS {
               }
               
               if(!$found) {
-                $mods_array[$i]['value'] = $note;
+                $mods_array[$i]['value'] = static::linkify($note);
                 $mods_array[$i]['label'] = removeQuotes((string)$note['displayLabel']);
                 $mods_array[$i]['class'] = $note->getName() . '_text';
                 $i++;
@@ -403,6 +406,7 @@ class MODS {
       $note_value = '';
       $total_counter = 0;
       foreach ($mods_object->note as $note) {
+        $note[0] = static::linkify($note);
         switch((string) $note['type']) { // Get attributes as element indices
           case 'rights':
             break;
@@ -1154,6 +1158,12 @@ class MODS {
 
     return $string;
   }
+
+  protected static function linkify($string)
+  {
+    return preg_replace("/(http[s]?:\/\/[\S]*[^\.\s|^,]+)/", "<a href='\\1'>\\1</a>", $string);
+  }
+
 }
 
 
