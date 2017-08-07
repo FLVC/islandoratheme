@@ -106,16 +106,16 @@ if (isset($islandora_object->label))
                       <a href="<?php print $islandora_download_link; ?>">
                         <button class="download">Download PDF</button>
                       </a>
+                      <?php if ($ip_embargoed) { ?>
+                      <p style="margin-top:10px;font-size:60%;" class="error">This record is restricted to on-campus access only.</p>
+                      <?php } ?>
                     <?php endif; ?>
                   <?php } else { ?>
                   <button disabled class="download">Download PDF</button>
                   <p style="margin-top:10px;font-size:60%;" class="error"><?php print $cron_expiry_msg ?></p>
                   <?php } ?>
 
-                  <?php if ($ip_embargoed) { ?>
-                  <p style="margin-top:10px;font-size:60%;" class="error">This record is restricted to on-campus access only.</p>
-                  <?php } ?>
- 
+
               </td>
 
             <?php endif; ?>
