@@ -1360,11 +1360,11 @@ function get_embargo_status($islandora_object) {
       $embargo_data['cron_embargoed'] = TRUE;
       $expiry = $expiry_array[0][0];
       if ($expiry == "indefinite") {
-        $embargo_data['cron_expiry_msg'] = "Embargoed indefinitely";
+        $embargo_data['cron_expiry_msg'] = "Inaccessible indefinitely due to copyright restrictions.";
       }
       else {
         $expiry_date = date("M j, Y", strtotime($expiry));
-        $embargo_data['cron_expiry_msg'] = "Embargoed until {$expiry_date}";
+        $embargo_data['cron_expiry_msg'] = "Inaccessible until {$expiry_date} due to copyright restrictions.";
       }
     } 
     else {
