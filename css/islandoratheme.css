@@ -311,6 +311,7 @@ div.islandora-definition-row { margin-bottom: 10px; }
 .islandora-table-display td { padding-left: 20px; }
 body.no-sidebars .islandora-basic-image-sidebar { padding: 0; }
 body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
+.islandora-basic-image-sidebar { clear: both; }
 .full-description-heading { width: 20%; min-width: 200px; }
 .islandora-pdf-thumbnail img, .islandora-basic-image-thumbnail img, .islandora-large-image-thumbnail img
 {
