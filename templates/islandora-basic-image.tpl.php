@@ -59,7 +59,7 @@
       <?php endif; ?>
       </div>
     <?php endif; ?>
-  <div class="islandora-basic-image-sidebar">
+  <div class="islandora-basic-image-sidebar" style="clear:both;">
     <dl>
       <?php if(isset($mods_array['mods:date']['value'])): ?>
 	<div class="islandora-definition-row">
