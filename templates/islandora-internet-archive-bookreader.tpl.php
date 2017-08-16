@@ -34,7 +34,11 @@
 
 <ul>
   <li><a href="#tabs-1">Summary</a></li>
-  <?php if (isset($newspaper_mods_array)): ?>
+
+  <?php if (isset($parent_mods_array)): ?>
+    <li><a href="#tabs-2">Item Description</a></li>
+    <li><a href="#tabs-3">Set Description</a></li>
+  <?php elseif (isset($newspaper_mods_array)): ?>
     <li><a href="#tabs-2">Issue Details</a></li>
     <li><a href="#tabs-3">Newspaper Details</a></li>
   <?php else: ?>
