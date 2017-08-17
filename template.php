@@ -114,6 +114,15 @@ function islandoratheme_preprocess_islandora_binary_object(&$variables) {
 
   // remove non-public sites from collection links
   $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
+
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_downloads'] = $usage_data['downloads'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+    $variables['usage_download_icon'] = $usage_data['download_icon_path'];
+  }
+
 }
 
 /**
@@ -151,6 +160,13 @@ function islandoratheme_preprocess_islandora_basic_image(&$variables) {
 
   // remove non-public sites from collection links
   $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
+
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+  }
+
 }
 
 /**
@@ -236,6 +252,13 @@ function islandoratheme_preprocess_islandora_audio(&$variables) {
   elseif (isset($islandora_object['PROXY_MP3']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['PROXY_MP3'])) {
     $variables['islandora_content'] = l($islandora_object->label, $audio_url);
   }  
+
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+  }
+
 }
 
 /**
@@ -423,6 +446,13 @@ function islandoratheme_preprocess_islandora_large_image(&$variables) {
 
   // remove non-public sites from collection links
   $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
+
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+  }
+
 }
 
 /**
@@ -477,6 +507,13 @@ function islandoratheme_process_islandora_internet_archive_bookreader(&$variable
 
   // remove non-public sites from collection links
   $variables['parent_collections'] = remove_non_public_sites_from_collections($variables['parent_collections']);
+
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+  }
+
 }
 
 /**
@@ -550,6 +587,12 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
     );
   }
 
+  if (module_exists('islandora_usage_stats_callbacks')) {
+    $usage_data = get_usage_stats($islandora_object);
+    $variables['usage_views'] = $usage_data['views'];
+    $variables['usage_view_icon'] = $usage_data['view_icon_path'];
+  }
+
   $viewer = islandora_get_viewer($video_params, 'islandora_video_viewers', $islandora_object);
   $variables['islandora_content'] = '';
   if ($viewer) {
@@ -559,6 +602,7 @@ function islandoratheme_preprocess_islandora_video(&$variables) {
     $variables['islandora_content'] = NULL;
   }
   return array('' => $viewer);
+
 }
 
 /**
@@ -1316,11 +1360,11 @@ function get_embargo_status($islandora_object) {
       $embargo_data['cron_embargoed'] = TRUE;
       $expiry = $expiry_array[0][0];
       if ($expiry == "indefinite") {
-        $embargo_data['cron_expiry_msg'] = "Embargoed indefinitely";
+        $embargo_data['cron_expiry_msg'] = "Inaccessible indefinitely due to copyright restrictions.";
       }
       else {
         $expiry_date = date("M j, Y", strtotime($expiry));
-        $embargo_data['cron_expiry_msg'] = "Embargoed until {$expiry_date}";
+        $embargo_data['cron_expiry_msg'] = "Inaccessible until {$expiry_date} due to copyright restrictions.";
       }
     } 
     else {

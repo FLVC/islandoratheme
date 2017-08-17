@@ -96,6 +96,12 @@
 
             <?php if($row_field == 0): ?>
               <td class="islandora-audio-thumbnail" rowspan="5"> 
+                  <?php if(isset($usage_views)) { ?>
+                    <?php print "<div id=\"usage-stats-box\">"; ?>
+                    <?php print "<span class=\"usage-stats-views\"><img class=\"usage-stats-icon\" src=\"$usage_view_icon\" /> $usage_views views</span><br/>"; ?>
+                    <?php print "</div>"; ?>
+                  <?php } ?>
+
                 <?php if(isset($islandora_full_url)): ?>
                   <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
                 <?php elseif(isset($islandora_thumbnail_img)): ?>

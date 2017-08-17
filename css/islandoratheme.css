@@ -309,6 +309,7 @@ dl.islandora-table-display dt, dl.islandora-table-display dd { display: inline; 
 div.islandora-definition-row { margin-bottom: 10px; }
 .islandora-title h3 { margin-bottom: 10px; }
 .islandora-table-display td { padding-left: 20px; }
+.islandora-table-display td.note_text { max-width: 200px; }
 body.no-sidebars .islandora-basic-image-sidebar { padding: 0; }
 body.no-sidebars .islandora-large-image-sidebar { padding: 0; }
 .full-description-heading { width: 20%; min-width: 200px; }
