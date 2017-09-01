@@ -270,6 +270,8 @@ function islandoratheme_preprocess_islandora_pdf(&$variables) {
   global $base_url;
   // base path
   global $base_path;
+
+  $variables['badges'] = get_doi_badges($variables['islandora_object']);
  
   // Add css file for PDF presentation
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/pdf.css', array('group' => CSS_THEME, 'type' => 'file'));

@@ -123,6 +123,14 @@ if (isset($islandora_content))
 		    <?php print "</div>"; ?>
 		  <?php } ?>
 
+                  <!-- Metrics Badges pre-load -->
+                  <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
+                  <?php print "<div id='islandora-metric-badges'>"; ?>
+                  <?php if (isset($badges['altmetric'])) { print $badges['altmetric']; } ?>
+                  <?php if (isset($badges['scopus'])) { print $badges['scopus']; } ?>
+                  <?php if (isset($badges['wos'])) { print $badges['wos']; } ?>
+                  <?php print "</div>"; ?>
+
                 <?php if(isset($islandora_full_url)): ?>
                   <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
                 <?php elseif(isset($islandora_thumbnail_img)): ?>
