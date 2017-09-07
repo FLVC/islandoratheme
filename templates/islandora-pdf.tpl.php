@@ -125,7 +125,7 @@ if (isset($islandora_content))
 
                   <!-- Metrics Badges pre-load -->
                   <?php print "<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>"; ?>
-                  <?php print "<div id='islandora-metric-badges'>"; ?>
+                  <?php print "<div id='islandora-metric-badges' style='max-width:165px;'>"; ?>
                   <?php if (isset($badges['altmetric'])) { print $badges['altmetric']; } ?>
                   <?php if (isset($badges['scopus'])) { print $badges['scopus']; } ?>
                   <?php if (isset($badges['wos'])) { print $badges['wos']; } ?>
