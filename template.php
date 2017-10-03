@@ -1571,11 +1571,16 @@ EOS;
 
 
 function get_formatted_citation($islandora_object) {
-  module_load_include('inc', 'islandora_scholar', 'includes/utilities');
-  $selector = drupal_render(drupal_get_form('islandora_scholar_citation_select_form', $islandora_object->id));
-  module_load_include('inc', 'islandora_scholar', 'includes/callbacks');
-  $citation = citeproc_bibliography_from_mods(citeproc_default_style(), $islandora_object['MODS']->content);
-  return "{$selector}<span class='citation'>{$citation}</span>";
+  if (variable_get('islandora_scholar_users_choose_display_csl', FALSE)) {
+    module_load_include('inc', 'islandora_scholar', 'includes/utilities');
+    $selector = drupal_render(drupal_get_form('islandora_scholar_citation_select_form', $islandora_object->id));
+    module_load_include('inc', 'islandora_scholar', 'includes/callbacks');
+    $citation = citeproc_bibliography_from_mods(citeproc_default_style(), $islandora_object['MODS']->content);
+    return "{$selector}<span class='citation'>{$citation}</span><br/>";
+  }
+  else {
+    return "";
+  }
 }
 
 /**
