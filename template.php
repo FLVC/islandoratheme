@@ -634,6 +634,9 @@ function islandoratheme_preprocess_islandora_basic_collection_wrapper(&$variable
  * Implements hook_preprocess_HOOK for islandora_scholar_citation
  */
 function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
+  
+  $variables['citation'] = get_formatted_citation($variables['islandora_object']);
+
   $variables['badges'] = get_doi_badges($variables['islandora_object']);
 
   global $base_url;
@@ -1563,6 +1566,17 @@ EOS;
   return $sharing_button_html;
 }
 
+
+function get_formatted_citation($islandora_object) {
+  module_load_include('inc', 'islandora_scholar', 'includes/utilities');
+  $selector = drupal_render(drupal_get_form('islandora_scholar_citation_select_form', 'dev:41'));
+
+  module_load_include('inc', 'islandora_scholar', 'includes/callbacks');
+  //$citation = json_decode(citeproc_bibliography_from_mods(citeproc_style(''), $islandora_object['MODS']->content));
+  $citation = citeproc_bibliography_from_mods(citeproc_default_style(), $islandora_object['MODS']->content);
+
+  return "<span class='citation'>{$selector}{$citation}<br/></span";
+}
 
 /**
  * Override or insert variables for the page templates.

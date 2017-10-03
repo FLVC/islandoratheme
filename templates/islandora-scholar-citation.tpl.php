@@ -53,6 +53,7 @@ if (isset($islandora_object->label))
 </ul>
 
 <div id="tabs-1">
+    <div id="islandora_formatted_citation_display"><?php print $citation ?></div>
     <div class="islandora-citation-image-sidebar">
       <div>
         <table class="islandora-table-display" width="100%">
