@@ -686,7 +686,7 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   
   // Check if object has PDF
   $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
-  $variables['pdfless_icon'] = $base_url . "/sites/all/themes/islandoratheme/images/no-full-text.jpg";
+  $variables['pdfless_icon'] = $base_url . "/sites/all/themes/islandoratheme/images/no-full-text.png";
 }
 
 /**
@@ -745,7 +745,7 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
   
   // Check if object has PDF
   $variables['pdfless'] = ($islandora_object['PDF'] ? FALSE : TRUE);
-  $variables['pdfless_icon'] = $base_url . "/sites/all/themes/islandoratheme/images/no-full-text.jpg";
+  $variables['pdfless_icon'] = $base_url . "/sites/all/themes/islandoratheme/images/no-full-text.png";
 }
 
 /**
