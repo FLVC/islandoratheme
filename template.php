@@ -637,12 +637,14 @@ function islandoratheme_preprocess_islandora_scholar_citation(&$variables) {
   
   $variables['citation'] = get_formatted_citation($variables['islandora_object']);
 
+  $islandora_object = $variables['islandora_object'];
+  compound_object_check($islandora_object, $variables);
+
   $variables['badges'] = get_doi_badges($variables['islandora_object']);
 
   global $base_url;
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/citation.css', 
     array('group' => CSS_THEME, 'type' => 'file'));  
-  $islandora_object = $variables['islandora_object'];
 
   $variables['sharing_buttons'] = build_sharing_button_html($islandora_object);
   
@@ -699,12 +701,14 @@ function islandoratheme_preprocess_islandora_scholar_thesis(&$variables) {
 
   $variables['citation'] = get_formatted_citation($variables['islandora_object']);
 
+  $islandora_object = $variables['islandora_object'];
+  compound_object_check($islandora_object, $variables);
+
   $variables['badges'] = get_doi_badges($variables['islandora_object']);
 
   global $base_url;
   drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/thesis.css', 
     array('group' => CSS_THEME, 'type' => 'file'));
-  $islandora_object = $variables['islandora_object'];
   
   $variables['sharing_buttons'] = build_sharing_button_html($islandora_object);
 

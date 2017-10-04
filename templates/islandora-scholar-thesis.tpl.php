@@ -145,6 +145,45 @@ if (isset($islandora_object->label))
 </div>
 <?php } ?>
 
+<!--- Parent Object Metadata Display (if Compound Object) -->
+<?php if (isset($parent_mods_array)): ?>
+<div id="tabs-3">
+    <div class="islandora-pdf-image-sidebar">
+      <div>
+	<table class="islandora-table-display" width="100%">
+        <tbody>
+        <?php $row_field = 0; ?>
+        <?php foreach($parent_mods_array as $key => $value): ?>
+          <?php if(trim($value['value']) != ''): ?>
+            <tr class="islandora-definition-row">
+            <th class="full-description-heading<?php print $row_field == 0 ? ' first' : ''; ?>">
+              <?php print $value['label']; ?>:
+            </th>
+            <td class="<?php print $value['class']; ?><?php print $row_field == 0 ? ' first' : ''; ?>">
+              <?php print $value['value']; ?>
+            </td>
+            <?php if($row_field == 0): ?>
+                <td class="islandora-basic-image-thumbnail" rowspan="8">
+                <?php if(isset($parent_thumbnail_img)): ?>
+                  <?php print $parent_thumbnail_img; ?>
+                <?php elseif(isset($islandora_full_url)): ?>
+                  <?php print l($islandora_thumbnail_img, $islandora_full_url, array('html' => TRUE)); ?>
+                <?php elseif(isset($islandora_thumbnail_img)): ?>
+                  <?php print $islandora_thumbnail_img; ?>
+                <?php endif; ?>
+                </td>
+            <?php endif; ?>
+            </tr>
+            <?php $row_field++; ?>
+          <?php endif; ?>
+        <?php endforeach; ?>
+        </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+<?php endif; ?>
+
 </div>
 <div class="islandora-object-branding">
   <ul>
