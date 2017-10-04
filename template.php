@@ -1573,8 +1573,8 @@ EOS;
 function get_formatted_citation($islandora_object) {
   if (variable_get('islandora_scholar_users_choose_display_csl', FALSE)) {
     module_load_include('inc', 'islandora_scholar', 'includes/utilities');
+    module_load_include('inc', 'islandora_scholar', 'includes/csl_select.form');
     $selector = drupal_render(drupal_get_form('islandora_scholar_citation_select_form', $islandora_object->id));
-    module_load_include('inc', 'islandora_scholar', 'includes/callbacks');
     $citation = citeproc_bibliography_from_mods(citeproc_default_style(), $islandora_object['MODS']->content);
     return "<div id='dynamic-formatted-citation'>{$selector}<span class='citation'>{$citation}</span></div>";
   }
