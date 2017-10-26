@@ -89,3 +89,23 @@ function collectionAdvancedSearch() {
 
         };
 })(jQuery);
+
+
+// For newspaper display
+function islandora_newspaper_display_get_selected_year(){ 
+  return jQuery('.selected a strong').text();
+}
+
+function islandora_newspaper_display_update_selected_year(){
+  year = islandora_newspaper_display_get_selected_year();
+  jQuery('h3#dynamic-year-display').text(year);
+  jQuery("html, body").animate({ scrollTop: 0 }, "slow");
+}
+
+jQuery(document).ready(function($) {
+  year = islandora_newspaper_display_get_selected_year();
+  jQuery('div.vertical-tabs-panes').before('<h3 id="dynamic-year-display">' + year + '</h3>');
+  jQuery('li.vertical-tab-button a').click(function() {
+    islandora_newspaper_display_update_selected_year();
+  });
+});
