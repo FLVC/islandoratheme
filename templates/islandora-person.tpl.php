@@ -43,9 +43,9 @@ $affiliation = $variables['u2'];
 	  <h3>
 		  Current Scholars in <?php print $dept; ?>
 	  </h3>
-
+<div class="fellow_scholars">
 <?php print views_embed_view('other_scholars_in_dept', 'dept_scholars', $dept); ?>
-
+</div>
 
 </div>
 	<?php endforeach; ?>
