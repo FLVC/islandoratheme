@@ -1587,6 +1587,28 @@ function get_formatted_citation($islandora_object) {
   }
 }
 
+function islandoratheme_preprocess_islandora_newspaper_page_controls(array &$variables) {
+  $object = $variables['object'];
+  $download_prefix = '<strong>' . t('Download:') . ' </strong>';
+
+  if (isset($object['OBJ']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['OBJ'])) {
+    $size = islandora_datastream_get_human_readable_size($object['OBJ']);
+    $type = '';
+    if($object['OBJ']->mimetype == 'image/tiff') {
+      $type = 'TIFF';
+    }
+    if($object['OBJ']->mimetype == 'image/jpeg') {
+      $type = 'JPEG';
+    }
+    if($object['OBJ']->mimetype == 'image/jp2') {
+      $type = 'JP2';
+    }
+    $text = t('@type (@size)', array('@size' => $size));
+    $url = islandora_datastream_get_url($object['OBJ'], 'download');
+    $attributes = array('attributes' => array('title' => t('Download @type')));
+    $controls['tiff_download'] = $download_prefix . l($text, $url, $attributes);
+    $variables['object'] = $object;
+}
 /**
  * Override or insert variables for the page templates.
  */
