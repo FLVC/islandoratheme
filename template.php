@@ -1606,8 +1606,8 @@ function islandoratheme_preprocess_islandora_newspaper_page_controls(array &$var
     $text = t('@type (@size)', array('@size' => $size));
     $url = islandora_datastream_get_url($object['OBJ'], 'download');
     $attributes = array('attributes' => array('title' => t('Download @type')));
-    $controls['tiff_download'] = $download_prefix . l($text, $url, $attributes);
-    $variables['object'] = $object;
+    $variables['controls']['tiff_download'] = $download_prefix . l($text, $url, $attributes);
+  }
 }
 /**
  * Override or insert variables for the page templates.
