@@ -1603,9 +1603,9 @@ function islandoratheme_preprocess_islandora_newspaper_page_controls(array &$var
     if($object['OBJ']->mimetype == 'image/jp2') {
       $type = 'JP2';
     }
-    $text = t('@type (@size)', array('@size' => $size));
+    $text = t('@type (@size)', array('@size' => $size, '@type' => $type));
     $url = islandora_datastream_get_url($object['OBJ'], 'download');
-    $attributes = array('attributes' => array('title' => t('Download @type')));
+    $attributes = array('attributes' => array('title' => t('Download @type', array('@type' => $type))));
     $variables['controls']['tiff_download'] = $download_prefix . l($text, $url, $attributes);
   }
 }
