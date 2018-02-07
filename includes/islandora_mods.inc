@@ -737,13 +737,15 @@ class MODS {
         {
           switch((string) $accessCondition['type']) { // Get attributes as element indices
             case 'useAndReproduction':
-              $mods_array[$i]['value'] = $accessCondition;
-              $mods_array[$i]['label'] = 'Use and Reproduction';
-              $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
-              $i++;
-              break;
             case 'use and reproduction':
-              $mods_array[$i]['value'] = $accessCondition;
+              //$accessCondition->registerNamespace('xlink', 'http://www.w3.org/1999/xlink');
+              if(isset($accessCondition['href'])) {
+                $mods_array[$i]['value'] = "TEST";
+              }
+              else {
+                //$mods_array[$i]['value'] = $accessCondition;
+                $mods_array[$i]['value'] = print_r($accessCondition);
+              }
               $mods_array[$i]['label'] = 'Use and Reproduction';
               $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
               $i++;
