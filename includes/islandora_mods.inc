@@ -149,6 +149,7 @@ class MODS {
       $mods_array[$i]['value'] = '';
       $mods_array[$i]['label'] = 'Genre';
       foreach ($mods_object->genre as $genre) {
+        $genre = ucwords($genre);
         if ($counter == 0) {
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $genre;
         } else {
