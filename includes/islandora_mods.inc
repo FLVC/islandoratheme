@@ -738,13 +738,14 @@ class MODS {
           switch((string) $accessCondition['type']) { // Get attributes as element indices
             case 'useAndReproduction':
             case 'use and reproduction':
-              //$accessCondition->registerNamespace('xlink', 'http://www.w3.org/1999/xlink');
-              if(isset($accessCondition['href'])) {
-                $mods_array[$i]['value'] = "TEST";
+              $accessCondition->registerXPathNamespace('xlink', 'http://www.w3.org/1999/xlink');
+              $result = $accessCondition->xpath('//@xlink:href');
+              $result_url = @$result[0]['href'];
+              if(isset($result_url)) {
+                $mods_array[$i]['value'] = "<a target=\"_blank\" href=\"{$result_url}\">{$accessCondition}</a>";
               }
               else {
-                //$mods_array[$i]['value'] = $accessCondition;
-                $mods_array[$i]['value'] = print_r($accessCondition);
+                $mods_array[$i]['value'] = $accessCondition;
               }
               $mods_array[$i]['label'] = 'Use and Reproduction';
               $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
