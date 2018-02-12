@@ -9,11 +9,3 @@ button.download {
   border-radius: 5px;
 }
 .islandora-basic-image-thumbnail { text-align: center; }
-
-/* FSU Site specific CSS */
-.site-name-fsudigitalflvcorg .typeOfResource { display: none; }
-.site-name-fsudigitalflvcorg .genre { display: none; }
-.site-name-fsudigitalflvcorg .issuance { display: none; }
-.site-name-fsudigitalflvcorg .form { display: none; }
-.site-name-fsudigitalflvcorg .extent { display: none; }
-.site-name-fsudigitalflvcorg .language_text { display: none; }
