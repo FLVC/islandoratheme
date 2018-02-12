@@ -149,6 +149,7 @@ class MODS {
       $mods_array[$i]['value'] = '';
       $mods_array[$i]['label'] = 'Genre';
       foreach ($mods_object->genre as $genre) {
+        $genre = ucwords($genre);
         if ($counter == 0) {
           $mods_array[$i]['value'] = $mods_array[$i]['value'] . $genre;
         } else {
@@ -737,13 +738,16 @@ class MODS {
         {
           switch((string) $accessCondition['type']) { // Get attributes as element indices
             case 'useAndReproduction':
-              $mods_array[$i]['value'] = $accessCondition;
-              $mods_array[$i]['label'] = 'Use and Reproduction';
-              $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
-              $i++;
-              break;
             case 'use and reproduction':
-              $mods_array[$i]['value'] = $accessCondition;
+              $accessCondition->registerXPathNamespace('xlink', 'http://www.w3.org/1999/xlink');
+              $result = $accessCondition->xpath('//@xlink:href');
+              $result_url = @$result[0]['href'];
+              if(isset($result_url)) {
+                $mods_array[$i]['value'] = "<a target=\"_blank\" href=\"{$result_url}\">{$accessCondition}</a>";
+              }
+              else {
+                $mods_array[$i]['value'] = $accessCondition;
+              }
               $mods_array[$i]['label'] = 'Use and Reproduction';
               $mods_array[$i]['class'] = $accessCondition->getName() . '_reproduction';
               $i++;
