@@ -989,6 +989,27 @@ function islandoratheme_islandora_newspaper(array $variables) {
   }
 
   $newspaper_output .= '</div></div>';
+
+  // add branding logos
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+  $branding_info = get_branding_info($variables);
+  $newspaper_output .= '<div class="islandora-object-branding"><ul>';
+  $local_counter = 0;
+  while (isset($branding_info['other_logo_' . $local_counter]) && $local_counter < 3) {
+    $newspaper_output .= '<li><a href="' . $branding_info['other_logo_' . $local_counter]['institution_link'] . '" target="_blank">';
+    $newspaper_output .= '<img src="' . base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['other_logo_' . $local_counter]['image_filename'] . '"></a>';
+    $newspaper_output .= '</li>';
+  }
+  $newspaper_output .= '<li><img src="' . $base_path . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['institution_logo']['image_filename'] . '"/></li>';
+  $newspaper_output .= '</ul></div>';
+
   return $newspaper_output;
 }
 
@@ -1032,6 +1053,27 @@ function islandoratheme_islandora_serial_object(array $variables) {
   }
 
   $serial_output .= '</div></div>';
+
+  // add branding logos
+  try {
+    $mods = $islandora_object['MODS']->content;
+    $mods_object = simplexml_load_string($mods);
+  } catch (Exception $e) {
+    drupal_set_message(t('Error retrieving object %s %t', array('%s' => $islandora_object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+  $variables['mods_array'] = isset($mods_object) ? MODS::as_formatted_array($mods_object) : array();
+  $variables['other_logo_array'] = isset($mods_object) ? MODS::other_logo_array($mods_object) : array();
+  $branding_info = get_branding_info($variables);
+  $serial_output .= '<div class="islandora-object-branding"><ul>';
+  $local_counter = 0;
+  while (isset($branding_info['other_logo_' . $local_counter]) && $local_counter < 3) {
+    $serial_output .= '<li><a href="' . $branding_info['other_logo_' . $local_counter]['institution_link'] . '" target="_blank">';
+    $serial_output .= '<img src="' . base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['other_logo_' . $local_counter]['image_filename'] . '"></a>';
+    $serial_output .= '</li>';
+  }
+  $serial_output .= '<li><img src="' . $base_path . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['institution_logo']['image_filename'] . '"/></li>';
+  $serial_output .= '</ul></div>';
+
   return $serial_output;
 }
 
@@ -1609,6 +1651,7 @@ function islandoratheme_preprocess_islandora_newspaper_page_controls(array &$var
     $variables['controls']['tiff_download'] = $download_prefix . l($text, $url, $attributes);
   }
 }
+
 /**
  * Override or insert variables for the page templates.
  */

@@ -28,12 +28,12 @@
   </div>
 <?php endif; ?>
 
-<div class="section-label"><h3>Recent Publications</h3><a href="/islandora/search/mods_parent_organization_ms%3A(%22<?php print $object->label ?>%22)"><h4>View All Publications (search link)</h4></a></div>
+<div class="section-label"><h3>Recent Publications</h3><a href="/islandora/search/mods_parent_organization_ms%3A(%22<?php print $object->label ?>%22)"><h4>View All Publications</h4></a></div>
 <div class="view--recent-publications-by-dept">
   <?php print views_embed_view('recent_publications_by_dept', 'publications_by_dept', $object->label); ?>
 </div>
 
-<div class="section-label"><h3>Scholars</h3><a href="/islandora/search/MADS_parent_organization_ms%3A(%22<?php print $object->label ?>%22)"><h4>View All Scholars (search link)</h4></a></div>
+<div class="section-label"><h3>Scholars</h3><a href="/islandora/search/MADS_parent_organization_ms%3A(%22<?php print $object->label ?>%22)"><h4>View All Scholars</h4></a></div>
 <div class="other-scholars islandora-object-scholars">
   <!--<?php print views_embed_view('other_scholars_in_dept', 'dept_scholars', $object->label); ?>-->
   <?php print views_embed_view('browse_scholars_by_dept', 'block', $object->label); ?>
