@@ -84,6 +84,15 @@ width: 100%; }
   margin-bottom: 0.75em;
   padding-bottom: 0.75em; }
 
+.scholar .section-label h3 {
+  display: inline; }
+
+.scholar .section-label a {
+  float:right; }
+
+.scholar .section-label a h4 {
+  display: inline; }
+
 /*---------------------*/
 /*-  fellow scholars  -*/
 /*---------------------*/
