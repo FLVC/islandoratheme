@@ -1006,6 +1006,7 @@ function islandoratheme_islandora_newspaper(array $variables) {
     $newspaper_output .= '<li><a href="' . $branding_info['other_logo_' . $local_counter]['institution_link'] . '" target="_blank">';
     $newspaper_output .= '<img src="' . base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['other_logo_' . $local_counter]['image_filename'] . '"></a>';
     $newspaper_output .= '</li>';
+    $local_counter++;
   }
   $newspaper_output .= '<li><img src="' . $base_path . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['institution_logo']['image_filename'] . '"/></li>';
   $newspaper_output .= '</ul></div>';
@@ -1070,6 +1071,7 @@ function islandoratheme_islandora_serial_object(array $variables) {
     $serial_output .= '<li><a href="' . $branding_info['other_logo_' . $local_counter]['institution_link'] . '" target="_blank">';
     $serial_output .= '<img src="' . base_path() . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['other_logo_' . $local_counter]['image_filename'] . '"></a>';
     $serial_output .= '</li>';
+    $local_counter++;
   }
   $serial_output .= '<li><img src="' . $base_path . variable_get('file_public_path', conf_path() . '/files') . '/custom_logos/' . $branding_info['institution_logo']['image_filename'] . '"/></li>';
   $serial_output .= '</ul></div>';
