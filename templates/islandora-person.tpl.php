@@ -27,7 +27,7 @@ $affiliation = $variables['u2'];
 	</div>
 	<div class="view--citations">
             <div class="section-label">
-		<h3>Recent Publications</h3><a href="/islandora/search/mods_name_nameIdentifier_ms%3A(%22<?php print str_replace('/','~slsh~',$identifier) ?>%22)"><h4>View Scholar's Publications</h4></a>
+		<h3>Recent Publications</h3><a href="/islandora/search/mods_name_nameIdentifier_ms%3A(%22<?php print str_replace('/','~slsh~',$identifier) ?>%22)"><h4>View this Scholar's Repository Publications</h4></a>
             </div>
 	<?php print views_embed_view('recent_publications_by_scholar', 'publications_by_scholar', $identifier); ?>
 	</div>
