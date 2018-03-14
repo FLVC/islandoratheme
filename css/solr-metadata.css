@@ -58,5 +58,5 @@ fieldset.islandora-metadata {
   .islandora-object-image {
     float: left;
     margin-right: 1.5em; }
-  .metadata {
+  .solr-metadata {
     min-height: 150px; } }

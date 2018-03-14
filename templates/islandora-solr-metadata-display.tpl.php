@@ -63,15 +63,15 @@ foreach ( $webservice_links as $webservice_link ) {
 }
 ?>
 
-
-<?php if ($found):
-if (!(empty($solr_fields) && variable_get('islandora_solr_metadata_omit_empty_values', FALSE))):?>
+<div class="solr-metadata">
+<?php if ($found): ?>
+<?php if (!(empty($solr_fields) && variable_get('islandora_solr_metadata_omit_empty_values', FALSE))):?>
 <div class="islandora-object-image">
   <?php if (isset($variables['tn'])): ?>
     <?php print $variables['tn']; ?>
   <?php endif; ?>
 </div>
-<fieldset <?php $print ? print('class="islandora islandora-metadata"') : print('class="islandora islandora-metadata collapsible"');?>>
+<fieldset <?php $print ? print('class="islandora islandora-metadata"') : print('class="islandora islandora-metadata"');?>>
   <legend><span class="fieldset-legend"><?php print t('Details'); ?></span></legend>
   <div class="fieldset-wrapper">
 	<dl xmlns:dcterms="http://purl.org/dc/terms/" class="islandora-inline-metadata islandora-metadata-fields">
@@ -142,3 +142,4 @@ $postprint = '<div class="tooltip-item">
 if ( $pub_status == 'pre-publication' || $pub_status == 'pre-print' ) { print $preprint; } 
 if ( $pub_status == 'post-publication' || $pub_status == 'post-print' ) { print $postprint; } 
 ?>
+</div>
