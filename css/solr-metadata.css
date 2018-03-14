@@ -1,0 +1,62 @@
+
+.islandora-metadata {
+  border: 0;
+  background: none;
+  padding: 0; }
+  .islandora-metadata legend {
+    display: none; }
+  .islandora-metadata p {
+    margin: 0; }
+  .islandora-metadata dt {
+    font-weight: bold;
+    width: 11%; }
+
+dl.islandora-inline-metadata {
+  margin: 0 auto;
+  letter-spacing: -0.31em;
+  *letter-spacing: normal;
+  word-spacing: -0.43em; }
+
+.islandora-inline-metadata dt {
+  margin-right: -1px;
+  width: 20%;
+  font-family: "Roboto Condensed", sans-serif;
+  /*font-weight: bold;*/
+  padding-right: 0;
+  word-wrap: normal; }
+
+.islandora-inline-metadata dd {
+  width: 80%;
+  padding-left: 40px; }
+
+dl.islandora-metadata-fields {
+width: 100%; }
+
+.islandora-metadata dt,
+.islandora-metadata dd {
+  border-top: 1px solid #e5e5e5; }
+
+.islandora-metadata dt.first,
+.islandora-metadata dd.first {
+  border-top: 0; }
+
+fieldset.islandora-metadata {
+  border: 0px;
+  padding: 0;
+  background-color: none;
+  background: none;
+  margin-bottom: 0px; }
+
+.islandora-object-image {
+  width: 170px; }
+.islandora-object-image img {
+    border: 1px solid #ccc;
+    padding: 4px;
+    width: 100%; }
+
+@media screen and (min-width: 600px) {
+  .islandora-object-image {
+    float: left;
+    margin-right: 1.5em; }
+  .metadata {
+    min-height: 150px; } }

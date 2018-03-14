@@ -1654,6 +1654,29 @@ function islandoratheme_preprocess_islandora_newspaper_page_controls(array &$var
   }
 }
 
+function islandoratheme_preprocess_islandora_solr_metadata_display(array &$variables) {
+
+  // base url
+  global $base_url;
+  // base path
+  global $base_path;
+
+  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/solr-metadata.css', array('group' => CSS_THEME, 'type' => 'file'));
+
+  $islandora_object = $variables['islandora_object'];
+  
+  // Thumbnail.
+  if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
+    $tn_url = url("islandora/object/{$islandora_object->id}/datastream/TN/view");
+    $params = array(
+      'title' => $islandora_object->label,
+      'path' => $tn_url,
+    );
+    $variables['tn'] = theme('image', $params);
+  }
+
+}
+
 /**
  * Override or insert variables for the page templates.
  */
