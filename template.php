@@ -861,6 +861,7 @@ function islandoratheme_preprocess_islandora_basic_collection(&$variables) {
 /**
  * Implements theme from newspaper module.
  */
+
 /*
 function islandoratheme_islandora_newspaper(array $variables) {
   drupal_add_js('misc/collapse.js');
@@ -947,6 +948,8 @@ function islandoratheme_islandora_newspaper(array $variables) {
   return drupal_render($output);
 }
 */
+
+
 /**
  * Implements theme from newspaper module.
  */
