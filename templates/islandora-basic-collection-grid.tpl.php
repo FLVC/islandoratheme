@@ -21,7 +21,7 @@
  
     <dl class="islandora-basic-collection-object <?php print $value['class']; ?>">
         <dt class="islandora-basic-collection-thumb"><?php print $value['thumb_link']; ?></dt>
-        <dd class="islandora-basic-collection-caption"><a href="<?php print $base_url . '/' . $value['path']; ?>"><?php print substr($value['title'], 0, 100); ?></a></dd>
+        <dd class="islandora-basic-collection-caption"><a href="<?php print $base_url . '/' . $value['path']; ?>"><?php print strlen($value['title']) > 100 ? preg_replace('/\s+?(\S+)?$/', '', substr($value['title'], 0, 100)) : $value['title'];; ?></a></dd>
     </dl>
   
   <?php if($collection_policy): ?>
