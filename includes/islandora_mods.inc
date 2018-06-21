@@ -192,12 +192,20 @@ class MODS {
         $i++;
       }
       else {
+        $counter = 0;
+        $mods_array[$i]['value'] = '';
+        $mods_array[$i]['label'] = 'Physical Form';
+        $mods_array[$i]['class'] = $mods_object->physicalDescription->form->getName();
         foreach ($mods_object->physicalDescription->form as $form) {
-          $mods_array[$i]['value'] = $form;
-          $mods_array[$i]['label'] = 'Physical Form';
-          $mods_array[$i]['class'] = $form->getName();
-          $i++;
+          if ($counter == 0) {
+            $mods_array[$i]['value'] = $form;
+          }
+          else {
+            $mods_array[$i]['value'] = $mods_array[$i]['value'] . '<br />' . $form;
+          }
+          $counter++;
         }
+        $i++;
       }
     }
 
