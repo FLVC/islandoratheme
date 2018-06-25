@@ -449,16 +449,16 @@ class MODS {
 
       $mods_array[$i]['label'] = 'Subject(s)';
       $mods_array[$i]['value'] = '';
-      
+     
+      $cartographic_info_array = array();
+      $j = 0; 
       foreach ($mods_object->subject as $subject) {
-        $j = 0;
         $counter = 0;
         $name_flag = false;
         $title_flag = false;
         $hierarchical_geographic_flag = false;
         $geographic_code_flag = false;
         $subject_as_type = null;
-        $cartographic_info_array = array();
         
         if($total_counter > 0)
         {
@@ -632,6 +632,7 @@ class MODS {
           }
         }
 */
+
         /*foreach($cartographic_info_array as $cartographic_info)
         {
           if (isset($cartographic_info->coordinates) && trim($cartographic_info->coordinates) != '')
@@ -664,6 +665,35 @@ class MODS {
       
       $mods_array[$i]['class'] = $mods_object->subject->getName();
       $i++;
+
+      // Cartographic Coordinates
+      foreach($cartographic_info_array as $cartographic_info)
+      {
+        if (isset($cartographic_info->coordinates) && trim($cartographic_info->coordinates) != '')
+        {
+          $mods_array[$i]['value'] = $cartographic_info->coordinates;
+          $mods_array[$i]['label'] = 'Coordinates';
+          $mods_array[$i]['class'] = $cartographic_info->coordinates->getName();
+          $i++;
+        }
+
+        if (isset($cartographic_info->scale) && $cartographic_info->scale != '')
+        {
+          $mods_array[$i]['value'] = $cartographic_info->scale;
+          $mods_array[$i]['label'] = 'Scale';
+          $mods_array[$i]['class'] = $cartographic_info->scale->getName();
+          $i++;
+        }
+
+        if (isset($cartographic_info->projection) && $cartographic_info->projection != '')
+        {
+          $mods_array[$i]['value'] = $cartographic_info->projection;
+          $mods_array[$i]['label'] = 'Projection';
+          $mods_array[$i]['class'] = $cartographic_info->projection->getName();
+          $i++;
+        }
+      }
+
     }
     
     // Library Classification Section    
