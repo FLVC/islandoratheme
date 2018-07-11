@@ -1664,20 +1664,24 @@ function islandoratheme_preprocess_islandora_solr_metadata_display(array &$varia
   // base path
   global $base_path;
 
-  drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/solr-metadata.css', array('group' => CSS_THEME, 'type' => 'file'));
+  module_load_include('inc', 'islandora', 'includes/utilities');
 
   $islandora_object = $variables['islandora_object'];
-  
-  // Thumbnail.
-  if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
-    $tn_url = url("islandora/object/{$islandora_object->id}/datastream/TN/view");
-    $params = array(
-      'title' => $islandora_object->label,
-      'path' => $tn_url,
-    );
-    $variables['tn'] = theme('image', $params);
-  }
 
+  if (in_array('islandora:collectionCModel', $islandora_object->models)) {
+
+    drupal_add_css(drupal_get_path('theme', 'islandoratheme') . '/css/solr-metadata.css', array('group' => CSS_THEME, 'type' => 'file'));
+
+    // Thumbnail.
+    if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
+      $tn_url = url("islandora/object/{$islandora_object->id}/datastream/TN/view");
+      $params = array(
+        'title' => $islandora_object->label,
+        'path' => $tn_url,
+      );
+      $variables['tn'] = theme('image', $params);
+    }
+  }
 }
 
 /**
