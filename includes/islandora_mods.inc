@@ -168,25 +168,14 @@ class MODS {
     if (isset($mods_object->physicalDescription->form))
     {
       $form_marccategory = '';
-      $form_no_authority = '';
       foreach ($mods_object->physicalDescription->form as $form) {
-        if (!isset($form['authority'])) {
-          // only display the first one
-          if (strlen($form_no_authority) == 0) $form_no_authority = $form;
-        }
-        else if ($form['authority'] == 'marccategory') {
+        if (isset($form['authority'])&&($form['authority'] == 'marccategory')) {
           // only display the first one
           if (strlen($form_marccategory) == 0) $form_marccategory = $form;
         }
       }
       if (strlen($form_marccategory) > 0) {
         $mods_array[$i]['value'] = $form_marccategory;
-        $mods_array[$i]['label'] = 'Physical Form';
-        $mods_array[$i]['class'] = $form->getName();
-        $i++;
-      }
-      else if (strlen($form_no_authority) > 0) {
-        $mods_array[$i]['value'] = $form_no_authority;
         $mods_array[$i]['label'] = 'Physical Form';
         $mods_array[$i]['class'] = $form->getName();
         $i++;
