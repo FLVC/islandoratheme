@@ -88,10 +88,10 @@ $parent_name = $parent->label;
       <th>Title:</th>
       <td><?php print $title; ?></td>
     </tr>
-    <tr>
+<!--<tr>
       <th>Location:</th>
       <td><?php print $location; ?></td>
-    </tr>
+    </tr>-->
     <tr>
       <th>Rights:</th>
       <td><?php print $rights; ?></td>
@@ -100,9 +100,9 @@ $parent_name = $parent->label;
       <th>IID:</th>
       <td><?php print $iid; ?></td>
     </tr>
-    <tr>
+<!--<tr>
       <th>PURL:</th>
       <td><?php print $purl; ?></td>
-    </tr>
+    </tr>-->
   </tbody>
 </table>
