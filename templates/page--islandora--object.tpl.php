@@ -1,4 +1,3 @@
-<?php include_once 'logaholic.php'; ?>
 <?php // Corolla ?>
 <div id="page-wrapper">
   <div id="page" class="<?php print $classes; ?>">
