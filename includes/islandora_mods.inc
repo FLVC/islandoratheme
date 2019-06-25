@@ -805,7 +805,7 @@ class MODS {
         $flvc = $extension->children($namespaces['flvc']);
         
         $mods_array['mods:owner_inst']['value'] = $flvc->flvc->owningInstitution;
-        $mods_array['mods:owner_inst']['label'] = 'Owner Institution';
+        $mods_array['mods:owner_inst']['label'] = 'Host Institution';
         $mods_array['mods:owner_inst']['class'] = $flvc->flvc->owningInstitution->getName();
         $i++;
       }
