@@ -83,6 +83,10 @@ dl.islandora-metadata-fields {
 .department-tree-link {
   float: right; }
 
+img.missing-scholar {
+     display: none;
+}
+
 /*
  *Table stuff
  */
