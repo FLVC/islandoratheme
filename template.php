@@ -1685,6 +1685,14 @@ function islandoratheme_preprocess_islandora_solr_metadata_display(array &$varia
 }
 
 /**
+ * Override the Islandora Organization Object preprocess function.
+ */
+function islandoratheme_preprocess_islandora_dept(array &$variables) {
+  drupal_add_js(drupal_get_path('theme', 'islandoratheme') . '/js/lazyload.min.js');
+  drupal_add_js(drupal_get_path('theme', 'islandoratheme') . '/js/islandora_dept.js');
+}
+
+/**
  * Override or insert variables for the page templates.
  */
 /*
