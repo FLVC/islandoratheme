@@ -11,7 +11,8 @@
 function makeURL(the_form) {
   var collection = document.forms[the_form]["islandora_simple_collection"].value;
   collection = collection.replace(":", "\%3A");
-  var query = document.forms[the_form]["base_url"].value + "/islandora/search/" + document.forms[the_form]["islandora_simple_search_query"].value + "?type=edismax&collection=" + collection;
+  var search_query = document.forms[the_form]["islandora_simple_search_query"].value;
+  var query = document.forms[the_form]["base_url"].value + "/islandora/search/" + search_query + "?type=edismax&collection=" + collection + "&search=" + search_query;
   window.location = query;
   return false;
 }
